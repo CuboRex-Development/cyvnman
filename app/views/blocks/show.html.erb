@@ -1,15 +1,36 @@
 <h1>Block: <%= @block.block_name %></h1>
 
-<div class="card">
+<div class="card mb-3">
   <div class="card-header">
     Block Details
   </div>
   <div class="card-body">
-    <p><strong>Block Number:</strong> <%= @block.block_number %></p>
-    <p><strong>Block Name:</strong> <%= @block.block_name %></p>
-    <p><strong>Description:</strong> <%= @block.description %></p>
+    <h5 class="card-title"><%= @block.block_number %></h5>
+    <p class="card-text"><strong>Block Name:</strong> <%= @block.block_name %></p>
+    <p class="card-text"><strong>Description:</strong> <%= @block.description %></p>
   </div>
 </div>
+
+<h2>Related Models</h2>
+<ul class="list-group mb-3">
+  <% @block.models.each do |model| %>
+    <li class="list-group-item">
+      <strong>Model Code:</strong> <%= model.model_code %><br>
+      <strong>Description:</strong> <%= model.description %>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Related Parts</h2>
+<ul class="list-group mb-3">
+  <% @block.parts.each do |part| %>
+    <li class="list-group-item">
+      <strong>Part Number:</strong> <%= part.part_number %><br>
+      <strong>Part Name:</strong> <%= part.part_name %><br>
+      <strong>Description:</strong> <%= part.description %>
+    </li>
+  <% end %>
+</ul>
 
 <div class="mt-3">
   <%= link_to 'Edit', edit_block_path(@block), class: "btn btn-warning" %>
