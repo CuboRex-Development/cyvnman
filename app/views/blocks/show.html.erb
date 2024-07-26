@@ -11,13 +11,12 @@
   </div>
 </div>
 
-<h2>Related Types</h2>
+<h2>Related Parts</h2>
 <ul class="list-group mb-3">
-  <% @block.types.each do |type| %>
+  <% @block.parts.each do |part| %>
     <li class="list-group-item">
-      <strong>Type Name:</strong> <%= type.type_name %><br>
-      <strong>Type Number:</strong> <%= type.type_number %><br>
-      <strong>Description:</strong> <%= type.description %>
+      <%= link_to part.part_name, part %>
+      <small class="text-muted">Part Number: <%= part.part_number %></small>
     </li>
   <% end %>
 </ul>
@@ -26,19 +25,8 @@
 <ul class="list-group mb-3">
   <% @block.models.each do |model| %>
     <li class="list-group-item">
-      <strong>Model Code:</strong> <%= model.model_code %><br>
-      <strong>Description:</strong> <%= model.description %>
-    </li>
-  <% end %>
-</ul>
-
-<h2>Related Parts</h2>
-<ul class="list-group mb-3">
-  <% @block.parts.each do |part| %>
-    <li class="list-group-item">
-      <strong>Part Number:</strong> <%= part.part_number %><br>
-      <strong>Part Name:</strong> <%= part.part_name %><br>
-      <strong>Description:</strong> <%= part.description %>
+      <%= link_to model.model_code, model %>
+      <small class="text-muted">Description: <%= model.description %></small>
     </li>
   <% end %>
 </ul>

@@ -1,35 +1,28 @@
-<h1>Model Details</h1>
+<h1>Model: <%= @model.model_code %></h1>
 
-<div class="card">
+<div class="card mb-3">
   <div class="card-header">
-    Model: <%= @model.model_code %>
+    Model Details
   </div>
   <div class="card-body">
-    <h5 class="card-title">Description</h5>
-    <p class="card-text"><%= @model.description %></p>
-
-    <h5 class="card-title">Type</h5>
-    <p class="card-text"><%= @model.type.type_name %> (<%= @model.type.type_number %>)</p>
-
-    <h5 class="card-title">Blocks</h5>
-    <% if @model.blocks.any? %>
-      <ul class="list-group">
-        <% @model.blocks.each do |block| %>
-          <li class="list-group-item">
-            <strong>Block Number:</strong> <%= block.block_number %><br>
-            <strong>Block Name:</strong> <%= block.block_name %><br>
-            <strong>Description:</strong> <%= block.description %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p>No blocks associated with this model.</p>
-    <% end %>
+    <h5 class="card-title"><%= @model.model_code %></h5>
+    <p class="card-text"><strong>Description:</strong> <%= @model.description %></p>
+    <p class="card-text"><strong>Type:</strong> <%= link_to @model.type.type_name, @model.type %></p>
   </div>
 </div>
 
+<h2>Related Blocks</h2>
+<ul class="list-group mb-3">
+  <% @model.blocks.each do |block| %>
+    <li class="list-group-item">
+      <%= link_to block.block_name, block %>
+      <small class="text-muted">Block Number: <%= block.block_number %></small>
+    </li>
+  <% end %>
+</ul>
+
 <div class="mt-3">
-  <%= link_to 'Edit', edit_model_path(@model), class: 'btn btn-warning' %>
-  <%= link_to 'Back', models_path, class: 'btn btn-secondary' %>
-  <%= button_to 'Destroy', @model, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+  <%= link_to 'Edit', edit_model_path(@model), class: "btn btn-warning" %>
+  <%= link_to 'Back to Models', models_path, class: "btn btn-secondary" %>
+  <%= button_to 'Destroy', @model, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
 </div>

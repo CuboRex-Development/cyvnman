@@ -15,9 +15,8 @@
 <ul class="list-group mb-3">
   <% @part.blocks.each do |block| %>
     <li class="list-group-item">
-      <strong>Block Number:</strong> <%= block.block_number %><br>
-      <strong>Block Name:</strong> <%= block.block_name %><br>
-      <strong>Description:</strong> <%= block.description %>
+      <%= link_to block.block_name, block %>
+      <small class="text-muted">Block Number: <%= block.block_number %></small>
     </li>
   <% end %>
 </ul>
@@ -26,8 +25,8 @@
 <ul class="list-group mb-3">
   <% @part.versions.each do |version| %>
     <li class="list-group-item">
-      <strong>Version Number:</strong> <%= version.version_number %><br>
-      <strong>Description:</strong> <%= version.description %>
+      <%= link_to version.version_number, version %>
+      <small class="text-muted">Description: <%= version.description %></small>
     </li>
   <% end %>
 </ul>

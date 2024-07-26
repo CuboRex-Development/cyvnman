@@ -1,6 +1,17 @@
 <h1>Models</h1>
 
-<table class="table table-striped">
+<div class="mb-3">
+  <%= form_with(url: models_path, method: :get, local: true) do |form| %>
+    <div class="input-group">
+      <%= form.text_field :search, value: params[:search], class: "form-control", placeholder: "Search Models" %>
+      <div class="input-group-append">
+        <%= form.submit "Search", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<table class="table table-bordered table-striped table-hover table-responsive">
   <thead>
     <tr>
       <th>Model Code</th>
@@ -14,13 +25,13 @@
       <tr>
         <td><%= model.model_code %></td>
         <td><%= model.description %></td>
-        <td><%= model.type.type_name %></td>
-        <td><%= link_to 'Show', model, class: 'btn btn-info btn-sm' %></td>
-        <td><%= link_to 'Edit', edit_model_path(model), class: 'btn btn-warning btn-sm' %></td>
-        <td><%= link_to 'Destroy', model, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
+        <td><%= link_to model.type.type_name, model.type %></td>
+        <td><%= link_to 'Show', model, class: "btn btn-outline-primary btn-sm" %></td>
+        <td><%= link_to 'Edit', edit_model_path(model), class: "btn btn-outline-warning btn-sm" %></td>
+        <td><%= button_to 'Destroy', model, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to 'New Model', new_model_path, class: 'btn btn-primary' %>
+<%= link_to 'New Model', new_model_path, class: "btn btn-success" %>
