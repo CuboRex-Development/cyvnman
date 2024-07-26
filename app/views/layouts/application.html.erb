@@ -1,16 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Pms</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>PartsManagementSystem</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">Parts Management System</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <%= link_to 'Types', types_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Models', models_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Blocks', blocks_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Parts', parts_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Versions', versions_path, class: 'nav-link' %>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <%= yield %>
+    </div>
   </body>
 </html>

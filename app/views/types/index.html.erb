@@ -1,14 +1,27 @@
-<p style="color: green"><%= notice %></p>
-
 <h1>Types</h1>
 
-<div id="types">
-  <% @types.each do |type| %>
-    <%= render type %>
-    <p>
-      <%= link_to "Show this type", type %>
-    </p>
-  <% end %>
-</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Type Name</th>
+      <th>Type Number</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
 
-<%= link_to "New type", new_type_path %>
+  <tbody>
+    <% @types.each do |type| %>
+      <tr>
+        <td><%= type.type_name %></td>
+        <td><%= type.type_number %></td>
+        <td><%= type.description %></td>
+        <td><%= link_to 'Show', type, class: 'btn btn-info' %></td>
+        <td><%= link_to 'Edit', edit_type_path(type), class: 'btn btn-warning' %></td>
+        <td><%= link_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'New Type', new_type_path, class: 'btn btn-primary' %>
