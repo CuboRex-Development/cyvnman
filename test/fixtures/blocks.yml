@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  block_number: MyString
+  block_name: MyString
+  description: MyText
+
+two:
+  block_number: MyString
+  block_name: MyString
+  description: MyText

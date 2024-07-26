@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  version_number: MyString
+  description: MyText
+  part: one
+
+two:
+  version_number: MyString
+  description: MyText
+  part: two
