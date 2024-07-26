@@ -2,7 +2,6 @@
   <% if block.errors.any? %>
     <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(block.errors.count, "error") %> prohibited this block from being saved:</h2>
-
       <ul>
         <% block.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,11 +9,6 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="mb-3">
-    <%= form.label :type_ids, "Types", class: "form-label" %>
-    <%= form.collection_select :type_ids, Type.all, :id, :type_name, {}, { multiple: true, class: "form-select" } %>
-  </div>
 
   <div class="mb-3">
     <%= form.label :block_number, class: "form-label" %>
@@ -32,6 +26,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit "Create Block", class: "btn btn-primary" %>
+    <%= form.submit class: "btn btn-primary" %>
   </div>
 <% end %>
