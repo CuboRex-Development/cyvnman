@@ -25,6 +25,11 @@ block1.models << model2
 block2.models << model1
 block3.models << model3
 
+# Associate Blocks with Types (New Step)
+block1.types << type1
+block2.types << type1
+block3.types << type2
+
 # Create Parts
 part1 = Part.create(part_number: '0001-001-001', part_name: 'Capacitor', description: '10uF Capacitor')
 part2 = Part.create(part_number: '0001-001-002', part_name: 'Resistor', description: '100 Ohm Resistor')

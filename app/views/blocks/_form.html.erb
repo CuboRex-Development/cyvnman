@@ -1,32 +1,37 @@
-<%= form_with(model: block) do |form| %>
+<%= form_with(model: block, local: true) do |form| %>
   <% if block.errors.any? %>
-    <div style="color: red">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(block.errors.count, "error") %> prohibited this block from being saved:</h2>
 
       <ul>
-        <% block.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% block.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :block_number, style: "display: block" %>
-    <%= form.text_field :block_number %>
+  <div class="mb-3">
+    <%= form.label :type_ids, "Types", class: "form-label" %>
+    <%= form.collection_select :type_ids, Type.all, :id, :type_name, {}, { multiple: true, class: "form-select" } %>
   </div>
 
-  <div>
-    <%= form.label :block_name, style: "display: block" %>
-    <%= form.text_field :block_name %>
+  <div class="mb-3">
+    <%= form.label :block_number, class: "form-label" %>
+    <%= form.text_field :block_number, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
+  <div class="mb-3">
+    <%= form.label :block_name, class: "form-label" %>
+    <%= form.text_field :block_name, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Create Block", class: "btn btn-primary" %>
   </div>
 <% end %>
