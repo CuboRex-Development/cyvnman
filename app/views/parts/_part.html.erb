@@ -15,8 +15,13 @@
   </p>
 
   <p>
-    <strong>Block:</strong>
-    <%= part.block_id %>
+    <strong>Blocks:</strong>
+    <% if part.blocks.present? %>
+      <% part.blocks.each do |block| %>
+        <%= block.block_name %> (<%= block.block_number %>)<br>
+      <% end %>
+    <% else %>
+      No blocks associated
+    <% end %>
   </p>
-
 </div>

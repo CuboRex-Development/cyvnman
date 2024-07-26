@@ -2,6 +2,32 @@
 
 <%= render @type %>
 
+<h2>Related Models and Blocks</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Block Number / Model Code</th>
+      <% @type.models.each do |model| %>
+        <th><%= model.model_code %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @type.blocks.each do |block| %>
+      <tr>
+        <td><%= block.block_number %></td>
+        <% @type.models.each do |model| %>
+          <td>
+            <% if model.blocks.include?(block) %>
+              ✅
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <div>
   <%= link_to "Edit this type", edit_type_path(@type) %> |
   <%= link_to "Back to types", types_path %>

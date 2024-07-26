@@ -10,13 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_26_063241) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_26_070809) do
   create_table "blocks", force: :cascade do |t|
     t.string "block_number"
     t.string "block_name"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "blocks_models", id: false, force: :cascade do |t|
+    t.integer "block_id", null: false
+    t.integer "model_id", null: false
+    t.index ["block_id"], name: "index_blocks_models_on_block_id"
+    t.index ["model_id"], name: "index_blocks_models_on_model_id"
   end
 
   create_table "blocks_parts", id: false, force: :cascade do |t|
@@ -39,10 +46,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_26_063241) do
     t.string "part_number"
     t.string "part_name"
     t.text "description"
-    t.integer "block_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["block_id"], name: "index_parts_on_block_id"
   end
 
   create_table "types", force: :cascade do |t|
@@ -63,6 +68,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_26_063241) do
   end
 
   add_foreign_key "models", "types"
-  add_foreign_key "parts", "blocks"
   add_foreign_key "versions", "parts"
 end

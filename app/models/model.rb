@@ -1,4 +1,4 @@
 class Model < ApplicationRecord
   belongs_to :type
-  has_many :blocks
+  has_and_belongs_to_many :blocks
 end
