@@ -12,17 +12,17 @@
 
   <div class="mb-3">
     <%= form.label :part_number, class: "form-label" %>
-    <%= form.text_field :part_number, class: "form-control" %>
+    <%= form.text_field :part_number, class: "form-control", placeholder: "e.g., 0001-001-001", data: { toggle: "tooltip", placement: "top", title: "Part number in the format type_number-block_number-part_number" } %>
   </div>
 
   <div class="mb-3">
     <%= form.label :part_name, class: "form-label" %>
-    <%= form.text_field :part_name, class: "form-control" %>
+    <%= form.text_field :part_name, class: "form-control", placeholder: "Enter part name" %>
   </div>
 
   <div class="mb-3">
     <%= form.label :description, class: "form-label" %>
-    <%= form.text_area :description, class: "form-control" %>
+    <%= form.text_area :description, class: "form-control", placeholder: "Enter part description" %>
   </div>
 
   <div class="actions">
