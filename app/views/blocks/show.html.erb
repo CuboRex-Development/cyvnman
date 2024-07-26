@@ -11,6 +11,17 @@
   </div>
 </div>
 
+<h2>Related Types</h2>
+<ul class="list-group mb-3">
+  <% @block.types.each do |type| %>
+    <li class="list-group-item">
+      <strong>Type Name:</strong> <%= type.type_name %><br>
+      <strong>Type Number:</strong> <%= type.type_number %><br>
+      <strong>Description:</strong> <%= type.description %>
+    </li>
+  <% end %>
+</ul>
+
 <h2>Related Models</h2>
 <ul class="list-group mb-3">
   <% @block.models.each do |model| %>
