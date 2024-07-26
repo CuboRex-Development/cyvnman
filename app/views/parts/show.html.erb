@@ -1,10 +1,39 @@
-<p style="color: green"><%= notice %></p>
+<h1>Part: <%= @part.part_name %></h1>
 
-<%= render @part %>
+<div class="card mb-3">
+  <div class="card-header">
+    Part Details
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><%= @part.part_number %></h5>
+    <p class="card-text"><strong>Part Name:</strong> <%= @part.part_name %></p>
+    <p class="card-text"><strong>Description:</strong> <%= @part.description %></p>
+  </div>
+</div>
 
-<div>
-  <%= link_to "Edit this part", edit_part_path(@part) %> |
-  <%= link_to "Back to parts", parts_path %>
+<h2>Related Blocks</h2>
+<ul class="list-group mb-3">
+  <% @part.blocks.each do |block| %>
+    <li class="list-group-item">
+      <strong>Block Number:</strong> <%= block.block_number %><br>
+      <strong>Block Name:</strong> <%= block.block_name %><br>
+      <strong>Description:</strong> <%= block.description %>
+    </li>
+  <% end %>
+</ul>
 
-  <%= button_to "Destroy this part", @part, method: :delete %>
+<h2>Related Versions</h2>
+<ul class="list-group mb-3">
+  <% @part.versions.each do |version| %>
+    <li class="list-group-item">
+      <strong>Version Number:</strong> <%= version.version_number %><br>
+      <strong>Description:</strong> <%= version.description %>
+    </li>
+  <% end %>
+</ul>
+
+<div class="mt-3">
+  <%= link_to 'Edit', edit_part_path(@part), class: "btn btn-warning" %>
+  <%= link_to 'Back to Parts', parts_path, class: "btn btn-secondary" %>
+  <%= button_to 'Destroy', @part, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
 </div>
