@@ -1,9 +1,9 @@
-<p style="color: green"><%= notice %></p>
+<p class="text-success"><%= notice %></p>
 
 <%= render @type %>
 
 <h2>Related Models and Blocks</h2>
-<table>
+<table class="table table-bordered table-striped">
   <thead>
     <tr>
       <th>Block Number / Model Code</th>
@@ -17,7 +17,7 @@
       <tr>
         <td><%= block.block_number %></td>
         <% @type.models.each do |model| %>
-          <td>
+          <td class="text-center">
             <% if model.blocks.include?(block) %>
               ✅
             <% end %>
@@ -28,9 +28,8 @@
   </tbody>
 </table>
 
-<div>
-  <%= link_to "Edit this type", edit_type_path(@type) %> |
-  <%= link_to "Back to types", types_path %>
-
-  <%= button_to "Destroy this type", @type, method: :delete %>
+<div class="mt-3">
+  <%= link_to "Edit this type", edit_type_path(@type), class: "btn btn-warning" %>
+  <%= link_to "Back to types", types_path, class: "btn btn-secondary" %>
+  <%= button_to "Destroy this type", @type, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
 </div>
