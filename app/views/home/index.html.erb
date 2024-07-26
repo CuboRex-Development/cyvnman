@@ -1,9 +1,57 @@
-<h1>部品管理システム</h1>
+<h1>Dashboard</h1>
 
-<ul>
-  <li><%= link_to 'Type 一覧', types_path %></li>
-  <li><%= link_to 'Model 一覧', models_path %></li>
-  <li><%= link_to 'Block 一覧', blocks_path %></li>
-  <li><%= link_to 'Part 一覧', parts_path %></li>
-  <li><%= link_to 'Version 一覧', versions_path %></li>
-</ul>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-3">
+      <div class="card-header">
+        Statistics
+      </div>
+      <div class="card-body">
+        <p><strong>Types:</strong> <%= @types_count %></p>
+        <p><strong>Models:</strong> <%= @models_count %></p>
+        <p><strong>Blocks:</strong> <%= @blocks_count %></p>
+        <p><strong>Parts:</strong> <%= @parts_count %></p>
+        <p><strong>Versions:</strong> <%= @versions_count %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card mb-3">
+      <div class="card-header">
+        Recent Activities
+      </div>
+      <div class="card-body">
+        <h5>Recent Parts</h5>
+        <ul class="list-group">
+          <% @recent_parts.each do |part| %>
+            <li class="list-group-item">
+              <%= link_to part.part_name, part %>
+              <small class="text-muted">created at <%= part.created_at.strftime("%Y-%m-%d %H:%M") %></small>
+            </li>
+          <% end %>
+        </ul>
+
+        <h5 class="mt-4">Recent Blocks</h5>
+        <ul class="list-group">
+          <% @recent_blocks.each do |block| %>
+            <li class="list-group-item">
+              <%= link_to block.block_name, block %>
+              <small class="text-muted">created at <%= block.created_at.strftime("%Y-%m-%d %H:%M") %></small>
+            </li>
+          <% end %>
+        </ul>
+
+        <h5 class="mt-4">Recent Models</h5>
+        <ul class="list-group">
+          <% @recent_models.each do |model| %>
+            <li class="list-group-item">
+              <%= link_to model.model_code, model %>
+              <small class="text-muted">created at <%= model.created_at.strftime("%Y-%m-%d %H:%M") %></small>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
