@@ -1,32 +1,31 @@
-<%= form_with(model: version) do |form| %>
+<%= form_with(model: version, local: true) do |form| %>
   <% if version.errors.any? %>
-    <div style="color: red">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(version.errors.count, "error") %> prohibited this version from being saved:</h2>
-
       <ul>
-        <% version.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% version.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :version_number, style: "display: block" %>
-    <%= form.text_field :version_number %>
+  <div class="mb-3">
+    <%= form.label :version_number, class: "form-label" %>
+    <%= form.text_field :version_number, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :part_id, style: "display: block" %>
-    <%= form.text_field :part_id %>
+  <div class="mb-3">
+    <%= form.label :part_id, "Part", class: "form-label" %>
+    <%= form.collection_select :part_id, Part.all, :id, :part_number, {}, { class: "form-select" } %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="actions">
+    <%= form.submit 'Save Version', class: "btn btn-primary" %>
   </div>
 <% end %>

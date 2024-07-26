@@ -1,10 +1,19 @@
-<p style="color: green"><%= notice %></p>
+<h1>Version: <%= @version.version_number %></h1>
 
-<%= render @version %>
+<div class="card mb-3">
+  <div class="card-header">
+    Version Details
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><%= @version.version_number %></h5>
+    <p class="card-text"><strong>Description:</strong> <%= @version.description %></p>
+    <p class="card-text"><strong>Part Number:</strong> <%= @version.part.part_number %></p>
+    <p class="card-text"><strong>Part Name:</strong> <%= @version.part.part_name %></p>
+  </div>
+</div>
 
-<div>
-  <%= link_to "Edit this version", edit_version_path(@version) %> |
-  <%= link_to "Back to versions", versions_path %>
-
-  <%= button_to "Destroy this version", @version, method: :delete %>
+<div class="mt-3">
+  <%= link_to 'Edit', edit_version_path(@version), class: "btn btn-warning" %>
+  <%= link_to 'Back to Versions', versions_path, class: "btn btn-secondary" %>
+  <%= button_to 'Destroy', @version, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
 </div>
