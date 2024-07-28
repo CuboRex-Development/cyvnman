@@ -7,8 +7,15 @@
   <div class="card-body">
     <h5 class="card-title"><%= @version.version_number %></h5>
     <p class="card-text"><strong>Description:</strong> <%= @version.description %></p>
-    <p class="card-text"><strong>Part Number:</strong> <%= @version.part.part_number %></p>
-    <p class="card-text"><strong>Part Name:</strong> <%= @version.part.part_name %></p>
+    <p class="card-text"><strong>Part:</strong> <%= link_to @version.part.part_name, @version.part %></p>
+    <p class="card-text"><strong>File Path:</strong> <%= @version.file_path %></p>
+    <p class="card-text"><strong>Scale:</strong> <%= @version.scale %></p>
+    <p class="card-text"><strong>Sheet Size:</strong> <%= @version.sheet_size %></p>
+    <p class="card-text"><strong>Unit:</strong> <%= @version.unit %></p>
+    <p class="card-text"><strong>Drawn By:</strong> <%= @version.drawn_by %></p>
+    <p class="card-text"><strong>Checked By:</strong> <%= @version.checked_by %></p>
+    <p class="card-text"><strong>Approved By:</strong> <%= @version.approved_by %></p>
+    <p class="card-text"><strong>Drawn Date:</strong> <%= @version.drawn_date %></p>
   </div>
 </div>
 

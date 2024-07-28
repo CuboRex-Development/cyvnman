@@ -17,6 +17,8 @@
       <th>Version Number</th>
       <th>Description</th>
       <th>Part</th>
+      <th>File Path</th>
+      <th>Drawn Date</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -26,6 +28,8 @@
         <td><%= link_to version.version_number, version %></td>
         <td><%= version.description %></td>
         <td><%= link_to version.part.part_name, version.part %></td>
+        <td><%= version.file_path %></td>
+        <td><%= version.drawn_date %></td>
         <td><%= link_to 'Edit', edit_version_path(version), class: "btn btn-outline-warning btn-sm" %></td>
         <td><%= button_to 'Destroy', version, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>

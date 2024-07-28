@@ -12,17 +12,57 @@
 
   <div class="mb-3">
     <%= form.label :version_number, class: "form-label" %>
-    <%= form.text_field :version_number, class: "form-control" %>
+    <%= form.text_field :version_number, class: "form-control", placeholder: "Enter version number" %>
   </div>
 
   <div class="mb-3">
     <%= form.label :description, class: "form-label" %>
-    <%= form.text_area :description, class: "form-control" %>
+    <%= form.text_area :description, class: "form-control", placeholder: "Enter version description" %>
   </div>
 
   <div class="mb-3">
     <%= form.label :part_id, "Part", class: "form-label" %>
     <%= form.collection_select :part_id, Part.all, :id, :part_number, {}, { class: "form-select" } %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :file_path, class: "form-label" %>
+    <%= form.text_field :file_path, class: "form-control", placeholder: "Enter file path" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :scale, class: "form-label" %>
+    <%= form.text_field :scale, class: "form-control", placeholder: "Enter scale" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :sheet_size, class: "form-label" %>
+    <%= form.text_field :sheet_size, class: "form-control", placeholder: "Enter sheet size" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :unit, class: "form-label" %>
+    <%= form.text_field :unit, class: "form-control", placeholder: "Enter unit" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :drawn_by, class: "form-label" %>
+    <%= form.text_field :drawn_by, class: "form-control", placeholder: "Enter drawn by" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :checked_by, class: "form-label" %>
+    <%= form.text_field :checked_by, class: "form-control", placeholder: "Enter checked by" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :approved_by, class: "form-label" %>
+    <%= form.text_field :approved_by, class: "form-control", placeholder: "Enter approved by" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :drawn_date, class: "form-label" %>
+    <%= form.date_field :drawn_date, class: "form-control" %>
   </div>
 
   <div class="actions">

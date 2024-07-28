@@ -25,11 +25,6 @@ block1.models << model2
 block2.models << model1
 block3.models << model3
 
-# Associate Blocks with Types (New Step)
-block1.types << type1
-block2.types << type1
-block3.types << type2
-
 # Create Parts
 part1 = Part.create(part_number: '0001-001-001', part_name: 'Capacitor', description: '10uF Capacitor')
 part2 = Part.create(part_number: '0001-001-002', part_name: 'Resistor', description: '100 Ohm Resistor')
@@ -41,8 +36,56 @@ block1.parts << part2
 block2.parts << part1
 block3.parts << part3
 
-# Create Versions
-Version.create(version_number: '0001-001-001-001', description: 'Initial version', part: part1)
-Version.create(version_number: '0001-001-001-002', description: 'Updated version', part: part1)
-Version.create(version_number: '0001-001-002-001', description: 'Initial version', part: part2)
-Version.create(version_number: '0002-001-001-001', description: 'Initial version', part: part3)
+# Create Versions with new attributes
+Version.create(
+  version_number: '0001-001-001-001', 
+  description: 'Initial version', 
+  part: part1, 
+  file_path: '/path/to/drawing1', 
+  scale: '1:100', 
+  sheet_size: 'A4', 
+  unit: 'mm', 
+  drawn_by: 'Engineer A', 
+  checked_by: 'Supervisor B', 
+  approved_by: 'Manager C', 
+  drawn_date: '2023-01-01'
+)
+Version.create(
+  version_number: '0001-001-001-002', 
+  description: 'Updated version', 
+  part: part1, 
+  file_path: '/path/to/drawing2', 
+  scale: '1:50', 
+  sheet_size: 'A3', 
+  unit: 'mm', 
+  drawn_by: 'Engineer A', 
+  checked_by: 'Supervisor B', 
+  approved_by: 'Manager C', 
+  drawn_date: '2023-02-01'
+)
+Version.create(
+  version_number: '0001-001-002-001', 
+  description: 'Initial version', 
+  part: part2, 
+  file_path: '/path/to/drawing3', 
+  scale: '1:100', 
+  sheet_size: 'A4', 
+  unit: 'mm', 
+  drawn_by: 'Engineer D', 
+  checked_by: 'Supervisor E', 
+  approved_by: 'Manager F', 
+  drawn_date: '2023-03-01'
+)
+Version.create(
+  version_number: '0002-001-001-001', 
+  description: 'Initial version', 
+  part: part3, 
+  file_path: '/path/to/drawing4', 
+  scale: '1:200', 
+  sheet_size: 'A2', 
+  unit: 'cm', 
+  drawn_by: 'Engineer G', 
+  checked_by: 'Supervisor H', 
+  approved_by: 'Manager I', 
+  drawn_date: '2023-04-01'
+)

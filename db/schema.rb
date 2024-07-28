@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_26_100611) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_28_170512) do
   create_table "blocks", force: :cascade do |t|
     t.string "block_number"
     t.string "block_name"
@@ -71,6 +71,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_26_100611) do
     t.integer "part_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "file_path"
+    t.string "scale"
+    t.string "sheet_size"
+    t.string "unit"
+    t.string "drawn_by"
+    t.string "checked_by"
+    t.string "approved_by"
+    t.date "drawn_date"
     t.index ["part_id"], name: "index_versions_on_part_id"
   end
 
