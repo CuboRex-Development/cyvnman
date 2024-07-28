@@ -46,6 +46,7 @@ gem 'bootsnap', require: false
 
 gem 'bootstrap'
 gem 'jquery-rails'
+gem 'ransack'
 gem 'sassc-rails'
 
 group :development, :test do

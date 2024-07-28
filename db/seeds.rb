@@ -25,6 +25,11 @@ block1.models << model2
 block2.models << model1
 block3.models << model3
 
+# Associate Blocks with Types
+type1.blocks << block1
+type1.blocks << block2
+type2.blocks << block3
+
 # Create Parts
 part1 = Part.create(part_number: '0001-001-001', part_name: 'Capacitor', description: '10uF Capacitor')
 part2 = Part.create(part_number: '0001-001-002', part_name: 'Resistor', description: '100 Ohm Resistor')
@@ -36,7 +41,7 @@ block1.parts << part2
 block2.parts << part1
 block3.parts << part3
 
-# Create Versions with new attributes
+# Create Versions
 Version.create(
   version_number: '0001-001-001-001', 
   description: 'Initial version', 
