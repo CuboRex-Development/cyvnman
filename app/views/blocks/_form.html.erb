@@ -1,7 +1,8 @@
 <%= form_with(model: block, local: true) do |form| %>
   <% if block.errors.any? %>
-    <div id="error_explanation" class="alert alert-danger">
+    <div id="error_explanation">
       <h2><%= pluralize(block.errors.count, "error") %> prohibited this block from being saved:</h2>
+
       <ul>
         <% block.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,22 +11,64 @@
     </div>
   <% end %>
 
-  <div class="mb-3">
-    <%= form.label :block_number, class: "form-label" %>
-    <%= form.text_field :block_number, class: "form-control" %>
+  <div class="form-group">
+    <%= form.label :type_id, "Primary Type" %>
+    <%= form.collection_select :type_id, @types, :id, :type_name, { prompt: "Select Type" }, { class: 'form-control', id: 'type_select' } %>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :block_name, class: "form-label" %>
-    <%= form.text_field :block_name, class: "form-control" %>
+  <div class="form-group">
+    <%= form.label :block_number, "Block Number" %>
+    <div class="input-group">
+      <input type="text" id="block_number_prefix" class="form-control" readonly>
+      <%= form.text_field :block_number_suffix, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :description, class: "form-label" %>
-    <%= form.text_area :description, class: "form-control" %>
+  <div class="form-group">
+    <%= form.label :block_name %>
+    <%= form.text_field :block_name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :type_ids, "Additional Types" %>
+    <% @types.each do |type| %>
+      <div class="form-check">
+        <%= check_box_tag "block[type_ids][]", type.id, @block.types.include?(type), class: 'form-check-input' %>
+        <%= label_tag "block_type_ids_#{type.id}", type.type_name, class: 'form-check-label' %>
+      </div>
+    <% end %>
   </div>
 
   <div class="actions">
-    <%= form.submit class: "btn btn-primary" %>
+    <%= form.submit class: 'btn btn-primary' %>
   </div>
 <% end %>
+
+<%= link_to 'Back', blocks_path, class: 'btn btn-secondary' %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const typeSelect = document.getElementById("type_select");
+    const blockNumberPrefix = document.getElementById("block_number_prefix");
+
+    const typeNumbers = <%= @types.map { |type| [type.id, type.type_number] }.to_h.to_json.html_safe %>;
+
+    typeSelect.addEventListener("change", function() {
+      const selectedTypeId = typeSelect.value;
+      const typeNumber = typeNumbers[selectedTypeId];
+      blockNumberPrefix.value = typeNumber ? `${typeNumber}-` : "";
+    });
+
+    // 初期値の設定
+    const initialSelectedTypeId = typeSelect.value;
+    if (initialSelectedTypeId) {
+      const initialTypeNumber = typeNumbers[initialSelectedTypeId];
+      blockNumberPrefix.value = initialTypeNumber ? `${initialTypeNumber}-` : "";
+    }
+  });
+</script>
