@@ -17,16 +17,15 @@
       <th>Model Code</th>
       <th>Description</th>
       <th>Type</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
   <tbody>
     <% @models.each do |model| %>
       <tr>
-        <td><%= model.model_code %></td>
+        <td><%= link_to model.model_code, model %></td>
         <td><%= model.description %></td>
         <td><%= link_to model.type.type_name, model.type %></td>
-        <td><%= link_to 'Show', model, class: "btn btn-outline-primary btn-sm" %></td>
         <td><%= link_to 'Edit', edit_model_path(model), class: "btn btn-outline-warning btn-sm" %></td>
         <td><%= button_to 'Destroy', model, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>

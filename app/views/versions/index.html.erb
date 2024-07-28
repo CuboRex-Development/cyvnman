@@ -1,19 +1,31 @@
 <h1>Versions</h1>
 
-<table class="table table-bordered table-striped table-hover">
+<div class="mb-3">
+  <%= form_with(url: versions_path, method: :get, local: true) do |form| %>
+    <div class="input-group">
+      <%= form.text_field :search, value: params[:search], class: "form-control", placeholder: "Search Versions" %>
+      <div class="input-group-append">
+        <%= form.submit "Search", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<table class="table table-bordered table-striped table-hover table-responsive">
   <thead>
     <tr>
       <th>Version Number</th>
       <th>Description</th>
-      <th colspan="3"></th>
+      <th>Part</th>
+      <th colspan="2"></th>
     </tr>
   </thead>
   <tbody>
     <% @versions.each do |version| %>
       <tr>
-        <td><%= version.version_number %></td>
+        <td><%= link_to version.version_number, version %></td>
         <td><%= version.description %></td>
-        <td><%= link_to 'Show', version, class: "btn btn-outline-primary btn-sm" %></td>
+        <td><%= link_to version.part.part_name, version.part %></td>
         <td><%= link_to 'Edit', edit_version_path(version), class: "btn btn-outline-warning btn-sm" %></td>
         <td><%= button_to 'Destroy', version, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>
