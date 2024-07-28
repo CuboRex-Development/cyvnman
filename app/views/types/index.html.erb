@@ -1,27 +1,37 @@
 <h1>Types</h1>
 
-<table class="table table-striped">
+<div class="mb-3">
+  <%= form_with(url: types_path, method: :get, local: true) do |form| %>
+    <div class="input-group">
+      <%= form.text_field :search, value: params[:search], class: "form-control", placeholder: "Search Types" %>
+      <div class="input-group-append">
+        <%= form.submit "Search", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<table class="table table-bordered table-striped table-hover table-responsive">
   <thead>
     <tr>
-      <th>Type Name</th>
       <th>Type Number</th>
+      <th>Type Name</th>
       <th>Description</th>
       <th colspan="3"></th>
     </tr>
   </thead>
-
   <tbody>
     <% @types.each do |type| %>
       <tr>
-        <td><%= type.type_name %></td>
         <td><%= type.type_number %></td>
+        <td><%= type.type_name %></td>
         <td><%= type.description %></td>
-        <td><%= link_to 'Show', type, class: 'btn btn-info' %></td>
-        <td><%= link_to 'Edit', edit_type_path(type), class: 'btn btn-warning' %></td>
-        <td><%= link_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+        <td><%= link_to 'Show', type, class: "btn btn-outline-primary btn-sm" %></td>
+        <td><%= link_to 'Edit', edit_type_path(type), class: "btn btn-outline-warning btn-sm" %></td>
+        <td><%= button_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to 'New Type', new_type_path, class: 'btn btn-primary' %>
+<%= link_to 'New Type', new_type_path, class: "btn btn-success" %>

@@ -1,9 +1,11 @@
-<h1>New type</h1>
+<h1>New Type</h1>
 
-<%= render "form", type: @type %>
+<div class="card">
+  <div class="card-body">
+    <%= render 'form', type: @type %>
+  </div>
+</div>
 
-<br>
-
-<div>
-  <%= link_to "Back to types", types_path %>
+<div class="mt-3">
+  <%= link_to 'Back to Types', types_path, class: "btn btn-secondary" %>
 </div>
