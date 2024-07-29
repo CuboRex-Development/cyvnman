@@ -21,26 +21,11 @@
   <% end %>
 </ul>
 
-<%= link_to 'New Version', new_part_version_path(@part), class: "btn btn-primary mb-3", data: { bs_toggle: "modal", bs_target: "#newVersionModal" } %>
+<%= link_to 'New Version', new_part_version_path(@part), class: "btn btn-primary mb-3" %>
 
 <!-- Buttons Group -->
 <div class="btn-group" role="group" aria-label="Basic example">
   <%= link_to 'Edit', edit_part_path(@part), class: "btn btn-warning" %>
   <%= link_to 'Back to Parts', parts_path, class: "btn btn-secondary" %>
   <%= button_to 'Destroy', @part, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-</div>
-
-<!-- New Version Modal -->
-<div class="modal fade" id="newVersionModal" tabindex="-1" aria-labelledby="newVersionModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="newVersionModalLabel">New Version for Part: <%= @part.part_name %></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <%= render 'versions/form', version: @part.versions.build %>
-      </div>
-    </div>
-  </div>
 </div>

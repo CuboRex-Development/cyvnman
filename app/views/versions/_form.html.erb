@@ -1,10 +1,9 @@
-<%= form_with(model: [@part, version], local: true) do |form| %>
-  <% if version.errors.any? %>
+<%= form_with(model: @version, url: @version.persisted? ? version_path(@version) : part_versions_path(@part), method: @version.persisted? ? :patch : :post) do |form| %>
+  <% if @version.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(version.errors.count, "error") %> prohibited this version from being saved:</h2>
-
+      <h2><%= pluralize(@version.errors.count, "error") %> prohibited this version from being saved:</h2>
       <ul>
-        <% version.errors.full_messages.each do |message| %>
+        <% @version.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
@@ -14,7 +13,7 @@
   <div class="form-group">
     <%= form.label :version_number_suffix, "Version Number (last 3 digits)" %>
     <div class="input-group">
-      <input type="text" id="version_number_prefix" class="form-control" value="<%= @part.part_number %>-" readonly>
+      <input type="text" id="version_number_prefix" class="form-control" value="<%= @part&.part_number %>-" readonly>
       <%= form.text_field :version_number_suffix, class: 'form-control' %>
     </div>
   </div>
@@ -25,11 +24,51 @@
   </div>
 
   <div class="form-group">
+    <%= form.label :file_path %>
+    <%= form.text_field :file_path, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :scale %>
+    <%= form.text_field :scale, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :sheet_size %>
+    <%= form.text_field :sheet_size, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :unit %>
+    <%= form.text_field :unit, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :drawn_by %>
+    <%= form.text_field :drawn_by, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :checked_by %>
+    <%= form.text_field :checked_by, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :approved_by %>
+    <%= form.text_field :approved_by, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :drawn_date %>
+    <%= form.date_field :drawn_date, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
     <%= form.label :drawing_image, "Upload Drawing Image" %>
     <%= form.file_field :drawing_image, class: 'form-control' %>
   </div>
 
   <div class="actions">
-    <%= form.submit 'Create Version', class: 'btn btn-primary' %>
+    <%= form.submit 'Save Version', class: 'btn btn-primary' %>
   </div>
 <% end %>
