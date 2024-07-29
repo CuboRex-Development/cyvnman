@@ -3,7 +3,8 @@ class VersionsController < ApplicationController
   before_action :set_part, only: %i[ new create edit update ]
 
   def index
-    @versions = Version.all
+    @q = Version.ransack(params[:q])
+    @versions = @q.result(distinct: true)
   end
 
   def show
