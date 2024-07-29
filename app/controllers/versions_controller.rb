@@ -1,6 +1,6 @@
 class VersionsController < ApplicationController
   before_action :set_version, only: %i[ show edit update destroy ]
-  before_action :set_part, only: %i[ new create ]
+  before_action :set_part, only: %i[ new create edit update ]
 
   def index
     @versions = Version.all
@@ -14,10 +14,11 @@ class VersionsController < ApplicationController
   end
 
   def edit
+    @part = @version.part # 編集時にも@partを設定
   end
 
   def create
-    @version = @part.versions.build(version_params)
+    @version = @part.versions.build(version_params.except(:version_number_suffix))
     @version.version_number = "#{@part.part_number}-#{params[:version][:version_number_suffix]}"
 
     if @version.save
@@ -28,7 +29,11 @@ class VersionsController < ApplicationController
   end
 
   def update
-    if @version.update(version_params)
+    if params[:version][:version_number_suffix].present?
+      @version.version_number = "#{@part.part_number}-#{params[:version][:version_number_suffix]}"
+    end
+
+    if @version.update(version_params.except(:version_number_suffix))
       redirect_to @version, notice: "Version was successfully updated."
     else
       render :edit, status: :unprocessable_entity
@@ -48,6 +53,8 @@ class VersionsController < ApplicationController
 
   def set_part
     @part = Part.find(params[:part_id])
+  rescue ActiveRecord::RecordNotFound
+    @part = @version&.part
   end
 
   def version_params

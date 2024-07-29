@@ -5,6 +5,7 @@
 
 import "@hotwired/turbo-rails"
 import "controllers"
+import "custom_modal"
 
 document.addEventListener('turbolinks:load', () => {
     const typeSelect = document.querySelector('#block_type_id');

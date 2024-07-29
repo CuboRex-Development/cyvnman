@@ -1,10 +1,16 @@
 Rails.application.routes.draw do
   root 'home#index'
-  resources :versions
-  resources :parts
-  resources :blocks
-  resources :models
+
   resources :types
+  resources :models
+  resources :blocks do
+    resources :parts, only: [:new, :create]
+  end
+  resources :parts do
+    resources :versions, only: [:new, :create]
+  end
+  resources :versions
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
