@@ -1,9 +1,9 @@
 <h1>Blocks</h1>
 
 <div class="mb-3">
-  <%= form_with(url: blocks_path, method: :get, local: true) do |form| %>
+  <%= search_form_for @q, url: blocks_path, method: :get, local: true do |form| %>
     <div class="input-group">
-      <%= form.text_field :search, value: params[:search], class: "form-control", placeholder: "Search Blocks" %>
+      <%= form.text_field :block_name_or_block_number_cont, class: "form-control", placeholder: "Search Blocks" %>
       <div class="input-group-append">
         <%= form.submit "Search", class: "btn btn-primary" %>
       </div>

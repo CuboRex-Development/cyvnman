@@ -3,7 +3,8 @@ class BlocksController < ApplicationController
   before_action :set_types, only: %i[ new edit create update ]
 
   def index
-    @blocks = Block.all
+    @q = Block.ransack(params[:q])
+    @blocks = @q.result(distinct: true)
   end
 
   def new
