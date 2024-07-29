@@ -1,0 +1,3 @@
+$('#newVersionModal').modal('hide');
+$('#newVersionForm')[0].reset();
+$('.list-group').append('<li class="list-group-item"><%= j link_to @version.version_number, @version %><small class="text-muted">Description: <%= @version.description %></small></li>');
