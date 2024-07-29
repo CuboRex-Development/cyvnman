@@ -17,7 +17,7 @@ class VersionsController < ApplicationController
   end
 
   def create
-    @version = @part.versions.build(version_params)
+    @version = @part.versions.build(version_params.except(:version_number_suffix))
     @version.version_number = "#{@part.part_number}-#{params[:version][:version_number_suffix]}"
 
     if @version.save
@@ -51,6 +51,6 @@ class VersionsController < ApplicationController
   end
 
   def version_params
-    params.require(:version).permit(:version_number_suffix, :description, :part_id, :file_path, :scale, :sheet_size, :unit, :drawn_by, :checked_by, :approved_by, :drawn_date, :drawing_image)
+    params.require(:version).permit(:description, :part_id, :file_path, :scale, :sheet_size, :unit, :drawn_by, :checked_by, :approved_by, :drawn_date, :drawing_image, :version_number_suffix)
   end
 end
