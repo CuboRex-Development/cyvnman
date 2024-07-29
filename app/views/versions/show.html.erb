@@ -1,72 +1,43 @@
-<p id="notice"><%= notice %></p>
+<h1>Version: <%= @version.version_number %></h1>
 
-<p>
-  <strong>Version Number:</strong>
-  <%= @version.version_number %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @version.description %>
-</p>
-
-<p>
-  <strong>File Path:</strong>
-  <%= @version.file_path %>
-</p>
-
-<p>
-  <strong>Scale:</strong>
-  <%= @version.scale %>
-</p>
-
-<p>
-  <strong>Sheet Size:</strong>
-  <%= @version.sheet_size %>
-</p>
-
-<p>
-  <strong>Unit:</strong>
-  <%= @version.unit %>
-</p>
-
-<p>
-  <strong>Drawn By:</strong>
-  <%= @version.drawn_by %>
-</p>
-
-<p>
-  <strong>Checked By:</strong>
-  <%= @version.checked_by %>
-</p>
-
-<p>
-  <strong>Approved By:</strong>
-  <%= @version.approved_by %>
-</p>
-
-<p>
-  <strong>Drawn Date:</strong>
-  <%= @version.drawn_date %>
-</p>
-
-<% if @version.drawing_image.attached? %>
-  <p>
-    <strong>Drawing Image:</strong><br>
-    <%= image_tag @version.drawing_image.variant(resize: "500x500") %>
-  </p>
-<% end %>
-
-<%= form_with(model: @version, local: true) do |form| %>
-  <div class="form-group">
-    <%= form.label :drawing_image, "Upload Drawing Image" %>
-    <%= form.file_field :drawing_image, class: 'form-control' %>
+<div class="card mb-3">
+  <div class="card-header">
+    Version Details
   </div>
-  <div class="actions">
-    <%= form.submit "Upload Image", class: 'btn btn-primary' %>
+  <div class="card-body">
+    <h5 class="card-title"><%= @version.version_number %></h5>
+    <p class="card-text"><strong>Description:</strong> <%= @version.description %></p>
+    <p class="card-text"><strong>File Path:</strong> <%= @version.file_path %></p>
+    <p class="card-text"><strong>Scale:</strong> <%= @version.scale %></p>
+    <p class="card-text"><strong>Sheet Size:</strong> <%= @version.sheet_size %></p>
+    <p class="card-text"><strong>Unit:</strong> <%= @version.unit %></p>
+    <p class="card-text"><strong>Drawn By:</strong> <%= @version.drawn_by %></p>
+    <p class="card-text"><strong>Checked By:</strong> <%= @version.checked_by %></p>
+    <p class="card-text"><strong>Approved By:</strong> <%= @version.approved_by %></p>
+    <p class="card-text"><strong>Drawn Date:</strong> <%= @version.drawn_date %></p>
+    <% if @version.drawing_image.attached? %>
+      <p class="card-text">
+        <strong>Drawing Image:</strong>
+        <%= image_tag @version.drawing_image.variant(resize: "300x300") %>
+      </p>
+    <% end %>
   </div>
-<% end %>
+</div>
 
-<%= link_to 'Edit', edit_version_path(@version), class: "btn btn-warning" %> |
-<%= link_to 'Back to Versions', versions_path, class: "btn btn-secondary" %> |
-<%= button_to 'Destroy', @version, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+<h2>Related Part</h2>
+<ul class="list-group mb-3">
+  <% if @version.part %>
+    <li class="list-group-item">
+      <%= link_to @version.part.part_name, @version.part %>
+      <small class="text-muted">Part Number: <%= @version.part.part_number %></small>
+    </li>
+  <% else %>
+    <li class="list-group-item">No related part found.</li>
+  <% end %>
+</ul>
+
+<div class="mt-3">
+  <%= link_to 'Edit', edit_version_path(@version), class: "btn btn-warning" %>
+  <%= link_to 'Back to Versions', versions_path, class: "btn btn-secondary" %>
+  <%= button_to 'Destroy', @version, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+</div>
