@@ -21,6 +21,16 @@
   <% end %>
 </ul>
 
+<h2>Related Blocks</h2>
+<ul class="list-group mb-3">
+  <% @part.blocks.each do |block| %>
+    <li class="list-group-item">
+      <%= link_to block.block_name, block %>
+      <small class="text-muted">Block Number: <%= block.block_number %></small>
+    </li>
+  <% end %>
+</ul>
+
 <%= link_to 'New Version', new_part_version_path(@part), class: "btn btn-primary mb-3" %>
 
 <!-- Buttons Group -->
