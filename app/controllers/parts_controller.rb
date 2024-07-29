@@ -1,63 +1,47 @@
 class PartsController < ApplicationController
-  before_action :set_part, only: %i[show edit update destroy]
+  before_action :set_part, only: %i[ show edit update destroy ]
+  before_action :set_block, only: %i[ new create ]
 
-  # GET /parts or /parts.json
   def index
-    if params[:search].present?
-      @parts = Part.where('part_number LIKE ? OR part_name LIKE ? OR description LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%")
-    else
-      @parts = Part.all
-    end
+    @q = Part.ransack(params[:q])
+    @parts = @q.result(distinct: true)
   end
 
-  # GET /parts/1 or /parts/1.json
   def show
   end
 
-  # GET /parts/new
   def new
     @part = Part.new
   end
 
-  # GET /parts/1/edit
   def edit
   end
 
-  # POST /parts or /parts.json
   def create
-    @part = Part.new(part_params)
+    block_number = @block.block_number
+    suffix = part_params[:part_number_suffix]
+    @part = Part.new(part_params.except(:part_number_suffix))
+    @part.part_number = "#{block_number}-#{suffix}"
 
-    respond_to do |format|
-      if @part.save
-        format.html { redirect_to @part, notice: 'Part was successfully created.' }
-        format.json { render :show, status: :created, location: @part }
-      else
-        format.html { render :new }
-        format.json { render json: @part.errors, status: :unprocessable_entity }
-      end
+    if @part.save
+      @block.parts << @part
+      redirect_to @part, notice: "Part was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /parts/1 or /parts/1.json
   def update
-    respond_to do |format|
-      if @part.update(part_params)
-        format.html { redirect_to @part, notice: 'Part was successfully updated.' }
-        format.json { render :show, status: :ok, location: @part }
-      else
-        format.html { render :edit }
-        format.json { render json: @part.errors, status: :unprocessable_entity }
-      end
+    if @part.update(part_params)
+      redirect_to @part, notice: "Part was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /parts/1 or /parts/1.json
   def destroy
     @part.destroy
-    respond_to do |format|
-      format.html { redirect_to parts_url, notice: 'Part was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to parts_url, notice: "Part was successfully destroyed."
   end
 
   private
@@ -66,7 +50,11 @@ class PartsController < ApplicationController
     @part = Part.find(params[:id])
   end
 
+  def set_block
+    @block = Block.find(params[:block_id])
+  end
+
   def part_params
-    params.require(:part).permit(:part_number, :part_name, :description)
+    params.require(:part).permit(:part_number_suffix, :part_name, :description)
   end
 end

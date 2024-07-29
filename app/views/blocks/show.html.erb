@@ -12,6 +12,7 @@
 </div>
 
 <h2>Related Parts</h2>
+<%= link_to 'New Part', new_block_part_path(@block), class: "btn btn-primary mb-3" %>
 <ul class="list-group mb-3">
   <% @block.parts.each do |part| %>
     <li class="list-group-item">
@@ -27,16 +28,6 @@
     <li class="list-group-item">
       <%= link_to model.model_code, model %>
       <small class="text-muted">Description: <%= model.description %></small>
-    </li>
-  <% end %>
-</ul>
-
-<h2>Related Types</h2>
-<ul class="list-group mb-3">
-  <% @block.types.each do |type| %>
-    <li class="list-group-item">
-      <%= link_to type.type_name, type %>
-      <small class="text-muted">Type Number: <%= type.type_number %></small>
     </li>
   <% end %>
 </ul>
