@@ -61,6 +61,13 @@ class BlocksController < ApplicationController
     redirect_to @block
   end
 
+  def remove_part
+    part = Part.find(params[:part_id])
+    @block.parts.delete(part)
+    flash[:notice] = 'Part was successfully removed from the block.'
+    redirect_to @block
+  end
+
   private
 
   def set_block

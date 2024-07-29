@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :blocks do
     member do
       post 'add_part'
+      delete 'remove_part'
     end
     resources :parts, only: [:new, :create]
   end
