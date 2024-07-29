@@ -11,6 +11,19 @@
   </div>
 </div>
 
+<h2>Add Existing Part</h2>
+<%= form_with(url: add_part_block_path(@block), method: :post, local: true, class: 'mb-3') do |form| %>
+  <div class="input-group">
+    <%= form.collection_select :part_id, 
+                               Part.where.not(id: @block.parts.pluck(:id)), 
+                               :id, 
+                               ->(part) { "#{part.part_number} - #{part.part_name}" }, 
+                               { prompt: "Select a part" }, 
+                               { class: 'form-select' } %>
+    <%= form.submit "Add Part", class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
 <h2>Related Parts</h2>
 <%= link_to 'New Part', new_block_part_path(@block), class: "btn btn-primary mb-3" %>
 <ul class="list-group mb-3">
@@ -28,6 +41,16 @@
     <li class="list-group-item">
       <%= link_to model.model_code, model %>
       <small class="text-muted">Description: <%= model.description %></small>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Related Types</h2>
+<ul class="list-group mb-3">
+  <% @block.types.each do |type| %>
+    <li class="list-group-item">
+      <%= link_to type.type_name, type %>
+      <small class="text-muted">Type Number: <%= type.type_number %></small>
     </li>
   <% end %>
 </ul>

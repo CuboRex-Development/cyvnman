@@ -1,5 +1,5 @@
 class BlocksController < ApplicationController
-  before_action :set_block, only: %i[ show edit update destroy ]
+  before_action :set_block, only: [:show, :edit, :update, :destroy, :add_part]
   before_action :set_types, only: %i[ new edit create update ]
 
   def index
@@ -48,6 +48,17 @@ class BlocksController < ApplicationController
   def destroy
     @block.destroy
     redirect_to blocks_url, notice: "Block was successfully destroyed."
+  end
+
+  def add_part
+    part = Part.find(params[:part_id])
+    unless @block.parts.include?(part)
+      @block.parts << part
+      flash[:notice] = 'Part was successfully added to the block.'
+    else
+      flash[:alert] = 'This part is already in the block.'
+    end
+    redirect_to @block
   end
 
   private

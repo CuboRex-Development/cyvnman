@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   resources :types
   resources :models
   resources :blocks do
+    member do
+      post 'add_part'
+    end
     resources :parts, only: [:new, :create]
   end
   resources :parts do
