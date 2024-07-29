@@ -1,9 +1,9 @@
 <h1>Models</h1>
 
 <div class="mb-3">
-  <%= form_with(url: models_path, method: :get, local: true) do |form| %>
+  <%= search_form_for @q, url: models_path, method: :get, local: true do |form| %>
     <div class="input-group">
-      <%= form.text_field :search, value: params[:search], class: "form-control", placeholder: "Search Models" %>
+      <%= form.text_field :model_code_or_description_cont, class: "form-control", placeholder: "Search Models" %>
       <div class="input-group-append">
         <%= form.submit "Search", class: "btn btn-primary" %>
       </div>
@@ -25,7 +25,7 @@
       <tr>
         <td><%= link_to model.model_code, model %></td>
         <td><%= model.description %></td>
-        <td><%= link_to model.type.type_name, model.type %></td>
+        <td><%= model.type.type_name if model.type %></td>
         <td><%= link_to 'Edit', edit_model_path(model), class: "btn btn-outline-warning btn-sm" %></td>
         <td><%= button_to 'Destroy', model, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>
