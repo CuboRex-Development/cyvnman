@@ -12,6 +12,7 @@
 </div>
 
 <h2>Related Versions</h2>
+<%= link_to 'New Version', new_part_version_path(@part), class: "btn btn-primary mb-3" %>
 <ul class="list-group mb-3">
   <% @part.versions.each do |version| %>
     <li class="list-group-item">
@@ -30,8 +31,6 @@
     </li>
   <% end %>
 </ul>
-
-<%= link_to 'New Version', new_part_version_path(@part), class: "btn btn-primary mb-3" %>
 
 <!-- Buttons Group -->
 <div class="btn-group" role="group" aria-label="Basic example">
