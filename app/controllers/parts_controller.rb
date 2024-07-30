@@ -5,6 +5,11 @@ class PartsController < ApplicationController
   def index
     @q = Part.ransack(params[:q])
     @parts = @q.result(distinct: true)
+    if params[:search].present?
+      @parts = Part.where('part_number LIKE ? OR part_name LIKE ? OR description LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%")
+    else
+      @parts = Part.all
+    end
   end
 
   def show

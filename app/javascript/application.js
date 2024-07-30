@@ -6,6 +6,20 @@ import jquery from "jquery"
 window.jQuery = jquery;
 window.$ = jquery;
 
+document.addEventListener('turbo:load', () => {
+    const typeSelect = document.querySelector('#block_type_id');
+    const blockNumberField = document.querySelector('#block_block_number');
+    const typeNumberPrefix = document.querySelector('#type_number_prefix');
+
+    if (typeSelect && blockNumberField && typeNumberPrefix) {
+        typeSelect.addEventListener('change', () => {
+            const selectedType = typeSelect.options[typeSelect.selectedIndex].text.split('-')[0];
+            typeNumberPrefix.textContent = `${selectedType}-`;
+            blockNumberField.value = '';
+        });
+    }
+});
+
 document.addEventListener('turbo:load', function() {
     const input = document.querySelector('#custom-select-input');
     const list = document.querySelector('#custom-select-list');
@@ -83,17 +97,3 @@ function initCustomSelect(inputId, listId, selectedIdInputId, addBtnId) {
         }
     });
 }
-
-document.addEventListener('turbo:load', () => {
-    const typeSelect = document.querySelector('#block_type_id');
-    const blockNumberField = document.querySelector('#block_block_number');
-    const typeNumberPrefix = document.querySelector('#type_number_prefix');
-
-    if (typeSelect && blockNumberField && typeNumberPrefix) {
-        typeSelect.addEventListener('change', () => {
-            const selectedType = typeSelect.options[typeSelect.selectedIndex].text.split('-')[0];
-            typeNumberPrefix.textContent = `${selectedType}-`;
-            blockNumberField.value = '';
-        });
-    }
-});
