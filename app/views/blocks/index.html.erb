@@ -17,7 +17,6 @@
       <th>Block Number</th>
       <th>Block Name</th>
       <th>Description</th>
-      <th colspan="2"></th>
     </tr>
   </thead>
   <tbody>
@@ -26,8 +25,6 @@
         <td><%= block.block_number %></td>
         <td><%= block.block_name %></td>
         <td><%= block.description %></td>
-        <td><%= link_to 'Edit', edit_block_path(block), class: "btn btn-outline-primary btn-sm" %></td>
-        <td><%= button_to 'Destroy', block, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>

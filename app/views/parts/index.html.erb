@@ -17,7 +17,6 @@
       <th>Part Number</th>
       <th>Part Name</th>
       <th>Description</th>
-      <th colspan="2"></th>
     </tr>
   </thead>
   <tbody>
@@ -26,8 +25,6 @@
         <td><%= part.part_number %></td>
         <td><%= part.part_name %></td>
         <td><%= part.description %></td>
-        <td><%= link_to 'Edit', edit_part_path(part), class: "btn btn-outline-primary btn-sm" %></td>
-        <td><%= button_to 'Destroy', part, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>
