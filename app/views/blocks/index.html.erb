@@ -11,8 +11,8 @@
   <% end %>
 </div>
 
-<table class="table table-striped table-hover table-responsive">
-  <thead>
+<table class="table shadow table-hover table-responsive">
+  <thead class="table-light">
     <tr>
       <th>Block Number</th>
       <th>Block Name</th>
@@ -26,11 +26,11 @@
         <td><%= link_to block.block_number, block %></td>
         <td><%= block.block_name %></td>
         <td><%= block.description %></td>
-        <td><%= link_to 'Edit', edit_block_path(block), class: "btn btn-outline-warning btn-sm" %></td>
+        <td><%= link_to 'Edit', edit_block_path(block), class: "btn btn-outline-primary btn-sm" %></td>
         <td><%= button_to 'Destroy', block, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to 'New Block', new_block_path, class: "btn btn-outline-success" %>
+<%= link_to 'New Block', new_block_path, class: "btn btn-outline-primary" %>

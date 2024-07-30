@@ -2,8 +2,8 @@
 
 <div class="row">
   <div class="col-md-4">
-    <div class="card mb-3">
-      <div class="card-header">
+    <div class="card border-0 shadow p-2 mb-4">
+      <div class="card-title fs-5 mb-3 p-2">
         Statistics
       </div>
       <div class="card-body">
@@ -15,8 +15,8 @@
       </div>
     </div>
 
-    <div class="card mb-3">
-      <div class="card-header">
+    <div class="card border-0 shadow p-2">
+      <div class="card-title fs-5 mb-3 p-2">
         Recent Updates
       </div>
       <div class="card-body">
@@ -59,10 +59,7 @@
   </div>
 
   <div class="col-md-8">
-    <div class="card mb-3">
-      <div class="card-header">
-        Search System
-      </div>
+    <div class="card border-0 shadow p-2">
       <div class="card-body">
         <%= form_with url: root_path, method: :get, local: true, class: "mb-3" do |form| %>
           <div class="input-group">
