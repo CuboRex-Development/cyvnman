@@ -1,5 +1,5 @@
 class VersionsController < ApplicationController
-  before_action :set_version, only: %i[ show edit update destroy ]
+  before_action :set_version, only: %i[ show edit update destroy download ]
   before_action :set_part, only: %i[ new create edit update ]
 
   def index
@@ -44,6 +44,14 @@ class VersionsController < ApplicationController
   def destroy
     @version.destroy
     redirect_to versions_url, notice: "Version was successfully destroyed."
+  end
+
+  def download
+    if @version.drawing_image.attached?
+      send_data @version.drawing_image.download, filename: @version.drawing_image.filename.to_s, content_type: @version.drawing_image.content_type
+    else
+      redirect_to @version, alert: 'No file attached to this version.'
+    end
   end
 
   private

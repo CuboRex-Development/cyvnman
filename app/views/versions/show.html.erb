@@ -23,14 +23,18 @@
     </div>
 
     <!-- File Preview (if applicable) -->
-    <% if @version.file_path.present? %>
+    <% if @version.drawing_image.attached? %>
       <div class="card border-0 shadow mb-4">
         <div class="card-header bg-light">
           <h2 class="h5 mb-0">File Preview</h2>
         </div>
         <div class="card-body">
-          <!-- Add file preview logic here. This could be an image, PDF viewer, or a link to download the file -->
-          <%= link_to 'Download File', @version.file_path, class: 'btn btn-outline-primary', target: '_blank' %>
+          <% if @version.drawing_image.content_type.start_with?('image/') %>
+            <%= image_tag @version.drawing_image, class: 'img-fluid' %>
+          <% else %>
+            <p>File attached: <%= @version.drawing_image.filename %></p>
+          <% end %>
+          <%= link_to 'Download File', download_version_path(@version), class: 'btn btn-outline-primary' %>
         </div>
       </div>
     <% end %>

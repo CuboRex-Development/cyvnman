@@ -1,7 +1,7 @@
-<%= form_with(model: @version, url: @version.persisted? ? version_path(@version) : part_versions_path(@part), method: @version.persisted? ? :patch : :post) do |form| %>
+<%= form_with(model: @version, url: @version.persisted? ? version_path(@version) : part_versions_path(@part), method: @version.persisted? ? :patch : :post, local: true, class: 'needs-validation', novalidate: true) do |form| %>
   <% if @version.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@version.errors.count, "error") %> prohibited this version from being saved:</h2>
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading"><%= pluralize(@version.errors.count, "error") %> prohibited this version from being saved:</h4>
       <ul>
         <% @version.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,65 +10,87 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :version_number_suffix, "Version Number (last 3 digits)" %>
+  <div class="mb-3">
+    <%= form.label :version_number_suffix, "Version Number (last 3 digits)", class: 'form-label' %>
     <div class="input-group">
-      <input type="text" id="version_number_prefix" class="form-control" value="<%= @part&.part_number %>-" readonly>
-      <%= form.text_field :version_number_suffix, class: 'form-control' %>
+      <span class="input-group-text"><%= @part&.part_number %>-</span>
+      <%= form.text_field :version_number_suffix, class: 'form-control', required: true %>
+      <div class="invalid-feedback">Please provide a version number suffix.</div>
     </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :description %>
-    <%= form.text_area :description, class: 'form-control' %>
+  <div class="mb-3">
+    <%= form.label :description, class: 'form-label' %>
+    <%= form.text_area :description, class: 'form-control', rows: 3 %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :file_path %>
+  <div class="mb-3">
+    <%= form.label :file_path, class: 'form-label' %>
     <%= form.text_field :file_path, class: 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :scale %>
-    <%= form.text_field :scale, class: 'form-control' %>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <%= form.label :scale, class: 'form-label' %>
+      <%= form.text_field :scale, class: 'form-control' %>
+    </div>
+    <div class="col-md-4 mb-3">
+      <%= form.label :sheet_size, class: 'form-label' %>
+      <%= form.text_field :sheet_size, class: 'form-control' %>
+    </div>
+    <div class="col-md-4 mb-3">
+      <%= form.label :unit, class: 'form-label' %>
+      <%= form.text_field :unit, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :sheet_size %>
-    <%= form.text_field :sheet_size, class: 'form-control' %>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <%= form.label :drawn_by, class: 'form-label' %>
+      <%= form.text_field :drawn_by, class: 'form-control' %>
+    </div>
+    <div class="col-md-4 mb-3">
+      <%= form.label :checked_by, class: 'form-label' %>
+      <%= form.text_field :checked_by, class: 'form-control' %>
+    </div>
+    <div class="col-md-4 mb-3">
+      <%= form.label :approved_by, class: 'form-label' %>
+      <%= form.text_field :approved_by, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :unit %>
-    <%= form.text_field :unit, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :drawn_by %>
-    <%= form.text_field :drawn_by, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :checked_by %>
-    <%= form.text_field :checked_by, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :approved_by %>
-    <%= form.text_field :approved_by, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :drawn_date %>
+  <div class="mb-3">
+    <%= form.label :drawn_date, class: 'form-label' %>
     <%= form.date_field :drawn_date, class: 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :drawing_image, "Upload Drawing Image" %>
+  <div class="mb-3">
+    <%= form.label :drawing_image, "Upload Drawing Image", class: 'form-label' %>
     <%= form.file_field :drawing_image, class: 'form-control' %>
   </div>
 
-  <div class="actions">
+  <div class="mb-3">
     <%= form.submit 'Save Version', class: 'btn btn-outline-primary' %>
   </div>
 <% end %>
+
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>

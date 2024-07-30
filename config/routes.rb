@@ -18,7 +18,11 @@ Rails.application.routes.draw do
   resources :parts do
     resources :versions, only: [:new, :create]
   end
-  resources :versions
+  resources :versions do
+    member do
+      get 'download'
+    end
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
