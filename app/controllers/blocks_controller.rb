@@ -1,5 +1,5 @@
 class BlocksController < ApplicationController
-  before_action :set_block, only: [:show, :edit, :update, :destroy, :add_part]
+  before_action :set_block, only: [:show, :edit, :update, :destroy, :add_part, :remove_part]
   before_action :set_types, only: %i[ new edit create update ]
 
   def index
