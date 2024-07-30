@@ -12,14 +12,18 @@
 </div>
 
 <h2>Add Existing Part</h2>
+<div class="custom-select mb-3">
+  <input type="text" id="custom-select-input" class="form-control" placeholder="Search parts">
+  <ul id="custom-select-list" class="list-group">
+    <% Part.where.not(id: @block.parts.pluck(:id)).each do |part| %>
+      <li class="list-group-item" data-value="<%= part.id %>"><%= "#{part.part_number} - #{part.part_name}" %></li>
+    <% end %>
+  </ul>
+</div>
+
 <%= form_with(url: add_part_block_path(@block), method: :post, local: true, class: 'mb-3') do |form| %>
-  <div class="input-group">
-    <%= form.select :part_id, 
-                    Part.where.not(id: @block.parts.pluck(:id)).map { |p| ["#{p.part_number} - #{p.part_name}", p.id] },
-                    { prompt: "Select a part" }, 
-                    { class: 'form-select select2', style: 'width: 100%;' } %>
-    <%= form.submit "Add Part", class: 'btn btn-primary' %>
-  </div>
+  <%= form.hidden_field :part_id, id: 'selected-part-id' %>
+  <%= form.submit "Add Part", class: 'btn btn-primary', id: 'add-part-btn', disabled: true %>
 <% end %>
 
 <h2>Related Parts</h2>
