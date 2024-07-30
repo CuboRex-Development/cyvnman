@@ -5,13 +5,13 @@
     <div class="input-group">
       <%= form.text_field :type_name_or_type_number_cont, class: "form-control", placeholder: "Search Types" %>
       <div class="input-group-append">
-        <%= form.submit "Search", class: "btn btn-primary" %>
+        <%= form.submit "Search", class: "btn btn-outline-primary" %>
       </div>
     </div>
   <% end %>
 </div>
 
-<table class="table table-bordered table-striped table-hover table-responsive">
+<table class="table table-striped table-hover table-responsive">
   <thead>
     <tr>
       <th>Type Name</th>
@@ -33,4 +33,4 @@
   </tbody>
 </table>
 
-<%= link_to 'New Type', new_type_path, class: "btn btn-success" %>
+<%= link_to 'New Type', new_type_path, class: "btn btn-outline-success" %>

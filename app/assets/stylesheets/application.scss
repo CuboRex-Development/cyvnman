@@ -1,4 +1,15 @@
+$primary: #2784e8; // プライマリカラーの変更
+$font-family-base: 'Roboto',
+sans-serif; // フォントの変更
 @import "bootstrap";
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+}
+
 .custom-select {
     position: relative;
     #custom-select-input {

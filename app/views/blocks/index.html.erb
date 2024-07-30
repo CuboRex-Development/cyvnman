@@ -5,13 +5,13 @@
     <div class="input-group">
       <%= form.text_field :block_name_or_block_number_cont, class: "form-control", placeholder: "Search Blocks" %>
       <div class="input-group-append">
-        <%= form.submit "Search", class: "btn btn-primary" %>
+        <%= form.submit "Search", class: "btn btn-outline-primary" %>
       </div>
     </div>
   <% end %>
 </div>
 
-<table class="table table-bordered table-striped table-hover table-responsive">
+<table class="table table-striped table-hover table-responsive">
   <thead>
     <tr>
       <th>Block Number</th>
@@ -33,4 +33,4 @@
   </tbody>
 </table>
 
-<%= link_to 'New Block', new_block_path, class: "btn btn-success" %>
+<%= link_to 'New Block', new_block_path, class: "btn btn-outline-success" %>
