@@ -23,7 +23,7 @@
   <tbody>
     <% @parts.each do |part| %>
       <tr data-href="<%= part_path(part) %>" class="clickable-row">
-        <td><%= link_to part.part_number, part %></td>
+        <td><%= part.part_number %></td>
         <td><%= part.part_name %></td>
         <td><%= part.description %></td>
         <td><%= link_to 'Edit', edit_part_path(part), class: "btn btn-outline-primary btn-sm" %></td>

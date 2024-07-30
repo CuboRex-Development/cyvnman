@@ -23,7 +23,7 @@
   <tbody>
     <% @versions.each do |version| %>
       <tr data-href="<%= version_path(version) %>" class="clickable-row">
-        <td><%= link_to version.version_number, version %></td>
+        <td><%= version.version_number %></td>
         <td><%= version.description %></td>
         <td><%= version.part.part_number if version.part %></td>
         <td><%= link_to 'Edit', edit_version_path(version), class: "btn btn-outline-primary btn-sm" %></td>

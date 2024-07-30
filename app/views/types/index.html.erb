@@ -14,8 +14,8 @@
 <table class="table shadow table-hover table-responsive">
   <thead class="table-light">
     <tr>
-      <th>Type Name</th>
       <th>Type Number</th>
+      <th>Type Name</th>
       <th>Description</th>
       <th colspan="2"></th>
     </tr>
@@ -23,8 +23,8 @@
   <tbody>
     <% @types.each do |type| %>
       <tr data-href="<%= type_path(type) %>" class="clickable-row">
-        <td><%= link_to type.type_name, type %></td>
         <td><%= type.type_number %></td>
+        <td><%= type.type_name %></td>
         <td><%= type.description %></td>
         <td><%= link_to 'Edit', edit_type_path(type), class: "btn btn-outline-primary btn-sm" %></td>
         <td><%= button_to 'Destroy', type, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger btn-sm" %></td>

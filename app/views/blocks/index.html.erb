@@ -23,7 +23,7 @@
   <tbody>
     <% @blocks.each do |block| %>
       <tr data-href="<%= block_path(block) %>" class="clickable-row">
-        <td><%= link_to block.block_number, block %></td>
+        <td><%= block.block_number %></td>
         <td><%= block.block_name %></td>
         <td><%= block.description %></td>
         <td><%= link_to 'Edit', edit_block_path(block), class: "btn btn-outline-primary btn-sm" %></td>
