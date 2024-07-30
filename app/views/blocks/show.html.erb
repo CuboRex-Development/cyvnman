@@ -14,13 +14,11 @@
 <h2>Add Existing Part</h2>
 <%= form_with(url: add_part_block_path(@block), method: :post, local: true, class: 'mb-3') do |form| %>
   <div class="input-group">
-    <%= form.collection_select :part_id, 
-                               Part.where.not(id: @block.parts.pluck(:id)), 
-                               :id, 
-                               ->(part) { "#{part.part_number} - #{part.part_name}" }, 
-                               { prompt: "Select a part" }, 
-                               { class: 'form-select' } %>
-    <%= form.submit "Add", class: 'btn btn-primary' %>
+    <%= form.select :part_id, 
+                    Part.where.not(id: @block.parts.pluck(:id)).map { |p| ["#{p.part_number} - #{p.part_name}", p.id] },
+                    { prompt: "Select a part" }, 
+                    { class: 'form-select select2', style: 'width: 100%;' } %>
+    <%= form.submit "Add Part", class: 'btn btn-primary' %>
   </div>
 <% end %>
 
