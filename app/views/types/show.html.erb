@@ -17,14 +17,14 @@
     <!-- Related Models and Blocks -->
     <div class="card border-0 shadow mb-4">
       <div class="card-header bg-light">
-        <h2 class="h5 mb-0">Related Models and Blocks</h2>
+        <h2 class="h5 mb-0">Model-Block Relations</h2>
       </div>
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table table-hover mb-0">
             <thead class="table-light">
               <tr>
-                <th>Block Number / Model Code</th>
+                <th>Block Number / Model Name</th>
                 <% @type.models.each do |model| %>
                   <th class="text-center">
                     <%= link_to model.model_code, model, class: "text-decoration-none" %>
