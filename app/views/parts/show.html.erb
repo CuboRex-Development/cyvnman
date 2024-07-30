@@ -1,40 +1,59 @@
-<h1>Part: <%= @part.part_name %></h1>
-
-<div class="card mb-3">
-  <div class="card-header">
-    Part Details
-  </div>
+<div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
   <div class="card-body">
-    <h5 class="card-title"><%= @part.part_number %></h5>
-    <p class="card-text"><strong>Part Name:</strong> <%= @part.part_name %></p>
-    <p class="card-text"><strong>Description:</strong> <%= @part.description %></p>
+    <h1 class="card-title h3 mb-4">Part: <%= @part.part_name %></h1>
+
+    <!-- Part Details -->
+    <div class="card border-0 shadow mb-4">
+      <div class="card-header bg-light">
+        <h2 class="h5 mb-0">Part Details</h2>
+      </div>
+      <div class="card-body">
+        <p class="mb-1"><strong>Part Number:</strong> <%= @part.part_number %></p>
+        <p class="mb-1"><strong>Part Name:</strong> <%= @part.part_name %></p>
+        <p class="mb-0"><strong>Description:</strong> <%= @part.description %></p>
+      </div>
+    </div>
+
+    <!-- Related Versions -->
+    <div class="card border-0 shadow mb-4">
+      <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">Related Versions</h2>
+        <%= link_to 'New Version', new_part_version_path(@part), class: "btn btn-sm btn-outline-primary" %>
+      </div>
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          <% @part.versions.each do |version| %>
+            <li class="list-group-item">
+              <%= link_to version.version_number, version, class: "text-decoration-none" %>
+              <small class="text-muted d-block">Description: <%= truncate(version.description, length: 100) %></small>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Related Blocks -->
+    <div class="card border-0 shadow mb-4">
+      <div class="card-header bg-light">
+        <h2 class="h5 mb-0">Related Blocks</h2>
+      </div>
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          <% @part.blocks.each do |block| %>
+            <li class="list-group-item">
+              <%= link_to block.block_name, block, class: "text-decoration-none" %>
+              <small class="text-muted d-block">Block Number: <%= block.block_number %></small>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <%= link_to 'Edit', edit_part_path(@part), class: "btn btn-outline-primary" %>
+      <%= link_to 'Back to Parts', parts_path, class: "btn btn-outline-secondary" %>
+      <%= button_to 'Delete', @part, method: :delete, data: { confirm: 'Are you sure you want to delete this part?' }, class: "btn btn-outline-danger" %>
+    </div>
   </div>
-</div>
-
-<h2>Related Versions</h2>
-<%= link_to 'New Version', new_part_version_path(@part), class: "btn btn-primary mb-3" %>
-<ul class="list-group mb-3">
-  <% @part.versions.each do |version| %>
-    <li class="list-group-item">
-      <%= link_to version.version_number, version %>
-      <small class="text-muted">Description: <%= version.description %></small>
-    </li>
-  <% end %>
-</ul>
-
-<h2>Related Blocks</h2>
-<ul class="list-group mb-3">
-  <% @part.blocks.each do |block| %>
-    <li class="list-group-item">
-      <%= link_to block.block_name, block %>
-      <small class="text-muted">Block Number: <%= block.block_number %></small>
-    </li>
-  <% end %>
-</ul>
-
-<!-- Buttons Group -->
-<div class="btn-group" role="group" aria-label="Basic example">
-  <%= link_to 'Edit', edit_part_path(@part), class: "btn btn-warning" %>
-  <%= link_to 'Back to Parts', parts_path, class: "btn btn-secondary" %>
-  <%= button_to 'Destroy', @part, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
 </div>
