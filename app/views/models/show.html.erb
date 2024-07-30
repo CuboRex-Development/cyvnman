@@ -11,12 +11,28 @@
   </div>
 </div>
 
+<h2>Add Existing Block</h2>
+<div class="custom-select mb-3">
+  <input type="text" id="custom-select-input" class="form-control" placeholder="Search blocks">
+  <ul id="custom-select-list" class="list-group">
+    <% Block.where.not(id: @model.blocks.pluck(:id)).each do |block| %>
+      <li class="list-group-item" data-value="<%= block.id %>"><%= "#{block.block_number} - #{block.block_name}" %></li>
+    <% end %>
+  </ul>
+</div>
+
+<%= form_with(url: add_block_model_path(@model), method: :post, local: true, class: 'mb-3') do |form| %>
+  <%= form.hidden_field :block_id, id: 'selected-block-id' %>
+  <%= form.submit "Add Block", class: 'btn btn-primary', id: 'add-block-btn', disabled: true %>
+<% end %>
+
 <h2>Related Blocks</h2>
 <ul class="list-group mb-3">
   <% @model.blocks.each do |block| %>
-    <li class="list-group-item">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
       <%= link_to block.block_name, block %>
       <small class="text-muted">Block Number: <%= block.block_number %></small>
+      <%= button_to 'Remove', remove_block_model_path(@model, block_id: block.id), method: :delete, class: "btn btn-sm btn-danger", data: { confirm: 'Are you sure?' } %>
     </li>
   <% end %>
 </ul>

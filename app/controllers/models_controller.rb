@@ -1,5 +1,5 @@
 class ModelsController < ApplicationController
-  before_action :set_model, only: %i[ show edit update destroy ]
+  before_action :set_model, only: [:show, :edit, :update, :destroy, :add_block, :remove_block]
 
   def index
     @q = Model.ransack(params[:q])
@@ -37,6 +37,24 @@ class ModelsController < ApplicationController
   def destroy
     @model.destroy
     redirect_to models_url, notice: "Model was successfully destroyed."
+  end
+
+  def add_block
+    block = Block.find(params[:block_id])
+    unless @model.blocks.include?(block)
+      @model.blocks << block
+      flash[:notice] = 'Block was successfully added to the model.'
+    else
+      flash[:alert] = 'This block is already in the model.'
+    end
+    redirect_to @model
+  end
+
+  def remove_block
+    block = Block.find(params[:block_id])
+    @model.blocks.delete(block)
+    flash[:notice] = 'Block was successfully removed from the model.'
+    redirect_to @model
   end
 
   private

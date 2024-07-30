@@ -2,7 +2,12 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :types
-  resources :models
+  resources :models do
+    member do
+      post 'add_block'
+      delete 'remove_block'
+    end
+  end
   resources :blocks do
     member do
       post 'add_part'
