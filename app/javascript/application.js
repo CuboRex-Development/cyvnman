@@ -42,7 +42,6 @@ document.addEventListener('turbo:load', function() {
     });
 });
 
-
 document.addEventListener('turbo:load', () => {
     const typeSelect = document.querySelector('#block_type_id');
     const blockNumberField = document.querySelector('#block_block_number');

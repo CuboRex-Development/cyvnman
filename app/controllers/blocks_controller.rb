@@ -78,6 +78,16 @@ class BlocksController < ApplicationController
     @types = Type.all
   end
 
+  def set_block_number_prefix
+    type = Type.find_by(id: params[:block][:type_id])
+    if type
+      prefix = type.type_number
+      suffix = params[:block][:block_number_suffix]
+      @block.block_number = "#{prefix}-#{suffix}"
+      @block.types << type unless @block.types.include?(type)
+    end
+  end
+
   def block_params
     params.require(:block).permit(:block_number_suffix, :block_name, :description, :type_id, type_ids: [])
   end
