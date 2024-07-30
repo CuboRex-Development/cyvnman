@@ -22,7 +22,7 @@
   </thead>
   <tbody>
     <% @models.each do |model| %>
-      <tr>
+      <tr data-href="<%= model_path(model) %>" class="clickable-row">
         <td><%= link_to model.model_code, model %></td>
         <td><%= model.description %></td>
         <td><%= model.type.type_name if model.type %></td>

@@ -22,7 +22,7 @@
   </thead>
   <tbody>
     <% @parts.each do |part| %>
-      <tr>
+      <tr data-href="<%= part_path(part) %>" class="clickable-row">
         <td><%= link_to part.part_number, part %></td>
         <td><%= part.part_name %></td>
         <td><%= part.description %></td>

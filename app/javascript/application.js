@@ -7,6 +7,15 @@ window.jQuery = jquery;
 window.$ = jquery;
 
 document.addEventListener('turbo:load', () => {
+    const clickableRows = document.querySelectorAll('.clickable-row');
+    clickableRows.forEach(row => {
+        row.addEventListener('click', () => {
+            window.location.href = row.dataset.href;
+        });
+    });
+});
+
+document.addEventListener('turbo:load', () => {
     const typeSelect = document.querySelector('#block_type_id');
     const blockNumberField = document.querySelector('#block_block_number');
     const typeNumberPrefix = document.querySelector('#type_number_prefix');

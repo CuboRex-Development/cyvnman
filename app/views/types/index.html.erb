@@ -22,7 +22,7 @@
   </thead>
   <tbody>
     <% @types.each do |type| %>
-      <tr>
+      <tr data-href="<%= type_path(type) %>" class="clickable-row">
         <td><%= link_to type.type_name, type %></td>
         <td><%= type.type_number %></td>
         <td><%= type.description %></td>

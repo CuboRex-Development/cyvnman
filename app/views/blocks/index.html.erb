@@ -22,7 +22,7 @@
   </thead>
   <tbody>
     <% @blocks.each do |block| %>
-      <tr>
+      <tr data-href="<%= block_path(block) %>" class="clickable-row">
         <td><%= link_to block.block_number, block %></td>
         <td><%= block.block_name %></td>
         <td><%= block.description %></td>
