@@ -15,16 +15,16 @@
   <thead class="table-light">
     <tr>
       <th>Version Number</th>
-      <th>Description</th>
       <th>Part Number</th>
+      <th>Description</th>
     </tr>
   </thead>
   <tbody>
     <% @versions.each do |version| %>
       <tr data-href="<%= version_path(version) %>" class="clickable-row">
         <td><%= version.version_number %></td>
-        <td><%= version.description %></td>
         <td><%= version.part.part_number if version.part %></td>
+        <td><%= version.description %></td>
       </tr>
     <% end %>
   </tbody>

@@ -15,16 +15,16 @@
   <thead class="table-light">
     <tr>
       <th>Model Name</th>
-      <th>Description</th>
       <th>Type</th>
+      <th>Description</th>
     </tr>
   </thead>
   <tbody>
     <% @models.each do |model| %>
       <tr data-href="<%= model_path(model) %>" class="clickable-row">
         <td><%= model.model_code %></td>
-        <td><%= model.description %></td>
         <td><%= model.type.type_name if model.type %></td>
+        <td><%= model.description %></td>
       </tr>
     <% end %>
   </tbody>
