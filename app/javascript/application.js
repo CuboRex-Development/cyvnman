@@ -1,7 +1,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import jquery from "jquery"
-// import select2 from "select2"
 
 window.jQuery = jquery;
 window.$ = jquery;
