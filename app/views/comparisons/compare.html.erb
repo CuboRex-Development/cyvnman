@@ -1,0 +1,24 @@
+<h1>Comparison Result</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Part Number</th>
+      <% @selected_blocks.each do |block| %>
+        <th><%= block.block_number %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @parts.each do |part| %>
+      <tr>
+        <td><%= part.part_number %></td>
+        <% @selected_blocks.each do |block| %>
+          <td><%= block.parts.include?(part) ? '✓' : '-' %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Back to Comparison', comparisons_path, class: 'btn btn-secondary' %>

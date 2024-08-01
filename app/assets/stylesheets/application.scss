@@ -2,6 +2,19 @@ $primary: #2784e8; // プライマリカラーの変更
 $font-family-base: 'Roboto',
 sans-serif; // フォントの変更
 @import "bootstrap";
+#block-list {
+    .list-group-item {
+        cursor: pointer;
+        &:hover {
+            background-color: #f8f9fa;
+        }
+    }
+}
+
+#selected-count {
+    font-weight: bold;
+}
+
 body {
     background-color: #f8f9fa;
 }
