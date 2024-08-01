@@ -20,16 +20,28 @@
         <h2 class="h5 mb-0">Add Existing Part</h2>
       </div>
       <div class="card-body">
-        <div class="custom-select mb-3">
-          <input type="text" id="custom-select-input" class="form-control" placeholder="Search parts">
-          <ul id="custom-select-list" class="list-group">
-            <% Part.where.not(id: @block.parts.pluck(:id)).each do |part| %>
-              <li class="list-group-item" data-value="<%= part.id %>"><%= "#{part.part_number} - #{part.part_name}" %></li>
-            <% end %>
-          </ul>
-        </div>
         <%= form_with(url: add_part_block_path(@block), method: :post, local: true) do |form| %>
-          <%= form.hidden_field :part_id, id: 'selected-part-id' %>
+          <div class="mb-3">
+            <label for="part-search" class="form-label">Search Parts:</label>
+            <input type="text" id="part-search" class="form-control" placeholder="Type to search...">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Select Part to Add:</label>
+            <div id="part-list" class="list-group" style="max-height: 300px; overflow-y: auto;">
+              <% Part.where.not(id: @block.parts.pluck(:id)).each do |part| %>
+                <label class="list-group-item">
+                  <%= form.radio_button :part_id, part.id, class: 'form-check-input me-1' %>
+                  <%= part.part_number %> - <%= part.part_name %>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <span id="selected-part">No part selected</span>
+          </div>
+
           <%= form.submit "Add Part", class: 'btn btn-outline-primary', id: 'add-part-btn', disabled: true %>
         <% end %>
       </div>
@@ -98,3 +110,31 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('turbo:load', function() {
+  const partSearch = document.getElementById('part-search');
+  const partList = document.getElementById('part-list');
+  const selectedPart = document.getElementById('selected-part');
+  const addPartBtn = document.getElementById('add-part-btn');
+
+  if (partSearch && partList) {
+    partSearch.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const parts = partList.querySelectorAll('label');
+      parts.forEach(part => {
+        const text = part.textContent.toLowerCase();
+        part.style.display = text.includes(searchTerm) ? '' : 'none';
+      });
+    });
+
+    partList.addEventListener('change', function(event) {
+      if (event.target.type === 'radio') {
+        const selectedLabel = event.target.closest('label');
+        selectedPart.textContent = `Selected: ${selectedLabel.textContent.trim()}`;
+        addPartBtn.disabled = false;
+      }
+    });
+  }
+});
+</script>
