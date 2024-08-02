@@ -3,6 +3,7 @@ class TypesController < ApplicationController
 
   def index
     @q = Type.ransack(params[:q])
+    @q.sorts = 'type_number asc' if @q.sorts.empty?
     @types = @q.result(distinct: true)
   end
 
@@ -46,6 +47,6 @@ class TypesController < ApplicationController
   end
 
   def type_params
-    params.require(:type).permit(:type_name, :type_number, :description)
+    params.require(:type).permit(:type_name, :type_number, :category,:description)
   end
 end

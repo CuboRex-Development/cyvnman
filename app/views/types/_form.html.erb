@@ -11,21 +11,41 @@
   <% end %>
 
   <div class="mb-3">
-    <%= form.label :type_number, class: "form-label" %>
-    <%= form.text_field :type_number, class: "form-control", placeholder: "Enter type number" %>
+    <%= form.label :category, "Category", class: "form-label" %>
+    <%= form.select :category, 
+                    options_for_select([
+                      ['Carry :1', 'Carry'],
+                      ['Applicate :2', 'Applicate'],
+                      ['Collect :3', 'Collect'],
+                      ['Other :9', 'Other']
+                    ], type.category),
+                    { include_blank: "Select a category" },
+                    { class: "form-select", required: true } %>
+  </div>
+
+  <% if type.new_record? %>
+    <div class="mb-3">
+      <p class="form-text">Type number will be automatically generated upon saving.</p>
+    </div>
+  <% else %>
+    <div class="mb-3">
+      <%= form.label :type_number, "Type Number", class: "form-label" %>
+      <%= form.text_field :type_number, class: "form-control", readonly: true %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :type_name, "Type Name", class: "form-label" %>
+    <%= form.text_field :type_name, class: "form-control", placeholder: "Enter type name", required: true %>
   </div>
 
   <div class="mb-3">
-    <%= form.label :type_name, class: "form-label" %>
-    <%= form.text_field :type_name, class: "form-control", placeholder: "Enter type name" %>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :description, class: "form-label" %>
-    <%= form.text_area :description, class: "form-control", placeholder: "Enter type description" %>
+    <%= form.label :description, "Description", class: "form-label" %>
+    <%= form.text_area :description, class: "form-control", placeholder: "Enter type description", rows: 3 %>
   </div>
 
   <div class="actions">
     <%= form.submit 'Save Type', class: "btn btn-outline-primary" %>
+    <%= link_to 'Cancel', types_path, class: "btn btn-outline-secondary ms-2" %>
   </div>
 <% end %>
