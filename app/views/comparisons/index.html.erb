@@ -1,4 +1,4 @@
-<h1>Block Comparison</h1>
+<h1>Comparison</h1>
 
 <%= form_with url: compare_comparisons_path, method: :get, local: true do |form| %>
   <div class="mb-3">
@@ -7,7 +7,7 @@
   </div>
 
   <div class="mb-3">
-    <label class="form-label">Select Blocks to Compare:</label>
+    <label class="form-label">Select to Compare:</label>
     <div id="block-list" class="list-group" style="max-height: 300px; overflow-y: auto;">
       <% @blocks.each do |block| %>
         <label class="list-group-item">
