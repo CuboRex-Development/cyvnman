@@ -20,9 +20,10 @@
     <%= form.label :block_number, "Block Number", class: 'form-label' %>
     <div class="input-group">
       <span class="input-group-text" id="block_number_prefix"></span>
-      <%= form.text_field :block_number_suffix, class: 'form-control', required: true, aria: { describedby: 'block_number_prefix' } %>
+      <%= form.text_field :block_number_suffix, class: 'form-control', required: true, aria: { describedby: 'block_number_prefix' }, id: 'block_number_input' %>
       <div class="invalid-feedback">Please provide a block number suffix.</div>
     </div>
+    <div id="block_number_suggestion" class="form-text mt-1"></div>
   </div>
 
   <div class="mb-3">
@@ -58,30 +59,71 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    const typeSelect = document.getElementById("type_select");
-    const blockNumberPrefix = document.getElementById("block_number_prefix");
+  const typeSelect = document.getElementById("type_select");
+  const blockNumberPrefix = document.getElementById("block_number_prefix");
+  const blockNumberInput = document.getElementById("block_number_input");
+  const suggestionDiv = document.getElementById("block_number_suggestion");
 
-    const typeNumbers = <%= @types.map { |type| [type.id, type.type_number] }.to_h.to_json.html_safe %>;
+  const typeNumbers = <%= @types.map { |type| [type.id, type.type_number] }.to_h.to_json.html_safe %>;
 
-    function updateBlockNumberPrefix() {
-      const selectedTypeId = typeSelect.value;
-      const typeNumber = typeNumbers[selectedTypeId];
-      blockNumberPrefix.textContent = typeNumber ? `${typeNumber}-` : "";
+  function updateBlockNumberPrefix() {
+    const selectedTypeId = typeSelect.value;
+    const typeNumber = typeNumbers[selectedTypeId];
+    blockNumberPrefix.textContent = typeNumber ? `${typeNumber}-` : "";
+  }
+
+  function updateSuggestion() {
+    const input = blockNumberInput.value;
+    let suggestion = '';
+
+    if (input.length > 0) {
+      const firstDigit = input[0];
+      suggestion += getFirstDigitSuggestion(firstDigit);
     }
 
-    typeSelect.addEventListener("change", updateBlockNumberPrefix);
+    if (input.length > 1) {
+      suggestion += '<br>2nd digit: Subcategory code';
+    }
 
-    // 初期値の設定
-    updateBlockNumberPrefix();
+    if (input.length > 2) {
+      const thirdDigit = input[2];
+      suggestion += '<br>' + getThirdDigitSuggestion(thirdDigit);
+    }
 
-    // Bootstrap 5 validation
-    const form = document.querySelector('.needs-validation');
-    form.addEventListener('submit', function(event) {
-      if (!form.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      form.classList.add('was-validated');
-    }, false);
-  });
+    suggestionDiv.innerHTML = suggestion;
+  }
+
+  function getFirstDigitSuggestion(digit) {
+    const suggestions = {
+      '0': 'Specification',
+      '1': 'Power Unit',
+      '2': 'Transmission mechanism',
+      '3': 'Frame',
+      '4': 'Operation System',
+      '5': 'Electrical Harness',
+      '6': 'Exterior',
+    };
+    return suggestions[digit] || '1st: Use values 0-6';
+  }
+
+  function getThirdDigitSuggestion(digit) {
+    return digit === '0' ? '3rd: Block for standard Type' : '3rd: Derivative block';
+  }
+
+  typeSelect.addEventListener("change", updateBlockNumberPrefix);
+  blockNumberInput.addEventListener('input', updateSuggestion);
+
+  // 初期値の設定
+  updateBlockNumberPrefix();
+
+  // Bootstrap 5 validation
+  const form = document.querySelector('.needs-validation');
+  form.addEventListener('submit', function(event) {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+  }, false);
+});
 </script>
