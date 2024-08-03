@@ -12,11 +12,12 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :part_number_suffix, "Part Number (last 3 digits)" %>
+  <div class="mb-3">
+    <%= form.label :part_number_suffix, "Part Number (last 3 digits)", class: 'form-label' %>
     <div class="input-group">
-      <input type="text" id="part_number_prefix" class="form-control" value="<%= @block.block_number %>-" readonly>
-      <%= form.text_field :part_number_suffix, class: 'form-control' %>
+      <span class="input-group-text"><%= @block.block_number %>-</span>
+      <%= form.text_field :part_number_suffix, class: 'form-control', required: true %>
+      <div class="invalid-feedback">Please provide a part number suffix.</div>
     </div>
   </div>
 
@@ -31,8 +32,8 @@
   </div>
 
   <div class="actions">
-    <%= form.submit 'Create Part', class: "btn btn-primary" %>
+    <%= form.submit 'Create Part', class: "btn btn-outline-primary" %>
   </div>
 <% end %>
 
-<%= link_to 'Back to Blocks', blocks_path, class: "btn btn-secondary mt-3" %>
+<%= link_to 'Back to Blocks', blocks_path, class: "btn btn-outline-secondary mt-3" %>
