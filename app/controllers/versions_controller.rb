@@ -4,6 +4,7 @@ class VersionsController < ApplicationController
 
   def index
     @q = Version.ransack(params[:q])
+    @q.sorts = 'version_number asc' if @q.sorts.empty?
     @versions = @q.result(distinct: true)
   end
 

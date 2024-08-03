@@ -4,6 +4,7 @@ class BlocksController < ApplicationController
 
   def index
     @q = Block.ransack(params[:q])
+    @q.sorts = 'block_number asc' if @q.sorts.empty?
     @blocks = @q.result(distinct: true)
   end
 
