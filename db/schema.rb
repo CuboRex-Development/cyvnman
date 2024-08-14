@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_02_110732) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_06_073919) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -77,12 +77,31 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_110732) do
     t.index ["type_id"], name: "index_models_on_type_id"
   end
 
+  create_table "part_associations_parts", id: false, force: :cascade do |t|
+    t.integer "part_id", null: false
+    t.integer "part_association_id", null: false
+    t.index ["part_association_id", "part_id"], name: "idx_on_part_association_id_part_id_ecb24a7dba", unique: true
+    t.index ["part_id", "part_association_id"], name: "idx_on_part_id_part_association_id_dc6ff40f65", unique: true
+  end
+
+  create_table "part_relationships", force: :cascade do |t|
+    t.integer "parent_part_id", null: false
+    t.integer "child_part_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_part_id"], name: "index_part_relationships_on_child_part_id"
+    t.index ["parent_part_id", "child_part_id"], name: "index_part_relationships_on_parent_part_id_and_child_part_id", unique: true
+    t.index ["parent_part_id"], name: "index_part_relationships_on_parent_part_id"
+  end
+
   create_table "parts", force: :cascade do |t|
     t.string "part_number"
     t.string "part_name"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "parent_part_id"
+    t.index ["parent_part_id"], name: "index_parts_on_parent_part_id"
   end
 
   create_table "types", force: :cascade do |t|
@@ -115,5 +134,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_110732) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "models", "types"
+  add_foreign_key "part_relationships", "parts", column: "child_part_id"
+  add_foreign_key "part_relationships", "parts", column: "parent_part_id"
+  add_foreign_key "parts", "parts", column: "parent_part_id"
   add_foreign_key "versions", "parts"
 end

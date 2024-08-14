@@ -1,5 +1,5 @@
 class PartsController < ApplicationController
-  before_action :set_part, only: %i[ show edit update destroy ]
+  before_action :set_part, only: %i[ show edit update destroy add_related_part remove_related_part ]
   before_action :set_block, only: %i[ new create ]
 
   def index
@@ -14,6 +14,7 @@ class PartsController < ApplicationController
   end
 
   def show
+    @related_parts = @part.related_parts
   end
 
   def new
@@ -50,6 +51,22 @@ class PartsController < ApplicationController
     redirect_to parts_url, notice: "Part was successfully destroyed."
   end
 
+  def add_related_part
+    related_part = Part.find(params[:related_part_id])
+    unless @part.related_parts.include?(related_part)
+      @part.related_parts << related_part
+      related_part.related_parts << @part
+    end
+    redirect_to @part, notice: 'Related part was successfully added.'
+  end
+
+  def remove_related_part
+    related_part = Part.find(params[:related_part_id])
+    @part.related_parts.delete(related_part)
+    related_part.related_parts.delete(@part)
+    redirect_to @part, notice: 'Related part was successfully removed.'
+  end
+
   private
 
   def set_part
@@ -61,6 +78,6 @@ class PartsController < ApplicationController
   end
 
   def part_params
-    params.require(:part).permit(:part_number_suffix, :part_name, :description)
+    params.require(:part).permit(:part_number_suffix, :part_name, :description, related_part_ids: [])
   end
 end
