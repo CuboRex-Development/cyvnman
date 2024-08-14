@@ -16,6 +16,10 @@ Rails.application.routes.draw do
     resources :parts, only: [:new, :create]
   end
   resources :parts do
+    member do
+      post 'add_related_part'
+      delete 'remove_related_part'
+    end
     resources :versions, only: [:new, :create]
   end
   resources :versions do
