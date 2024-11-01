@@ -15,6 +15,35 @@
   </p>
 
   <p>
+    <strong>Material:</strong>
+    <%= part.material %>
+  </p>
+
+  <p>
+    <strong>Nominal Size:</strong>
+    <%= part.nominal_size %>
+  </p>
+
+  <p>
+    <strong>Part Name (English):</strong>
+    <%= part.part_name_eg %>
+  </p>
+
+  <p>
+    <strong>Quantity:</strong>
+    <%= part.quantity %>
+  </p>
+
+  <p>
+    <strong>Image:</strong>
+    <% if part.image.attached? %>
+      <%= image_tag part.image, class: "img-fluid", alt: part.part_name %>
+    <% else %>
+      No image available
+    <% end %>
+  </p>
+
+  <p>
     <strong>Blocks:</strong>
     <% if part.blocks.present? %>
       <% part.blocks.each do |block| %>
