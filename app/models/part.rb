@@ -8,8 +8,10 @@ class Part < ApplicationRecord
                           foreign_key: :part_id,
                           association_foreign_key: :part_association_id
 
+  has_one_attached :image
+
   def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "description", "id", "part_name", "part_number", "updated_at"]
+    ["created_at", "description", "id", "part_name", "part_number", "updated_at", "material", "nominal_size", "part_name_eg", "quantity", "image"]
   end
 
   def self.ransackable_associations(auth_object = nil)

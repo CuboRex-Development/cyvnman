@@ -3,16 +3,29 @@
     <h1 class="card-title h3 mb-4">Part: <%= @part.part_name %></h1>
 
     <!-- Part Details -->
-    <div class="card border-0 shadow mb-4">
-      <div class="card-header bg-light">
-        <h2 class="h5 mb-0">Part Details</h2>
-      </div>
-      <div class="card-body">
-        <p class="mb-1"><strong>Part Number:</strong> <%= @part.part_number %></p>
-        <p class="mb-1"><strong>Part Name:</strong> <%= @part.part_name %></p>
-        <p class="mb-0"><strong>Description:</strong> <%= @part.description %></p>
-      </div>
+  <div class="card border-0 shadow mb-4">
+    <div class="card-header bg-light">
+      <h2 class="h5 mb-0">Part Details</h2>
     </div>
+    <div class="card-body">
+      <p class="mb-1"><strong>Part Number:</strong> <%= @part.part_number %></p>
+      <p class="mb-1"><strong>Part Name:</strong> <%= @part.part_name %></p>
+      <p class="mb-1"><strong>Material:</strong> <%= @part.material %></p>
+      <p class="mb-1"><strong>Nominal Size:</strong> <%= @part.nominal_size %></p>
+      <p class="mb-1"><strong>Part Name (English):</strong> <%= @part.part_name_eg %></p>
+      <p class="mb-1"><strong>Quantity:</strong> <%= @part.quantity %></p>
+      <p class="mb-3"><strong>Description:</strong> <%= @part.description %></p>
+      <% if @part.image.attached? %>
+        <div class="mb-3">
+          <strong>Image:</strong>
+         <div class="mt-2">
+            <%= image_tag @part.image, class: "img-fluid rounded", alt: @part.part_name %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
 
     <!-- Related Versions -->
     <div class="card border-0 shadow mb-4">

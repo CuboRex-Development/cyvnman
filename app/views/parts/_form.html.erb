@@ -25,6 +25,31 @@
     <%= form.text_area :description, class: "form-control", placeholder: "Enter part description" %>
   </div>
 
+  <div class="mb-3">
+    <%= form.label :material, class: "form-label" %>
+    <%= form.text_field :material, class: "form-control", placeholder: "Enter material" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :nominal_size, class: "form-label" %>
+    <%= form.text_field :nominal_size, class: "form-control", placeholder: "Enter nominal size" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :part_name_eg, class: "form-label" %>
+    <%= form.text_field :part_name_eg, class: "form-control", placeholder: "Enter part name (English)" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :quantity, class: "form-label" %>
+    <%= form.number_field :quantity, class: "form-control", placeholder: "Enter quantity", min: 0 %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :image, class: "form-label" %>
+    <%= form.file_field :image, class: "form-control" %>
+  </div>
+
   <div class="actions">
     <%= form.submit 'Save Part', class: "btn btn-outline-primary" %>
   </div>
