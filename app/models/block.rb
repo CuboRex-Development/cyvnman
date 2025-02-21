@@ -11,6 +11,18 @@ class Block < ApplicationRecord
 
   before_validation :generate_block_number, on: :create
 
+ # 指定した Part をブロックに追加する（既に存在していなければ）
+  def add_part!(part)
+    unless parts.exists?(part.id)
+      parts << part
+    end
+  end
+
+  # 指定した Part をブロックから削除する
+  def remove_part!(part)
+    parts.destroy(part)
+  end
+
   # 自動連番採番ロジック
   def generate_block_number
     if primary_type_id.present?
