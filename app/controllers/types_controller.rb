@@ -19,19 +19,18 @@ class TypesController < ApplicationController
 
   def create
     @type = Type.new(type_params)
-
     if @type.save
-      redirect_to @type, notice: "Type was successfully created."
+      respond_success(@type, notice: "Type was successfully created.")
     else
-      render :new, status: :unprocessable_entity
+      respond_failure(@type, :new)
     end
   end
 
   def update
     if @type.update(type_params)
-      redirect_to @type, notice: "Type was successfully updated."
+      respond_success(@type, notice: "Type was successfully updated.")
     else
-      render :edit, status: :unprocessable_entity
+      respond_failure(@type, :edit)
     end
   end
 
@@ -47,6 +46,6 @@ class TypesController < ApplicationController
   end
 
   def type_params
-    params.require(:type).permit(:type_name, :type_number, :category,:description)
+    params.require(:type).permit(:type_name, :type_number, :category, :description)
   end
 end

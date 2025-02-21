@@ -1,6 +1,6 @@
 class BlocksController < ApplicationController
   before_action :set_block, only: [:show, :edit, :update, :destroy, :add_part, :remove_part]
-  before_action :set_types, only: %i[ new edit create update ]
+  before_action :set_types, only: %i[new edit create update]
 
   def index
     @q = Block.ransack(params[:q])
@@ -16,33 +16,34 @@ class BlocksController < ApplicationController
   end
 
   def create
-    type = Type.find_by(id: block_params[:type_id])
-    suffix = block_params[:block_number_suffix]
+    # 仮想属性として、番号生成用の値をセット
     @block = Block.new(block_params.except(:block_number_suffix, :type_id))
-    if type
-      @block.block_number = "#{type.type_number}-#{suffix}"
+    @block.block_number_suffix = block_params[:block_number_suffix]
+    @block.type_id_temp = block_params[:type_id]
+
+    if type = Type.find_by(id: block_params[:type_id])
       @block.types << type unless @block.types.include?(type)
     end
 
     if @block.save
-      redirect_to @block, notice: "Block was successfully created."
+      respond_success(@block, notice: "Block was successfully created.")
     else
-      render :new, status: :unprocessable_entity
+      respond_failure(@block, :new)
     end
   end
 
   def update
-    type = Type.find_by(id: block_params[:type_id])
-    suffix = block_params[:block_number_suffix]
-    if type
-      @block.block_number = "#{type.type_number}-#{suffix}"
+    @block.assign_attributes(block_params.except(:block_number_suffix, :type_id))
+    @block.block_number_suffix = block_params[:block_number_suffix]
+    @block.type_id_temp = block_params[:type_id]  # 更新時もセット
+    if type = Type.find_by(id: block_params[:type_id])
       @block.types << type unless @block.types.include?(type)
     end
-
-    if @block.update(block_params.except(:block_number_suffix, :type_id))
-      redirect_to @block, notice: "Block was successfully updated."
+  
+    if @block.save
+      respond_success(@block, notice: "Block was successfully updated.")
     else
-      render :edit, status: :unprocessable_entity
+      respond_failure(@block, :edit)
     end
   end
 
@@ -53,18 +54,17 @@ class BlocksController < ApplicationController
 
   def add_part
     part = Part.find(params[:part_id])
-    unless @block.parts.include?(part)
-      @block.parts << part
+    if @block.add_part!(part)
       flash[:notice] = 'Part was successfully added to the block.'
     else
-      flash[:alert] = 'This part is already in the block.'
+      flash[:alert] = @block.errors.full_messages.join(", ")
     end
     redirect_to @block
   end
 
   def remove_part
     part = Part.find(params[:part_id])
-    @block.parts.delete(part)
+    @block.remove_part!(part)
     flash[:notice] = 'Part was successfully removed from the block.'
     redirect_to @block
   end
@@ -77,16 +77,6 @@ class BlocksController < ApplicationController
 
   def set_types
     @types = Type.all
-  end
-
-  def set_block_number_prefix
-    type = Type.find_by(id: params[:block][:type_id])
-    if type
-      prefix = type.type_number
-      suffix = params[:block][:block_number_suffix]
-      @block.block_number = "#{prefix}-#{suffix}"
-      @block.types << type unless @block.types.include?(type)
-    end
   end
 
   def block_params
