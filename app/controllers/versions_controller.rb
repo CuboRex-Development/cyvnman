@@ -1,6 +1,6 @@
 class VersionsController < ApplicationController
-  before_action :set_version, only: %i[ show edit update destroy download ]
-  before_action :set_part, only: %i[ new create edit update ]
+  before_action :set_version, only: %i[show edit update destroy download]
+  before_action :set_part, only: %i[new create edit update]
 
   def index
     @q = Version.ransack(params[:q])
@@ -16,12 +16,13 @@ class VersionsController < ApplicationController
   end
 
   def edit
-    @part = @version.part # 編集時にも@partを設定
+    @part = @version.part
   end
 
   def create
+    # 仮想属性を使ってversion_numberを自動生成
     @version = @part.versions.build(version_params.except(:version_number_suffix))
-    @version.version_number = "#{@part.part_number}-#{params[:version][:version_number_suffix]}"
+    @version.version_number_suffix = version_params[:version_number_suffix]
 
     if @version.save
       redirect_to @part, notice: "Version was successfully created."
@@ -31,8 +32,8 @@ class VersionsController < ApplicationController
   end
 
   def update
-    if params[:version][:version_number_suffix].present?
-      @version.version_number = "#{@part.part_number}-#{params[:version][:version_number_suffix]}"
+    if version_params[:version_number_suffix].present?
+      @version.version_number_suffix = version_params[:version_number_suffix]
     end
 
     if @version.update(version_params.except(:version_number_suffix))
@@ -49,7 +50,9 @@ class VersionsController < ApplicationController
 
   def download
     if @version.drawing_image.attached?
-      send_data @version.drawing_image.download, filename: @version.drawing_image.filename.to_s, content_type: @version.drawing_image.content_type
+      send_data @version.drawing_image.download,
+                filename: @version.drawing_image.filename.to_s,
+                content_type: @version.drawing_image.content_type
     else
       redirect_to @version, alert: 'No file attached to this version.'
     end

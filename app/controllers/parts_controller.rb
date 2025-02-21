@@ -1,6 +1,6 @@
 class PartsController < ApplicationController
-  before_action :set_part, only: %i[ show edit update destroy add_related_part remove_related_part ]
-  before_action :set_block, only: %i[ new create ]
+  before_action :set_part, only: %i[show edit update destroy add_related_part remove_related_part]
+  before_action :set_block, only: %i[new create]
 
   def index
     @q = Part.ransack(params[:q])
@@ -25,13 +25,13 @@ class PartsController < ApplicationController
   end
 
   def create
-    block_number = @block.block_number
-    suffix = part_params[:part_number_suffix]
+    # 仮想属性を使って部品番号を自動生成させる
     @part = Part.new(part_params.except(:part_number_suffix))
-    @part.part_number = "#{block_number}-#{suffix}"
+    @part.part_number_suffix = part_params[:part_number_suffix]
+    @part.primary_block_id = @block.id
 
     if @part.save
-      @block.parts << @part
+      @block.parts << @part unless @block.parts.include?(@part)
       redirect_to @part, notice: "Part was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -80,5 +80,4 @@ class PartsController < ApplicationController
   def part_params
     params.require(:part).permit(:part_number_suffix, :part_name, :description, :material, :nominal_size, :part_name_eg, :quantity, :image, related_part_ids: [])
   end
-  
 end
