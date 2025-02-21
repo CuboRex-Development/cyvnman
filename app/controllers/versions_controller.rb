@@ -25,9 +25,10 @@ class VersionsController < ApplicationController
     @version.version_number_suffix = version_params[:version_number_suffix]
 
     if @version.save
-      redirect_to @part, notice: "Version was successfully created."
+      # 例として、保存後は部品詳細ページへリダイレクト
+      respond_success(@version, notice: "Version was successfully created.", redirect_url: @part)
     else
-      render :new, status: :unprocessable_entity
+      respond_failure(@version, :new)
     end
   end
 
@@ -37,9 +38,9 @@ class VersionsController < ApplicationController
     end
 
     if @version.update(version_params.except(:version_number_suffix))
-      redirect_to @version, notice: "Version was successfully updated."
+      respond_success(@version, notice: "Version was successfully updated.")
     else
-      render :edit, status: :unprocessable_entity
+      respond_failure(@version, :edit)
     end
   end
 

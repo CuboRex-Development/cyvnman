@@ -16,7 +16,7 @@ class BlocksController < ApplicationController
   end
 
   def create
-    # 受け取ったパラメータから仮想属性をセットする
+    # 仮想属性として、番号生成用の値をセット
     @block = Block.new(block_params.except(:block_number_suffix, :type_id))
     @block.block_number_suffix = block_params[:block_number_suffix]
     @block.type_id_temp = block_params[:type_id]
@@ -26,27 +26,26 @@ class BlocksController < ApplicationController
     end
 
     if @block.save
-      redirect_to @block, notice: "Block was successfully created."
+      respond_success(@block, notice: "Block was successfully created.")
     else
-      render :new, status: :unprocessable_entity
+      respond_failure(@block, :new)
     end
   end
 
   def update
     @block.assign_attributes(block_params.except(:block_number_suffix, :type_id))
     @block.block_number_suffix = block_params[:block_number_suffix]
-    @block.type_id_temp = block_params[:type_id]  # ← 追加
+    @block.type_id_temp = block_params[:type_id]  # 更新時もセット
     if type = Type.find_by(id: block_params[:type_id])
       @block.types << type unless @block.types.include?(type)
     end
   
     if @block.save
-      redirect_to @block, notice: "Block was successfully updated."
+      respond_success(@block, notice: "Block was successfully updated.")
     else
-      render :edit, status: :unprocessable_entity
+      respond_failure(@block, :edit)
     end
   end
-  
 
   def destroy
     @block.destroy
