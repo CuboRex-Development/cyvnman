@@ -1,22 +1,23 @@
 <%= form_with(model: block, local: true, class: 'needs-validation', novalidate: true) do |form| %>
-  <% if block.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <h4 class="alert-heading"><%= pluralize(block.errors.count, "error") %> prohibited this block from being saved:</h4>
-      <ul>
+<% if block.errors.any? %>
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading"><%= pluralize(block.errors.count, "error") %> prohibited this block from being saved:</h4>
+    <ul>
         <% block.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <li><%= message %></li>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
+    </ul>
+</div>
+<% end %>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :type_id, "Primary Type", class: 'form-label' %>
     <%= form.collection_select :type_id, @types, :id, :type_name, { prompt: "Select Type" }, { class: 'form-select', id: 'type_select', required: true } %>
     <div class="invalid-feedback">Please select a primary type.</div>
-  </div>
+</div>
 
-  <div class="mb-3">
+<!-- Block Number is auto-generated; remove manual input -->
+<!--<div class="mb-3">
     <%= form.label :block_number, "Block Number", class: 'form-label' %>
     <div class="input-group">
       <span class="input-group-text" id="block_number_prefix"></span>
@@ -24,106 +25,37 @@
       <div class="invalid-feedback">Please provide a block number suffix.</div>
     </div>
     <div id="block_number_suggestion" class="form-text mt-1"></div>
-  </div>
+  </div>-->
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :block_name, class: 'form-label' %>
     <%= form.text_field :block_name, class: 'form-control', required: true %>
     <div class="invalid-feedback">Please provide a block name.</div>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :description, class: 'form-label' %>
     <%= form.text_area :description, class: 'form-control', rows: 3 %>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :type_ids, "Additional Types", class: 'form-label d-block' %>
     <div class="row">
-      <% @types.each do |type| %>
+        <% @types.each do |type| %>
         <div class="col-md-4 mb-2">
-          <div class="form-check">
-            <%= check_box_tag "block[type_ids][]", type.id, @block.types.include?(type), class: 'form-check-input', id: "block_type_ids_#{type.id}" %>
-            <%= label_tag "block_type_ids_#{type.id}", type.type_name, class: 'form-check-label' %>
-          </div>
+            <div class="form-check">
+                <%= check_box_tag "block[type_ids][]", type.id, @block.types.include?(type), class: 'form-check-input', id: "block_type_ids_#{type.id}" %>
+                <%= label_tag "block_type_ids_#{type.id}", type.type_name, class: 'form-check-label' %>
+            </div>
         </div>
-      <% end %>
+        <% end %>
     </div>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.submit class: 'btn btn-outline-primary' %>
     <%= link_to 'Back', blocks_path, class: 'btn btn-outline-primary ms-2' %>
-  </div>
+</div>
 <% end %>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-  const typeSelect = document.getElementById("type_select");
-  const blockNumberPrefix = document.getElementById("block_number_prefix");
-  const blockNumberInput = document.getElementById("block_number_input");
-  const suggestionDiv = document.getElementById("block_number_suggestion");
-
-  const typeNumbers = <%= @types.map { |type| [type.id, type.type_number] }.to_h.to_json.html_safe %>;
-
-  function updateBlockNumberPrefix() {
-    const selectedTypeId = typeSelect.value;
-    const typeNumber = typeNumbers[selectedTypeId];
-    blockNumberPrefix.textContent = typeNumber ? `${typeNumber}-` : "";
-  }
-
-  function updateSuggestion() {
-    const input = blockNumberInput.value;
-    let suggestion = '';
-
-    if (input.length > 0) {
-      const firstDigit = input[0];
-      suggestion += getFirstDigitSuggestion(firstDigit);
-    }
-
-    if (input.length > 1) {
-      suggestion += '<br>2nd digit: Subcategory code';
-    }
-
-    if (input.length > 2) {
-      const thirdDigit = input[2];
-      suggestion += '<br>' + getThirdDigitSuggestion(thirdDigit);
-    }
-
-    suggestionDiv.innerHTML = suggestion;
-  }
-
-  function getFirstDigitSuggestion(digit) {
-    const suggestions = {
-      '0': 'Specification',
-      '1': 'Power Unit',
-      '2': 'Transmission mechanism',
-      '3': 'Frame',
-      '4': 'Operation System',
-      '5': 'Electrical Harness',
-      '6': 'Exterior',
-    };
-    return suggestions[digit] || '1st: Use values 0-6';
-  }
-
-  function getThirdDigitSuggestion(digit) {
-    return digit === '0' ? '3rd: Block for standard Type' : '3rd: Derivative block';
-  }
-
-  typeSelect.addEventListener("change", updateBlockNumberPrefix);
-  blockNumberInput.addEventListener('input', updateSuggestion);
-
-  // 初期値の設定
-  updateBlockNumberPrefix();
-
-  // Bootstrap 5 validation
-  const form = document.querySelector('.needs-validation');
-  form.addEventListener('submit', function(event) {
-    if (!form.checkValidity()) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    form.classList.add('was-validated');
-  }, false);
-});
-</script>
+<!-- JavaScript の採番入力処理は不要になるため、削除または無効化 -->

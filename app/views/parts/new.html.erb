@@ -1,39 +1,61 @@
 <h1>New Part</h1>
 
-<%= form_with(model: @part, url: block_parts_path(@block), local: true) do |form| %>
-  <% if @part.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@part.errors.count, "error") %> prohibited this part from being saved:</h2>
-      <ul>
+<%= form_with(model: @part, url: block_parts_path(@block), local: true, html: { multipart: true }) do |form| %>
+<% if @part.errors.any? %>
+<div id="error_explanation" class="alert alert-danger">
+    <h2><%= pluralize(@part.errors.count, "error") %> prohibited this part from being saved:</h2>
+    <ul>
         <% @part.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <li><%= message %></li>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
+    </ul>
+</div>
+<% end %>
 
-  <div class="mb-3">
-    <%= form.label :part_number_suffix, "Part Number (last 3 digits)", class: 'form-label' %>
-    <div class="input-group">
-      <span class="input-group-text"><%= @block.block_number %>-</span>
-      <%= form.text_field :part_number_suffix, class: 'form-control', required: true %>
-      <div class="invalid-feedback">Please provide a part number suffix.</div>
-    </div>
-  </div>
+<!-- 採番は自動生成されるため、Part Numberの入力は不要 -->
+<p class="mb-3">
+    Part Number will be automatically generated based on the Block Number:
+    <strong><%= @block.block_number %></strong>
+</p>
 
-  <div class="form-group">
-    <%= form.label :part_name %>
-    <%= form.text_field :part_name, class: 'form-control' %>
-  </div>
+<div class="form-group mb-3">
+    <%= form.label :part_name, "Part Name", class: 'form-label' %>
+    <%= form.text_field :part_name, class: 'form-control', required: true %>
+</div>
 
-  <div class="form-group">
-    <%= form.label :description %>
+<div class="form-group mb-3">
+    <%= form.label :description, class: 'form-label' %>
     <%= form.text_area :description, class: 'form-control' %>
-  </div>
+</div>
 
-  <div class="actions">
+<div class="form-group mb-3">
+    <%= form.label :material, class: 'form-label' %>
+    <%= form.text_field :material, class: 'form-control', placeholder: "Enter material" %>
+</div>
+
+<div class="form-group mb-3">
+    <%= form.label :nominal_size, class: 'form-label' %>
+    <%= form.text_field :nominal_size, class: 'form-control', placeholder: "Enter nominal size" %>
+</div>
+
+<div class="form-group mb-3">
+    <%= form.label :part_name_eg, "Part Name (English)", class: 'form-label' %>
+    <%= form.text_field :part_name_eg, class: 'form-control', placeholder: "Enter part name in English" %>
+</div>
+
+<div class="form-group mb-3">
+    <%= form.label :quantity, class: 'form-label' %>
+    <%= form.number_field :quantity, class: 'form-control', placeholder: "Enter quantity", min: 0 %>
+</div>
+
+<div class="form-group mb-3">
+    <%= form.label :image, "Upload Image", class: 'form-label' %>
+    <%= form.file_field :image, class: 'form-control' %>
+</div>
+
+<div class="actions mt-3">
     <%= form.submit 'Create Part', class: "btn btn-outline-primary" %>
-  </div>
+</div>
 <% end %>
 
 <%= link_to 'Back to Blocks', blocks_path, class: "btn btn-outline-secondary mt-3" %>

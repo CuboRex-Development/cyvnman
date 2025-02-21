@@ -7,8 +7,7 @@ class PartsController < ApplicationController
     @q.sorts = 'part_number asc' if @q.sorts.empty?
     @parts = @q.result(distinct: true)
     if params[:search].present?
-      @parts = Part.where('part_number LIKE ? OR part_name LIKE ? OR description LIKE ?', 
-                          "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%")
+      @parts = Part.where('part_number LIKE ? OR part_name LIKE ? OR description LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%")
     else
       @parts = Part.all
     end
@@ -26,9 +25,9 @@ class PartsController < ApplicationController
   end
 
   def create
-    # 仮想属性を使って部品番号を自動生成させる
-    @part = Part.new(part_params.except(:part_number_suffix))
-    @part.part_number_suffix = part_params[:part_number_suffix]
+    # 採番用の part_number_suffix は不要となるため、パラメータから除外
+    @part = Part.new(part_params)
+    # 所属ブロックのIDを primary_block_id にセット（モデル側で自動連番を実施）
     @part.primary_block_id = @block.id
 
     if @part.save
@@ -79,6 +78,7 @@ class PartsController < ApplicationController
   end
 
   def part_params
-    params.require(:part).permit(:part_number_suffix, :part_name, :description, :material, :nominal_size, :part_name_eg, :quantity, :image, related_part_ids: [])
+    # 採番用のパラメータ（part_number_suffix）は不要になったため、許可しない
+    params.require(:part).permit(:part_name, :description, :material, :nominal_size, :part_name_eg, :quantity, :image, related_part_ids: [])
   end
 end

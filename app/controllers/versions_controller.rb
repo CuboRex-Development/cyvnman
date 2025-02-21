@@ -20,12 +20,9 @@ class VersionsController < ApplicationController
   end
 
   def create
-    # 仮想属性を使ってversion_numberを自動生成
-    @version = @part.versions.build(version_params.except(:version_number_suffix))
-    @version.version_number_suffix = version_params[:version_number_suffix]
-
+    # version_number_suffix は不要となり、採番はモデル側で自動処理
+    @version = @part.versions.build(version_params)
     if @version.save
-      # 例として、保存後は部品詳細ページへリダイレクト
       respond_success(@version, notice: "Version was successfully created.", redirect_url: @part)
     else
       respond_failure(@version, :new)
@@ -33,11 +30,7 @@ class VersionsController < ApplicationController
   end
 
   def update
-    if version_params[:version_number_suffix].present?
-      @version.version_number_suffix = version_params[:version_number_suffix]
-    end
-
-    if @version.update(version_params.except(:version_number_suffix))
+    if @version.update(version_params)
       respond_success(@version, notice: "Version was successfully updated.")
     else
       respond_failure(@version, :edit)
@@ -72,6 +65,7 @@ class VersionsController < ApplicationController
   end
 
   def version_params
-    params.require(:version).permit(:version_number_suffix, :description, :part_id, :file_path, :scale, :sheet_size, :unit, :drawn_by, :checked_by, :approved_by, :drawn_date, :drawing_image)
+    # version_number_suffix は削除
+    params.require(:version).permit(:description, :part_id, :file_path, :scale, :sheet_size, :unit, :drawn_by, :checked_by, :approved_by, :drawn_date, :drawing_image)
   end
 end

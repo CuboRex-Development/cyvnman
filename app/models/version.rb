@@ -2,10 +2,6 @@ class Version < ApplicationRecord
   belongs_to :part
   has_one_attached :drawing_image
 
-  # 仮想属性：サフィックス
-  attr_accessor :version_number_suffix
-
-  # 作成前にversion_numberを自動生成
   before_validation :generate_version_number, on: :create
 
   def self.ransackable_attributes(auth_object = nil)
@@ -19,9 +15,12 @@ class Version < ApplicationRecord
   private
 
   def generate_version_number
-    # 関連するpartが存在し、version_number_suffixが入力されていれば生成する
-    if version_number_suffix.present? && part.present? && part.part_number.present?
-      self.version_number = "#{part.part_number}-#{version_number_suffix}"
+    if part.present? && part.part_number.present?
+      # 同じ部品内の既存のバージョン番号を取得
+      existing_numbers = part.versions.where("version_number LIKE ?", "#{part.part_number}-%").pluck(:version_number)
+      max_suffix = existing_numbers.map { |num| num.split('-').last.to_i }.max || 0
+      new_suffix = (max_suffix + 1).to_s.rjust(3, '0')
+      self.version_number = "#{part.part_number}-#{new_suffix}"
     end
   end
 end

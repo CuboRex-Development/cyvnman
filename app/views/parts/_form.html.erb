@@ -1,56 +1,59 @@
 <%= form_with(model: part, local: true) do |form| %>
-  <% if part.errors.any? %>
-    <div id="error_explanation" class="alert alert-danger">
-      <h2><%= pluralize(part.errors.count, "error") %> prohibited this part from being saved:</h2>
-      <ul>
+<% if part.errors.any? %>
+<div id="error_explanation" class="alert alert-danger">
+    <h2><%= pluralize(part.errors.count, "error") %> prohibited this part from being saved:</h2>
+    <ul>
         <% part.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <li><%= message %></li>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
+    </ul>
+</div>
+<% end %>
 
-  <div class="mb-3">
+<!-- 部品番号は自動生成のため、表示のみ（必要なら read-only フィールドでプレビュー可能） -->
+<% if part.part_number.present? %>
+<div class="mb-3">
     <%= form.label :part_number, class: "form-label" %>
-    <%= form.text_field :part_number, class: "form-control", placeholder: "e.g., 0001-001-001", data: { toggle: "tooltip", placement: "top", title: "Part number in the format type_number-block_number-part_number" } %>
-  </div>
+    <%= form.text_field :part_number, class: "form-control", readonly: true %>
+</div>
+<% end %>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :part_name, class: "form-label" %>
     <%= form.text_field :part_name, class: "form-control", placeholder: "Enter part name" %>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :description, class: "form-label" %>
     <%= form.text_area :description, class: "form-control", placeholder: "Enter part description" %>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :material, class: "form-label" %>
     <%= form.text_field :material, class: "form-control", placeholder: "Enter material" %>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :nominal_size, class: "form-label" %>
     <%= form.text_field :nominal_size, class: "form-control", placeholder: "Enter nominal size" %>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :part_name_eg, class: "form-label" %>
     <%= form.text_field :part_name_eg, class: "form-control", placeholder: "Enter part name (English)" %>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :quantity, class: "form-label" %>
     <%= form.number_field :quantity, class: "form-control", placeholder: "Enter quantity", min: 0 %>
-  </div>
+</div>
 
-  <div class="mb-3">
+<div class="mb-3">
     <%= form.label :image, class: "form-label" %>
     <%= form.file_field :image, class: "form-control" %>
-  </div>
+</div>
 
-  <div class="actions">
+<div class="actions">
     <%= form.submit 'Save Part', class: "btn btn-outline-primary" %>
-  </div>
+</div>
 <% end %>
