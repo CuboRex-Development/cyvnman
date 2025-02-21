@@ -18,19 +18,18 @@ class ModelsController < ApplicationController
 
   def create
     @model = Model.new(model_params)
-
     if @model.save
-      redirect_to @model, notice: "Model was successfully created."
+      respond_success(@model, notice: "Model was successfully created.")
     else
-      render :new, status: :unprocessable_entity
+      respond_failure(@model, :new)
     end
   end
 
   def update
     if @model.update(model_params)
-      redirect_to @model, notice: "Model was successfully updated."
+      respond_success(@model, notice: "Model was successfully updated.")
     else
-      render :edit, status: :unprocessable_entity
+      respond_failure(@model, :edit)
     end
   end
 
@@ -43,18 +42,17 @@ class ModelsController < ApplicationController
     block = Block.find(params[:block_id])
     unless @model.blocks.include?(block)
       @model.blocks << block
-      flash[:notice] = 'Block was successfully added to the model.'
+      respond_success(@model, notice: 'Block was successfully added to the model.')
     else
       flash[:alert] = 'This block is already in the model.'
+      redirect_to @model
     end
-    redirect_to @model
   end
 
   def remove_block
     block = Block.find(params[:block_id])
     @model.blocks.delete(block)
-    flash[:notice] = 'Block was successfully removed from the model.'
-    redirect_to @model
+    respond_success(@model, notice: 'Block was successfully removed from the model.')
   end
 
   private
