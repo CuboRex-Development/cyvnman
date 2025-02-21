@@ -16,12 +16,11 @@ class BlocksController < ApplicationController
   end
 
   def create
-    # 仮想属性として、番号生成用の値をセット
-    @block = Block.new(block_params.except(:block_number_suffix, :type_id))
-    @block.block_number_suffix = block_params[:block_number_suffix]
-    @block.type_id_temp = block_params[:type_id]
-
-    if type = Type.find_by(id: block_params[:type_id])
+    # ブロックの基本情報は block_params から取得し、採番用のタイプIDはフォームから params[:block][:type_id] を利用
+    @block = Block.new(block_params)
+    @block.primary_type_id = params[:block][:type_id]
+    
+    if type = Type.find_by(id: params[:block][:type_id])
       @block.types << type unless @block.types.include?(type)
     end
 
@@ -33,10 +32,10 @@ class BlocksController < ApplicationController
   end
 
   def update
-    @block.assign_attributes(block_params.except(:block_number_suffix, :type_id))
-    @block.block_number_suffix = block_params[:block_number_suffix]
-    @block.type_id_temp = block_params[:type_id]  # 更新時もセット
-    if type = Type.find_by(id: block_params[:type_id])
+    @block.assign_attributes(block_params)
+    @block.primary_type_id = params[:block][:type_id]
+    
+    if type = Type.find_by(id: params[:block][:type_id])
       @block.types << type unless @block.types.include?(type)
     end
   
@@ -80,6 +79,7 @@ class BlocksController < ApplicationController
   end
 
   def block_params
-    params.require(:block).permit(:block_number_suffix, :block_name, :description, :type_id, type_ids: [])
+    # type_id はフォームから渡されますが、DBには存在しないため、許可せずに仮想属性で処理する
+    params.require(:block).permit(:block_name, :description, type_ids: [])
   end
 end

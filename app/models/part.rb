@@ -1,4 +1,6 @@
 class Part < ApplicationRecord
+  attr_accessor :primary_block_id
+  
   has_and_belongs_to_many :blocks
   has_many :versions
 
@@ -12,10 +14,6 @@ class Part < ApplicationRecord
 
   validates :part_number, :part_name, presence: true
 
-  # 仮想属性：所属ブロック（primary_block_id）とサフィックス
-  attr_accessor :part_number_suffix, :primary_block_id
-
-  # 作成前にpart_numberを自動生成
   before_validation :generate_part_number, on: :create
 
   def self.ransackable_attributes(auth_object = nil)
@@ -33,11 +31,15 @@ class Part < ApplicationRecord
   private
 
   def generate_part_number
-    # primary_block_id と part_number_suffix が指定されていれば生成する
-    if part_number_suffix.present? && primary_block_id.present?
-      block = Block.find_by(id: primary_block_id)
+    # primary_block_id を利用して、所属ブロックを特定
+    if self.primary_block_id.present?
+      block = Block.find_by(id: self.primary_block_id)
       if block && block.block_number.present?
-        self.part_number = "#{block.block_number}-#{part_number_suffix}"
+        # 既存の Part の中で、このブロック番号で始まるものを取得
+        existing_numbers = Part.where("part_number LIKE ?", "#{block.block_number}-%").pluck(:part_number)
+        max_suffix = existing_numbers.map { |num| num.split('-').last.to_i }.max || 0
+        new_suffix = (max_suffix + 1).to_s.rjust(3, '0')
+        self.part_number = "#{block.block_number}-#{new_suffix}"
       end
     end
   end
