@@ -14,26 +14,51 @@
             </div>
         </div>
 
-        <!-- Related Parts -->
+        <!-- Related Parts (Table Format with Image Column) -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h2 class="h5 mb-0">Related Parts</h2>
                 <%= link_to 'New Part', new_block_part_path(@block), class: "btn btn-sm btn-outline-primary" %>
             </div>
             <div class="card-body p-0">
-                <ul class="list-group list-group-flush">
-                    <% @block.parts.each do |part| %>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <%= link_to part.part_name, part, class: "text-decoration-none" %>
-                            <small class="text-muted d-block">Part Number: <%= part.part_number %></small>
-                        </div>
-                        <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' } %>
-                    </li>
-                    <% end %>
-                </ul>
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Part Name</th>
+                            <th>Image</th>
+                            <th>Part Number</th>
+                            <th>Material</th>
+                            <th>Nominal Size</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @block.parts.each do |part| %>
+                        <tr>
+                            <td><%= link_to part.part_name, part, class: "text-decoration-none" %></td>
+                            <td>
+                                <% if part.image.attached? %>
+                                <%= image_tag part.image.variant(resize_to_limit: [50, 50]), class: "img-thumbnail" %>
+                                <% else %>
+                                <span class="text-muted">No Image</span>
+                                <% end %>
+                            </td>
+                            <td><%= part.part_number %></td>
+                            <td><%= part.material %></td>
+                            <td><%= part.nominal_size %></td>
+                            <td><%= part.quantity %></td>
+                            <td>
+                                <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+                            </td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
             </div>
         </div>
+
+
 
         <!-- Add Existing Part -->
         <div class="card border-0 shadow mb-4">
