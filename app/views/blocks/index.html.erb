@@ -1,33 +1,33 @@
 <h1>Blocks</h1>
 
 <div class="mb-3">
-  <%= search_form_for @q, url: blocks_path, method: :get, local: true do |form| %>
+    <%= search_form_for @q, url: blocks_path, method: :get, local: true do |form| %>
     <div class="input-group">
-      <%= form.text_field :block_name_or_block_number_cont, class: "form-control", placeholder: "Search Blocks" %>
-      <div class="input-group-append">
-        <%= form.submit "Search", class: "btn btn-outline-primary" %>
-      </div>
+        <%= form.text_field :block_name_or_block_number_cont, class: "form-control", placeholder: "Search Blocks" %>
+        <div class="input-group-append">
+            <%= form.submit "Search", class: "btn btn-outline-primary" %>
+        </div>
     </div>
-  <% end %>
+    <% end %>
 </div>
 
 <table class="table shadow table-hover table-responsive">
-  <thead class="table-light">
-    <tr>
-      <th>Block Number</th>
-      <th>Block Name</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @blocks.each do |block| %>
-      <tr data-href="<%= block_path(block) %>" class="clickable-row">
-        <td><%= block.block_number %></td>
-        <td><%= block.block_name %></td>
-        <td><%= block.description %></td>
-      </tr>
-    <% end %>
-  </tbody>
+    <thead class="table-light">
+        <tr>
+            <th>Block Number</th>
+            <th>Block Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @blocks.each do |block| %>
+        <tr data-href="<%= block_path(block) %>" class="clickable-row">
+            <td><%= block.block_number %></td>
+            <td><%= block.block_name %></td>
+            <td><%= block.description %></td>
+        </tr>
+        <% end %>
+    </tbody>
 </table>
 
 <%= link_to 'New Block', new_block_path, class: "btn btn-outline-primary" %>

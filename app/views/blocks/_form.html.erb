@@ -16,17 +16,6 @@
     <div class="invalid-feedback">Please select a primary type.</div>
 </div>
 
-<!-- Block Number is auto-generated; remove manual input -->
-<!--<div class="mb-3">
-    <%= form.label :block_number, "Block Number", class: 'form-label' %>
-    <div class="input-group">
-      <span class="input-group-text" id="block_number_prefix"></span>
-      <%= form.text_field :block_number_suffix, class: 'form-control', required: true, aria: { describedby: 'block_number_prefix' }, id: 'block_number_input' %>
-      <div class="invalid-feedback">Please provide a block number suffix.</div>
-    </div>
-    <div id="block_number_suggestion" class="form-text mt-1"></div>
-  </div>-->
-
 <div class="mb-3">
     <%= form.label :block_name, class: 'form-label' %>
     <%= form.text_field :block_name, class: 'form-control', required: true %>
@@ -57,5 +46,3 @@
     <%= link_to 'Back', blocks_path, class: 'btn btn-outline-primary ms-2' %>
 </div>
 <% end %>
-
-<!-- JavaScript の採番入力処理は不要になるため、削除または無効化 -->
