@@ -14,11 +14,12 @@
             </div>
         </div>
 
-        <!-- Related Parts (Table Format with Image Column) -->
+        <!-- Related Parts (Table Format with Image Column)  -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h2 class="h5 mb-0">Related Parts</h2>
-                <%= link_to 'New Part', new_block_part_path(@block), class: "btn btn-sm btn-outline-primary" %>
+                <!-- 「New Part」リンクをモーダル起動ボタンに変更 -->
+                <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newPartModal">New Part</a>
             </div>
             <div class="card-body p-0">
                 <table class="table table-hover mb-0">
@@ -57,6 +58,74 @@
                 </table>
             </div>
         </div>
+
+        <!-- モーダルウィンドウ：New Part 登録フォーム -->
+        <div class="modal fade" id="newPartModal" tabindex="-1" aria-labelledby="newPartModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- モーダル内に New Part フォームを配置 -->
+                    <%= form_with(model: @part, url: block_parts_path(@block), local: true, html: { multipart: true }) do |form| %>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newPartModalLabel">New Part</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <% if @part.errors.any? %>
+                        <div id="error_explanation" class="alert alert-danger">
+                            <h2><%= pluralize(@part.errors.count, "error") %> prohibited this part from being saved:</h2>
+                            <ul>
+                                <% @part.errors.full_messages.each do |message| %>
+                                <li><%= message %></li>
+                                <% end %>
+                            </ul>
+                        </div>
+                        <% end %>
+
+                        <!-- 採番は自動生成されるので、Part Number の入力欄は不要 -->
+                        <p class="mb-3">
+                            Part Number will be automatically generated based on the Block Number:
+                            <strong><%= @block.block_number %></strong>
+                        </p>
+
+                        <div class="mb-3">
+                            <%= form.label :part_name, "Part Name", class: 'form-label' %>
+                            <%= form.text_field :part_name, class: 'form-control', required: true %>
+                        </div>
+
+                        <div class="mb-3">
+                            <%= form.label :description, class: 'form-label' %>
+                            <%= form.text_area :description, class: 'form-control' %>
+                        </div>
+
+                        <div class="mb-3">
+                            <%= form.label :material, class: 'form-label' %>
+                            <%= form.text_field :material, class: 'form-control', placeholder: "Enter material" %>
+                        </div>
+
+                        <div class="mb-3">
+                            <%= form.label :nominal_size, class: 'form-label' %>
+                            <%= form.text_field :nominal_size, class: 'form-control', placeholder: "Enter nominal size" %>
+                        </div>
+
+                        <div class="mb-3">
+                            <%= form.label :quantity, class: 'form-label' %>
+                            <%= form.number_field :quantity, class: 'form-control', placeholder: "Enter quantity", min: 0 %>
+                        </div>
+
+                        <div class="mb-3">
+                            <%= form.label :image, "Upload Image", class: 'form-label' %>
+                            <%= form.file_field :image, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <%= form.submit 'Create Part', class: 'btn btn-outline-primary' %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+
 
 
 

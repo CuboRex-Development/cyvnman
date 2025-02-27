@@ -340,6 +340,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   jquery-rails
+  mini_magick
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.4)
   ransack

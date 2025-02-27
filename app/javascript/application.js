@@ -1,6 +1,9 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import jquery from "jquery"
+import * as bootstrap from "bootstrap"
+window.bootstrap = bootstrap
+console.log("Bootstrap module:", bootstrap)
 
 window.jQuery = jquery;
 window.$ = jquery;
@@ -46,7 +49,7 @@ function initCustomSelect(inputId, listId, selectedIdInputId, addBtnId) {
 
     const options = Array.from(list.querySelectorAll('li'));
 
-    input.addEventListener('input', function() {
+    input.addEventListener('input', function () {
         const filter = input.value.toLowerCase();
         options.forEach(option => {
             const text = option.textContent.toLowerCase();
@@ -54,7 +57,7 @@ function initCustomSelect(inputId, listId, selectedIdInputId, addBtnId) {
         });
     });
 
-    list.addEventListener('click', function(e) {
+    list.addEventListener('click', function (e) {
         if (e.target.tagName === 'LI') {
             options.forEach(opt => opt.classList.remove('active'));
             e.target.classList.add('active');
@@ -64,11 +67,11 @@ function initCustomSelect(inputId, listId, selectedIdInputId, addBtnId) {
         }
     });
 
-    input.addEventListener('focus', function() {
+    input.addEventListener('focus', function () {
         list.style.display = 'block';
     });
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (!input.contains(e.target) && !list.contains(e.target)) {
             list.style.display = 'none';
         }
@@ -82,7 +85,7 @@ function initBlockSearch() {
     const compareButton = document.getElementById('compare-button');
 
     if (blockSearch && blockList) {
-        blockSearch.addEventListener('input', function() {
+        blockSearch.addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
             const blocks = blockList.querySelectorAll('label');
             blocks.forEach(block => {
@@ -91,7 +94,7 @@ function initBlockSearch() {
             });
         });
 
-        blockList.addEventListener('change', function() {
+        blockList.addEventListener('change', function () {
             const checkedBoxes = blockList.querySelectorAll('input[type="checkbox"]:checked');
             if (selectedCount) selectedCount.textContent = checkedBoxes.length;
             if (compareButton) compareButton.disabled = checkedBoxes.length < 2;
