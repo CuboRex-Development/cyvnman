@@ -14,6 +14,11 @@ class BlocksController < ApplicationController
 
   def edit
   end
+  
+  def show
+    @block = Block.find(params[:id])
+    @part = Part.new
+  end
 
   def create
     # ブロックの基本情報は block_params から取得し、採番用のタイプIDはフォームから params[:block][:type_id] を利用
@@ -79,7 +84,7 @@ class BlocksController < ApplicationController
   end
 
   def block_params
-    # type_id はフォームから渡されますが、DBには存在しないため、許可せずに仮想属性で処理する
+    # type_id はフォームから渡されるがDBには存在しないため、許可せずに仮想属性で処理する
     params.require(:block).permit(:block_name, :description, type_ids: [])
   end
 end
