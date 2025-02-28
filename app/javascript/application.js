@@ -8,6 +8,15 @@ console.log("Bootstrap module:", bootstrap);
 window.jQuery = jquery;
 window.$ = jquery;
 
+document.addEventListener('turbo:load', function () {
+    initClickableRows();
+    initBlockTypeSelect();
+    initCustomSelect('custom-select-input', 'custom-select-list', 'selected-part-id', 'add-part-btn');
+    initCustomSelect('custom-select-input', 'custom-select-list', 'selected-block-id', 'add-block-btn');
+    initBlockSearch();
+    initPartSelectionPagination();
+});
+
 // 初期化関数群
 function initClickableRows() {
     const clickableRows = document.querySelectorAll('.clickable-row');
@@ -114,12 +123,109 @@ function initPartSelection() {
     }
 }
 
-// turbo:load イベントで全初期化関数を呼び出す
 document.addEventListener('turbo:load', function () {
-    initClickableRows();
-    initBlockTypeSelect();
-    initCustomSelect('custom-select-input', 'custom-select-list', 'selected-part-id', 'add-part-btn');
-    initCustomSelect('custom-select-input', 'custom-select-list', 'selected-block-id', 'add-block-btn');
-    initBlockSearch();
-    initPartSelection();
+    const searchInput = document.getElementById('existing-part-search');
+    const partsTable = document.getElementById('existing-parts-table');
+    if (searchInput && partsTable) {
+        searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = partsTable.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowText = row.textContent.toLowerCase();
+                row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    }
 });
+
+function initPartSelectionPagination() {
+    const searchInput = document.getElementById('existing-part-search');
+    const table = document.getElementById('existing-parts-table');
+    if (!table) return;
+
+    const tbody = table.querySelector('tbody');
+    const allRows = Array.from(tbody.querySelectorAll('tr'));
+    let filteredRows = allRows.slice(); // 初期状態は全件
+    const rowsPerPage = 10; // 1ページあたりの行数
+    let currentPage = 1;
+
+    function renderTable() {
+        // 全行を一旦非表示
+        allRows.forEach(row => row.style.display = 'none');
+
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        // 現在のページに属する行のみ表示
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        filteredRows.slice(start, end).forEach(row => {
+            row.style.display = '';
+        });
+        renderPaginationControls(totalPages);
+    }
+
+    function renderPaginationControls(totalPages) {
+        let paginationDiv = document.getElementById('table-pagination');
+        if (!paginationDiv) {
+            paginationDiv = document.createElement('div');
+            paginationDiv.id = 'table-pagination';
+            paginationDiv.className = 'mt-3';
+            // ページネーションをテーブルの下に挿入
+            table.parentNode.insertBefore(paginationDiv, table.nextSibling);
+        }
+        paginationDiv.innerHTML = '';
+
+        // 前へボタン
+        const prevButton = document.createElement('button');
+        prevButton.className = 'btn btn-sm btn-outline-secondary me-1';
+        prevButton.textContent = 'Previous';
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+        paginationDiv.appendChild(prevButton);
+
+        // ページ番号ボタン
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.className = 'btn btn-sm btn-outline-secondary me-1';
+            pageButton.textContent = i;
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+            }
+            pageButton.addEventListener('click', () => {
+                currentPage = i;
+                renderTable();
+            });
+            paginationDiv.appendChild(pageButton);
+        }
+
+        // 次へボタン
+        const nextButton = document.createElement('button');
+        nextButton.className = 'btn btn-sm btn-outline-secondary';
+        nextButton.textContent = 'Next';
+        nextButton.disabled = currentPage === totalPages || totalPages === 0;
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+        paginationDiv.appendChild(nextButton);
+    }
+
+    // 検索機能：入力値に応じてフィルタリングし、ページ番号をリセットして再描画
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            filteredRows = allRows.filter(row => row.textContent.toLowerCase().includes(searchTerm));
+            currentPage = 1; // 検索開始時は先頭ページにリセット
+            renderTable();
+        });
+    }
+
+    // 初期表示
+    renderTable();
+}
