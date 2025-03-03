@@ -1,15 +1,13 @@
 <h1>Parts</h1>
 
-<div class="mb-3">
-    <%= form_with(url: parts_path, method: :get, local: true) do |form| %>
-    <div class="input-group">
-        <%= form.text_field :search, value: params[:search], class: "form-control", placeholder: "Search Parts" %>
-        <div class="input-group-append">
-            <%= form.submit "Search", class: "btn btn-outline-primary" %>
-        </div>
+<%= search_form_for @q, url: parts_path, method: :get, html: { class: 'mb-3' } do |f| %>
+<div class="input-group">
+    <%= f.search_field :part_number_or_part_name_or_description_or_material_or_nominal_size_or_part_name_eg_cont, class: "form-control", placeholder: "Search Parts" %>
+    <div class="input-group-append">
+        <%= f.submit "Search", class: "btn btn-outline-primary" %>
     </div>
-    <% end %>
 </div>
+<% end %>
 
 <table class="table shadow table-hover table-responsive">
     <thead class="table-light">
@@ -47,5 +45,5 @@
 </table>
 
 <div class="d-flex justify-content-center mt-3">
-    <%= paginate @parts, theme: 'bootstrap-5'%>
+    <%= paginate @parts, theme: 'bootstrap-5' %>
 </div>
