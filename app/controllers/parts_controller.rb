@@ -11,6 +11,7 @@ class PartsController < ApplicationController
     else
       @parts = Part.all
     end
+    @parts = @q.result(distinct: true).page(params[:page]).per(10)
   end
 
   def show
