@@ -352,6 +352,8 @@ function initRelatedPartPagination() {
     renderTable();
 }
 
+
+
 // 既存の turbo:load イベントの中で呼び出す例
 document.addEventListener('turbo:load', function () {
     initClickableRows();
