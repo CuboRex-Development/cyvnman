@@ -62,25 +62,49 @@
             </div>
         </div>
 
-        <!-- Current Related Parts -->
+        <!-- Current Related Parts (Table Format) -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light">
                 <h2 class="h5 mb-0">Current Related Parts</h2>
             </div>
             <div class="card-body p-0">
-                <ul class="list-group list-group-flush">
-                    <% @related_parts.each do |related_part| %>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <%= link_to related_part.part_name, related_part, class: "text-decoration-none" %>
-                            <small class="text-muted d-block">Part Number: <%= related_part.part_number %></small>
-                        </div>
-                        <%= button_to 'Remove', remove_related_part_part_path(@part, related_part_id: related_part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' } %>
-                    </li>
-                    <% end %>
-                </ul>
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Part Name</th>
+                            <th>Image</th>
+                            <th>Part Number</th>
+                            <th>Material</th>
+                            <th>Nominal Size</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @related_parts.each do |related_part| %>
+                        <tr>
+                            <td><%= link_to related_part.part_name, related_part, class: "text-decoration-none" %></td>
+                            <td>
+                                <% if related_part.image.attached? %>
+                                <%= image_tag related_part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
+                                <% else %>
+                                <span class="text-muted">No Image</span>
+                                <% end %>
+                            </td>
+                            <td><%= related_part.part_number %></td>
+                            <td><%= related_part.material %></td>
+                            <td><%= related_part.nominal_size %></td>
+                            <td><%= related_part.quantity %></td>
+                            <td>
+                                <%= button_to 'Remove', remove_related_part_part_path(@part, related_part_id: related_part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+                            </td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
             </div>
         </div>
+
 
         <!-- Add Related Part (Table Format with Action Column) -->
         <div class="card border-0 shadow mb-4">
