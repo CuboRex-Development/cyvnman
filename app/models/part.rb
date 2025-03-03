@@ -13,6 +13,8 @@ class Part < ApplicationRecord
   has_one_attached :image
 
   validates :part_number, :part_name, presence: true
+  validates :standard_price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+
 
   before_validation :generate_part_number, on: :create
 

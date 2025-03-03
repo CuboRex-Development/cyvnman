@@ -14,6 +14,7 @@
                 <p class="mb-1"><strong>Nominal Size:</strong> <%= @part.nominal_size %></p>
                 <p class="mb-1"><strong>Part Name (English):</strong> <%= @part.part_name_eg %></p>
                 <p class="mb-1"><strong>Quantity:</strong> <%= @part.quantity %></p>
+                <p class="mb-1"><strong>Price:</strong> <%= number_to_currency(@part.standard_price) %></p>
                 <p class="mb-3"><strong>Description:</strong> <%= @part.description %></p>
                 <% if @part.image.attached? %>
                 <div class="mb-3">
@@ -159,6 +160,7 @@
                             <th>Material</th>
                             <th>Nominal Size</th>
                             <th>Quantity</th>
+                            <th>Price</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -177,6 +179,7 @@
                             <td><%= related_part.material %></td>
                             <td><%= related_part.nominal_size %></td>
                             <td><%= related_part.quantity %></td>
+                            <td><%= related_part.standard_price %></td>
                             <td>
                                 <%= button_to 'Remove', remove_related_part_part_path(@part, related_part_id: related_part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                             </td>
@@ -209,6 +212,7 @@
                                 <th>Material</th>
                                 <th>Nominal Size</th>
                                 <th>Quantity</th>
+                                <th>Price</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -227,6 +231,7 @@
                                 <td><%= p.material %></td>
                                 <td><%= p.nominal_size %></td>
                                 <td><%= p.quantity %></td>
+                                <td><%= p.standard_price %></td>
                                 <td>
                                     <%= button_to "Add", add_related_part_part_path(@part, related_part_id: p.id), method: :post, class: "btn btn-sm btn-outline-primary", data: { confirm: "Add this related part?" }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                                 </td>
