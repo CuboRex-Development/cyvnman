@@ -352,6 +352,114 @@ function initRelatedPartPagination() {
     renderTable();
 }
 
+document.addEventListener('turbo:load', function () {
+    // 既存の初期化処理
+    initClickableRows();
+    initBlockTypeSelect();
+    initCustomSelect('custom-select-input', 'custom-select-list', 'selected-part-id', 'add-part-btn');
+    initCustomSelect('custom-select-input', 'custom-select-list', 'selected-block-id', 'add-block-btn');
+    initBlockSearch();
+
+    // Add Related Part テーブルの検索機能
+    const relatedSearch = document.getElementById('related-part-search');
+    const relatedTable = document.getElementById('related-parts-table');
+    if (relatedSearch && relatedTable) {
+        relatedSearch.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = relatedTable.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
+            });
+        });
+    }
+
+    // クライアントサイドのページネーション (Add Related Part)
+    function initRelatedPartPagination() {
+        const searchInput = document.getElementById('related-part-search');
+        const table = document.getElementById('related-parts-table');
+        if (!table) return;
+
+        const tbody = table.querySelector('tbody');
+        const allRows = Array.from(tbody.querySelectorAll('tr'));
+        let filteredRows = allRows.slice();
+        const rowsPerPage = 10; // 表示件数
+        let currentPage = 1;
+
+        function renderTable() {
+            allRows.forEach(row => row.style.display = 'none');
+            const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            filteredRows.slice(start, end).forEach(row => row.style.display = '');
+            renderPaginationControls(totalPages);
+        }
+
+        function renderPaginationControls(totalPages) {
+            let paginationDiv = document.getElementById('related-pagination');
+            if (!paginationDiv) {
+                paginationDiv = document.createElement('div');
+                paginationDiv.id = 'related-pagination';
+                paginationDiv.className = 'mt-3 d-flex justify-content-center';
+                table.parentNode.insertBefore(paginationDiv, table.nextSibling);
+            }
+            paginationDiv.innerHTML = '';
+
+            // 前へボタン
+            const prevButton = document.createElement('button');
+            prevButton.className = 'btn btn-sm btn-outline-secondary me-1';
+            prevButton.textContent = 'Previous';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                }
+            });
+            paginationDiv.appendChild(prevButton);
+
+            // ページ番号ボタン
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = 'btn btn-sm btn-outline-secondary me-1';
+                pageButton.textContent = i;
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    renderTable();
+                });
+                paginationDiv.appendChild(pageButton);
+            }
+
+            // 次へボタン
+            const nextButton = document.createElement('button');
+            nextButton.className = 'btn btn-sm btn-outline-secondary';
+            nextButton.textContent = 'Next';
+            nextButton.disabled = currentPage === totalPages || totalPages === 0;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                }
+            });
+            paginationDiv.appendChild(nextButton);
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase();
+                filteredRows = allRows.filter(row => row.textContent.toLowerCase().includes(searchTerm));
+                currentPage = 1;
+                renderTable();
+            });
+        }
+
+        renderTable();
+    }
+
+    initRelatedPartPagination();
+});
 
 
 // 既存の turbo:load イベントの中で呼び出す例
