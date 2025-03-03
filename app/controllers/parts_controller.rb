@@ -76,6 +76,6 @@ class PartsController < ApplicationController
 
   def part_params
     # 採番用のパラメータ（part_number_suffix）は不要になったため、許可しない
-    params.require(:part).permit(:part_name, :description, :material, :nominal_size, :part_name_eg, :quantity, :image, related_part_ids: [])
+    params.require(:part).permit(:part_name, :description, :material, :nominal_size, :part_name_eg, :quantity,:standard_price, :image, related_part_ids: [])
   end
 end

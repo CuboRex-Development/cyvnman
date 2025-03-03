@@ -49,6 +49,11 @@
 </div>
 
 <div class="mb-3">
+    <%= form.label :standard_price, class: "form-label" %>
+    <%= form.number_field :standard_price, class: "form-control", step: "0.01", placeholder: "Enter standard price" %>
+</div>
+
+<div class="mb-3">
     <%= form.label :image, class: "form-label" %>
     <%= form.file_field :image, class: "form-control" %>
 </div>
