@@ -15,6 +15,8 @@ class PartsController < ApplicationController
   end
 
   def show
+    @part = Part.find(params[:id])
+    @version = Version.new
     @related_parts = @part.related_parts
   end
 

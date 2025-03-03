@@ -26,22 +26,103 @@
             </div>
         </div>
 
-
-        <!-- Related Versions -->
+        <!-- Related Versions (Table Format with Modal Trigger) -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h2 class="h5 mb-0">Related Versions</h2>
-                <%= link_to 'New Version', new_part_version_path(@part), class: "btn btn-sm btn-outline-primary" %>
+                <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newVersionModal" data-turbo="false">New Version</a>
             </div>
             <div class="card-body p-0">
-                <ul class="list-group list-group-flush">
-                    <% @part.versions.each do |version| %>
-                    <li class="list-group-item">
-                        <%= link_to version.version_number, version, class: "text-decoration-none" %>
-                        <small class="text-muted d-block">Description: <%= truncate(version.description, length: 100) %></small>
-                    </li>
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Version Number</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @part.versions.each do |version| %>
+                        <tr>
+                            <td><%= link_to version.version_number, version, class: "text-decoration-none" %></td>
+                            <td><%= truncate(version.description, length: 100) %></td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- New Version Modal -->
+        <div class="modal fade" id="newVersionModal" tabindex="-1" aria-labelledby="newVersionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <%= form_with(model: @version, url: part_versions_path(@part), local: true, html: { multipart: true }) do |form| %>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newVersionModalLabel">New Version</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <% if @version.errors.any? %>
+                        <div id="error_explanation" class="alert alert-danger">
+                            <h2><%= pluralize(@version.errors.count, "error") %> prohibited this version from being saved:</h2>
+                            <ul>
+                                <% @version.errors.full_messages.each do |message| %>
+                                <li><%= message %></li>
+                                <% end %>
+                            </ul>
+                        </div>
+                        <% end %>
+                        <p class="mb-3">
+                            Version Number will be automatically generated based on the Part Number:
+                            <strong><%= @part.part_number %></strong>
+                        </p>
+                        <div class="mb-3">
+                            <%= form.label :description, class: 'form-label' %>
+                            <%= form.text_area :description, class: 'form-control', rows: 3 %>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <%= form.label :scale, class: 'form-label' %>
+                                <%= form.text_field :scale, class: 'form-control' %>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <%= form.label :sheet_size, class: 'form-label' %>
+                                <%= form.text_field :sheet_size, class: 'form-control' %>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <%= form.label :unit, class: 'form-label' %>
+                                <%= form.text_field :unit, class: 'form-control' %>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <%= form.label :drawn_by, class: 'form-label' %>
+                                <%= form.text_field :drawn_by, class: 'form-control' %>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <%= form.label :checked_by, class: 'form-label' %>
+                                <%= form.text_field :checked_by, class: 'form-control' %>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <%= form.label :approved_by, class: 'form-label' %>
+                                <%= form.text_field :approved_by, class: 'form-control' %>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <%= form.label :drawn_date, class: 'form-label' %>
+                            <%= form.date_field :drawn_date, class: 'form-control' %>
+                        </div>
+                        <div class="mb-3">
+                            <%= form.label :drawing_image, "Upload Drawing Image", class: 'form-label' %>
+                            <%= form.file_field :drawing_image, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <%= form.submit 'Create Version', class: 'btn btn-outline-primary' %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                     <% end %>
-                </ul>
+                </div>
             </div>
         </div>
 
@@ -105,8 +186,7 @@
             </div>
         </div>
 
-
-        <!-- Add Related Part (Table Format with Action Column) -->
+        <!-- Add Related Part (Table Format with Action Column and Pagination) -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light">
                 <h2 class="h5 mb-0">Add Related Part</h2>
@@ -132,7 +212,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <%# 自分自身および既に関連している部品は除外 %>
                             <% Part.where.not(id: @part.id).where.not(id: @related_parts.pluck(:id)).each do |p| %>
                             <tr>
                                 <td><%= p.part_name %></td>
@@ -155,9 +234,10 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- ページネーションコントロール (クライアントサイド実装例; 必要に応じて) -->
+                <div id="related-pagination" class="mt-3 d-flex justify-content-center"></div>
             </div>
         </div>
-
 
         <!-- Action Buttons -->
         <div class="d-flex justify-content-between mt-4">
