@@ -144,7 +144,8 @@
         </div>
 
         <!-- Current Related Parts (Table Format) -->
-        <div class="card border-0 shadow mb-4">
+        <!-- セクションに id="current-related-parts" を追加 -->
+        <div id="current-related-parts" class="card border-0 shadow mb-4">
             <div class="card-header bg-light">
                 <h2 class="h5 mb-0">Current Related Parts</h2>
             </div>
@@ -152,9 +153,9 @@
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
+                            <th>Part Number</th>
                             <th>Part Name</th>
                             <th>Image</th>
-                            <th>Part Number</th>
                             <th>Material</th>
                             <th>Nominal Size</th>
                             <th>Quantity</th>
@@ -163,8 +164,9 @@
                     </thead>
                     <tbody>
                         <% @related_parts.each do |related_part| %>
-                        <tr>
-                            <td><%= link_to related_part.part_name, related_part, class: "text-decoration-none" %></td>
+                        <tr data-href="<%= part_path(related_part) %>" class="clickable-row">
+                            <td><%= related_part.part_number %></td>
+                            <td><%= related_part.part_name %></td>
                             <td>
                                 <% if related_part.image.attached? %>
                                 <%= image_tag related_part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
@@ -172,12 +174,11 @@
                                 <span class="text-muted">No Image</span>
                                 <% end %>
                             </td>
-                            <td><%= related_part.part_number %></td>
                             <td><%= related_part.material %></td>
                             <td><%= related_part.nominal_size %></td>
                             <td><%= related_part.quantity %></td>
                             <td>
-                                <%= button_to 'Remove', remove_related_part_part_path(@part, related_part_id: related_part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+                                <%= button_to 'Remove', remove_related_part_part_path(@part, related_part_id: related_part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                             </td>
                         </tr>
                         <% end %>
@@ -202,9 +203,9 @@
                     <table class="table table-hover mb-0" id="related-parts-table">
                         <thead class="table-light">
                             <tr>
+                                <th>Part Number</th>
                                 <th>Part Name</th>
                                 <th>Image</th>
-                                <th>Part Number</th>
                                 <th>Material</th>
                                 <th>Nominal Size</th>
                                 <th>Quantity</th>
@@ -213,7 +214,8 @@
                         </thead>
                         <tbody>
                             <% Part.where.not(id: @part.id).where.not(id: @related_parts.pluck(:id)).each do |p| %>
-                            <tr>
+                            <tr data-href="<%= part_path(p) %>" class="clickable-row">
+                                <td><%= p.part_number %></td>
                                 <td><%= p.part_name %></td>
                                 <td>
                                     <% if p.image.attached? %>
@@ -222,19 +224,18 @@
                                     <span class="text-muted">No Image</span>
                                     <% end %>
                                 </td>
-                                <td><%= p.part_number %></td>
                                 <td><%= p.material %></td>
                                 <td><%= p.nominal_size %></td>
                                 <td><%= p.quantity %></td>
                                 <td>
-                                    <%= button_to "Add", add_related_part_part_path(@part, related_part_id: p.id), method: :post, class: "btn btn-sm btn-outline-primary", data: { confirm: "Add this related part?" } %>
+                                    <%= button_to "Add", add_related_part_part_path(@part, related_part_id: p.id), method: :post, class: "btn btn-sm btn-outline-primary", data: { confirm: "Add this related part?" }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                                 </td>
                             </tr>
                             <% end %>
                         </tbody>
                     </table>
                 </div>
-                <!-- ページネーションコントロール (クライアントサイド実装例; 必要に応じて) -->
+                <!-- ページネーションコントロール (必要に応じて) -->
                 <div id="related-pagination" class="mt-3 d-flex justify-content-center"></div>
             </div>
         </div>
@@ -247,3 +248,39 @@
         </div>
     </div>
 </div>
+
+<!-- クリックで行からリンクへ遷移するスクリプト -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".clickable-row").forEach(function(row) {
+            row.addEventListener("click", function(e) {
+                // ボタン、リンク、input などの子要素がクリックされた場合は何もしない
+                if (e.target.closest("a, button, input")) return;
+                window.location = this.dataset.href;
+            });
+        });
+
+        // Add Related Part テーブル内の検索フィルタ
+        const partSearch = document.getElementById('related-part-search');
+        const partTable = document.getElementById('related-parts-table');
+        if (partSearch && partTable) {
+            partSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = partTable.querySelectorAll('tbody tr');
+                rows.forEach(function(row) {
+                    row.style.display = row.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+    });
+
+    // Current Related Parts セクションへスクロールする関数
+    function focusCurrentRelatedParts() {
+        var section = document.getElementById('current-related-parts');
+        if (section) {
+            section.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    }
+</script>
