@@ -55,6 +55,7 @@ gem 'bootstrap5-kaminari-views'
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri]
+  gem 'byebug'
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 5.0'
 end

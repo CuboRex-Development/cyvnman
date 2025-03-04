@@ -10,13 +10,16 @@
             <div class="card-body">
                 <p class="mb-1"><strong>Block Number:</strong> <%= @block.block_number %></p>
                 <p class="mb-1"><strong>Block Name:</strong> <%= @block.block_name %></p>
-                <p class="mb-1"><strong>Total Price:</strong> <%= number_to_currency(@block.total_standard_price) %></p>
+                <p class="mb-1">
+                    <strong>Block Price:</strong>
+                    <%= number_to_currency(@block.total_related_price) %>
+                </p>
                 <p class="mb-0"><strong>Description:</strong> <%= @block.description %></p>
             </div>
         </div>
 
+
         <!-- Related Parts (Table Format with Image Column) -->
-        <!-- Related Parts セクションに id を付与 -->
         <div id="current-related-parts" class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h2 class="h5 mb-0">Related Parts</h2>
@@ -29,33 +32,41 @@
                             <th>Part Number</th>
                             <th>Part Name</th>
                             <th>Image</th>
-                            <th>Material</th>
-                            <th>Nominal Size</th>
                             <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total Price</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% @block.parts.each do |part| %>
+                        <% @block.block_parts.each do |bp| %>
+                        <% part = bp.part %>
                         <tr data-href="<%= part_path(part) %>" class="clickable-row">
                             <td><%= part.part_number %></td>
                             <td><%= link_to part.part_name, part, class: "text-decoration-none" %></td>
                             <td>
                                 <% if part.image.attached? %>
-                                <%= image_tag part.image.variant(resize_to_limit: [50, 50]), class: "img-thumbnail" %>
+                                <%= image_tag part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
                                 <% else %>
                                 <span class="text-muted">No Image</span>
                                 <% end %>
                             </td>
-                            <td><%= part.material %></td>
-                            <td><%= part.nominal_size %></td>
-                            <td><%= part.quantity %></td>
+                            <td><%= bp.quantity %></td>
+                            <td><%= number_to_currency(part.standard_price || 0) %></td>
                             <td>
-                                <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                                <%= number_to_currency((part.standard_price || 0) * bp.quantity) %>
+                            </td>
+                            <td>
+                                <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id),
+                      method: :delete,
+                      class: "btn btn-sm btn-outline-danger",
+                      data: { confirm: 'Are you sure?' },
+                      onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                             </td>
                         </tr>
                         <% end %>
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -124,7 +135,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Add Existing Part (Table Format with Action Column) -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light">
@@ -145,9 +155,7 @@
                                 <th>Part Number</th>
                                 <th>Part Name</th>
                                 <th>Image</th>
-                                <th>Material</th>
-                                <th>Nominal Size</th>
-                                <th>Quantity</th>
+                                <th>Price</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -158,16 +166,23 @@
                                 <td><%= part.part_name %></td>
                                 <td>
                                     <% if part.image.attached? %>
-                                    <%= image_tag part.image.variant(resize_to_limit: [50, 50]), class: "img-thumbnail" %>
+                                    <%= image_tag part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
                                     <% else %>
                                     <span class="text-muted">No Image</span>
                                     <% end %>
                                 </td>
-                                <td><%= part.material %></td>
-                                <td><%= part.nominal_size %></td>
-                                <td><%= part.quantity %></td>
+                                <td><%= part.standard_price %></td>
                                 <td>
-                                    <%= button_to "Add", add_part_block_path(@block, part_id: part.id), method: :post, class: "btn btn-sm btn-outline-primary", data: { confirm: "Add this part to the block?" }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                                    <%= form_with url: add_part_block_path(@block, part_id: part.id),
+                              method: :post,
+                              scope: nil,
+                              local: true,
+                              data: { turbo: false } do |f| %>
+                                    <div class="input-group">
+                                        <%= f.number_field :quantity, value: 1, min: 1, class: "form-control", style: "width: 80px;" %>
+                                        <%= f.submit "Add", class: "btn btn-sm btn-outline-primary" %>
+                                    </div>
+                                    <% end %>
                                 </td>
                             </tr>
                             <% end %>
@@ -176,6 +191,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Related Models -->
         <div class="card border-0 shadow mb-4">
