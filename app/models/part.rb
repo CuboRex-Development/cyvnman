@@ -18,6 +18,10 @@ class Part < ApplicationRecord
 
   before_validation :generate_part_number, on: :create
 
+  def total_used_quantity
+    BlockPart.where(part_id: id).sum(:quantity)
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "part_name", "part_number", "updated_at", "material", "nominal_size", "part_name_eg", "quantity", "image"]
   end
