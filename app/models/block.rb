@@ -23,8 +23,8 @@ class Block < ApplicationRecord
 
   # 各 BlockPart の quantity と、関連 Part の standard_price の積の合計を算出
   def total_related_price
-    parts.sum { |part| (part.standard_price || 0) * (part.quantity || 0) }
-  end  
+    block_parts.sum { |bp| (bp.part.standard_price || 0) * bp.quantity }
+  end
 
   def generate_block_number
     if primary_type_id.present?

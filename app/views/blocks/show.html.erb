@@ -39,32 +39,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% @block.parts.each do |part| %>
+                        <% @block.block_parts.each do |bp| %>
+                        <% part = bp.part %>
                         <tr data-href="<%= part_path(part) %>" class="clickable-row">
                             <td><%= part.part_number %></td>
                             <td><%= link_to part.part_name, part, class: "text-decoration-none" %></td>
                             <td>
                                 <% if part.image.attached? %>
-                                <%= image_tag part.image.variant(resize_to_limit: [50, 50]), class: "img-thumbnail" %>
+                                <%= image_tag part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
                                 <% else %>
                                 <span class="text-muted">No Image</span>
                                 <% end %>
                             </td>
-                            <td><%= part.quantity %></td>
+                            <td><%= bp.quantity %></td>
                             <td><%= number_to_currency(part.standard_price || 0) %></td>
                             <td>
-                                <%= number_to_currency((part.standard_price || 0) * (part.quantity || 0)) %>
+                                <%= number_to_currency((part.standard_price || 0) * bp.quantity) %>
                             </td>
                             <td>
                                 <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id),
-                              method: :delete,
-                              class: "btn btn-sm btn-outline-danger",
-                              data: { confirm: 'Are you sure?' },
-                              onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                      method: :delete,
+                      class: "btn btn-sm btn-outline-danger",
+                      data: { confirm: 'Are you sure?' },
+                      onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                             </td>
                         </tr>
                         <% end %>
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -173,6 +175,7 @@
                                 <td>
                                     <%= form_with url: add_part_block_path(@block, part_id: part.id),
                               method: :post,
+                              scope: nil,
                               local: true,
                               data: { turbo: false } do |f| %>
                                     <div class="input-group">

@@ -58,7 +58,8 @@ class BlocksController < ApplicationController
 
   def add_part
     part = Part.find(params[:part_id])
-    if @block.add_part!(part)
+    quantity = params[:quantity].to_i.presence || 1
+    if @block.add_part!(part, quantity)
       flash[:notice] = 'Part was successfully added to the block.'
     else
       flash[:alert] = @block.errors.full_messages.join(", ")
