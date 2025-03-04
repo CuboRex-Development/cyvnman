@@ -1,29 +1,31 @@
 class Block < ApplicationRecord
-  # 既存のアソシエーションなど
+  has_many :block_parts, dependent: :destroy
+  has_many :parts, through: :block_parts
+
   has_and_belongs_to_many :types
   has_and_belongs_to_many :models
-  has_and_belongs_to_many :parts
 
   validates :block_number, :block_name, presence: true
 
-  # 仮想属性として採番用のタイプIDを保持
   attr_accessor :primary_type_id
-
   before_validation :generate_block_number, on: :create
 
- # 指定した Part をブロックに追加する（既に存在していなければ）
-  def add_part!(part)
-    unless parts.exists?(part.id)
-      parts << part
-    end
+  # ブロックにパーツを追加するときは、BlockPart 経由で数量を記録する
+  def add_part!(part, quantity = 1)
+    bp = block_parts.find_or_initialize_by(part: part)
+    bp.quantity = bp.new_record? ? quantity : bp.quantity + quantity
+    bp.save
   end
 
-  # 指定した Part をブロックから削除する
   def remove_part!(part)
-    parts.destroy(part)
+    block_parts.find_by(part: part)&.destroy
   end
 
-  # 自動連番採番ロジック
+  # 各 BlockPart の quantity と、関連 Part の standard_price の積の合計を算出
+  def total_related_price
+    parts.sum { |part| (part.standard_price || 0) * (part.quantity || 0) }
+  end  
+
   def generate_block_number
     if primary_type_id.present?
       type = Type.find_by(id: primary_type_id)
@@ -36,13 +38,6 @@ class Block < ApplicationRecord
     end
   end
 
-  # Block に関連するパーツの standard_price の総額を計算するメソッド
-  def total_standard_price
-    # 標準価格が nil のパーツがあっても 0 として扱うようにする
-    parts.sum { |part| part.standard_price || 0 }
-  end
-
-  # 以下、ransackable_attributes などはそのままで
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "block_name", "block_number", "updated_at"]
   end
