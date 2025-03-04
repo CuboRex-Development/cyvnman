@@ -14,7 +14,7 @@
                 <p class="mb-1"><strong>Nominal Size:</strong> <%= @part.nominal_size %></p>
                 <p class="mb-1"><strong>Part Name (English):</strong> <%= @part.part_name_eg %></p>
                 <p class="mb-1"><strong>TotalQuantity:</strong> <%= @part.total_used_quantity %></p>
-                <p class="mb-1"><strong>Price:</strong> <%= number_to_currency(@part.standard_price) %></p>
+                <p class="mb-1"><strong>Price:</strong> <%= number_to_currency(@part.standard_price, precision: 0) %></p>
                 <p class="mb-3"><strong>Description:</strong> <%= @part.description %></p>
                 <% if @part.image.attached? %>
                 <div class="mb-3">

@@ -12,7 +12,7 @@
                 <p class="mb-1"><strong>Block Name:</strong> <%= @block.block_name %></p>
                 <p class="mb-1">
                     <strong>Block Price:</strong>
-                    <%= number_to_currency(@block.total_related_price) %>
+                    <%= number_to_currency(@block.total_related_price, precision: 0) %>
                 </p>
                 <p class="mb-0"><strong>Description:</strong> <%= @block.description %></p>
             </div>
@@ -52,9 +52,9 @@
                                 <% end %>
                             </td>
                             <td><%= bp.quantity %></td>
-                            <td><%= number_to_currency(part.standard_price || 0) %></td>
+                            <td><%= number_to_currency(part.standard_price || 0, precision: 0) %></td>
                             <td>
-                                <%= number_to_currency((part.standard_price || 0) * bp.quantity) %>
+                                <%= number_to_currency((part.standard_price || 0) * bp.quantity, precision: 0) %>
                             </td>
                             <td>
                                 <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id),
