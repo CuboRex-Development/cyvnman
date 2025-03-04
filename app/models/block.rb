@@ -26,6 +26,12 @@ class Block < ApplicationRecord
     block_parts.sum { |bp| (bp.part.standard_price || 0) * bp.quantity }
   end
 
+  # app/models/block.rb
+  def quantity_for(part)
+    bp = block_parts.find_by(part: part)
+    bp ? bp.quantity : 0
+  end
+
   def generate_block_number
     if primary_type_id.present?
       type = Type.find_by(id: primary_type_id)
