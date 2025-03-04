@@ -22,9 +22,7 @@ class PartsController < ApplicationController
   end
 
   def create
-    # 採番用の part_number_suffix は不要となるため、パラメータから除外
     @part = Part.new(part_params)
-    # 所属ブロックのIDを primary_block_id にセット（モデル側で自動連番を実施）
     @part.primary_block_id = @block.id
 
     if @part.save
