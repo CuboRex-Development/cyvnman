@@ -10,6 +10,7 @@
             <div class="card-body">
                 <p class="mb-1"><strong>Block Number:</strong> <%= @block.block_number %></p>
                 <p class="mb-1"><strong>Block Name:</strong> <%= @block.block_name %></p>
+                <p class="mb-1"><strong>Total Price:</strong> <%= number_to_currency(@block.total_standard_price) %></p>
                 <p class="mb-0"><strong>Description:</strong> <%= @block.description %></p>
             </div>
         </div>

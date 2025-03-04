@@ -36,6 +36,12 @@ class Block < ApplicationRecord
     end
   end
 
+  # Block に関連するパーツの standard_price の総額を計算するメソッド
+  def total_standard_price
+    # 標準価格が nil のパーツがあっても 0 として扱うようにする
+    parts.sum { |part| part.standard_price || 0 }
+  end
+
   # 以下、ransackable_attributes などはそのままで
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "block_name", "block_number", "updated_at"]
