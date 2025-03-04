@@ -1,7 +1,8 @@
 class Part < ApplicationRecord
   attr_accessor :primary_block_id
   
-  has_and_belongs_to_many :blocks
+  has_many :block_parts, dependent: :destroy
+  has_many :blocks, through: :block_parts
   has_many :versions
 
   has_and_belongs_to_many :related_parts,
@@ -37,11 +38,9 @@ class Part < ApplicationRecord
   private
 
   def generate_part_number
-    # primary_block_id を利用して、所属ブロックを特定
     if self.primary_block_id.present?
       block = Block.find_by(id: self.primary_block_id)
       if block && block.block_number.present?
-        # 既存の Part の中で、このブロック番号で始まるものを取得
         existing_numbers = Part.where("part_number LIKE ?", "#{block.block_number}-%").pluck(:part_number)
         max_suffix = existing_numbers.map { |num| num.split('-').last.to_i }.max || 0
         new_suffix = (max_suffix + 1).to_s.rjust(3, '0')

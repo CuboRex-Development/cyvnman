@@ -20,18 +20,21 @@ class PartsController < ApplicationController
 
   def edit
   end
-
+  
   def create
     @part = Part.new(part_params)
     @part.primary_block_id = @block.id
-
+  
     if @part.save
-      @block.parts << @part unless @block.parts.include?(@part)
-      respond_success(@part, notice: "Part was successfully created.")
+      quantity = params[:part][:quantity].to_i
+      quantity = 1 if quantity.zero?
+      @block.add_part!(@part, quantity)
+      respond_success(@block, notice: "Part was successfully created and added to block.")
     else
       respond_failure(@part, :new)
     end
   end
+  
 
   def update
     if @part.update(part_params)

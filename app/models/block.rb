@@ -12,10 +12,17 @@ class Block < ApplicationRecord
 
   # ブロックにパーツを追加するときは、BlockPart 経由で数量を記録する
   def add_part!(part, quantity = 1)
-    bp = block_parts.find_or_initialize_by(part: part)
+    # part_id を条件にしてレコードを取得
+    bp = block_parts.where(part_id: part.id).first_or_initialize
+    # 新規の場合、明示的に関連付けを設定
+    bp.part = part if bp.new_record?
     bp.quantity = bp.new_record? ? quantity : bp.quantity + quantity
-    bp.save
+    unless bp.save
+      Rails.logger.debug "BlockPart save failed: #{bp.errors.full_messages}"
+    end
+    bp
   end
+  
 
   def remove_part!(part)
     block_parts.find_by(part: part)&.destroy

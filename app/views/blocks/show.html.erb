@@ -46,7 +46,7 @@
                             <td><%= link_to part.part_name, part, class: "text-decoration-none" %></td>
                             <td>
                                 <% if part.image.attached? %>
-                                <%= image_tag part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
+                                <%= image_tag part.image.variant(resize_to_limit: [50, 50]), class: "img-thumbnail" %>
                                 <% else %>
                                 <span class="text-muted">No Image</span>
                                 <% end %>
@@ -60,7 +60,6 @@
                                 <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id),
                       method: :delete,
                       class: "btn btn-sm btn-outline-danger",
-                      data: { confirm: 'Are you sure?' },
                       onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                             </td>
                         </tr>
