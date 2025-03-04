@@ -21,7 +21,9 @@ document.addEventListener('turbo:load', function () {
 function initClickableRows() {
     const clickableRows = document.querySelectorAll('.clickable-row');
     clickableRows.forEach(row => {
-        row.addEventListener('click', () => {
+        row.addEventListener('click', (e) => {
+            // ボタン、リンク、input、select、textarea、または form 内がクリックされた場合は何もしない
+            if (e.target.closest('a, button, input, select, textarea, form')) return;
             window.location.href = row.dataset.href;
         });
     });
