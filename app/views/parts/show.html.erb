@@ -30,7 +30,7 @@
         <!-- Related Versions (Table Format with Modal Trigger) -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">Related Versions</h2>
+                <h2 class="h5 mb-0">Versions</h2>
                 <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newVersionModal" data-turbo="false">New Version</a>
             </div>
             <div class="card-body p-0">
@@ -148,7 +148,7 @@
         <!-- セクションに id="current-related-parts" を追加 -->
         <div id="current-related-parts" class="card border-0 shadow mb-4">
             <div class="card-header bg-light">
-                <h2 class="h5 mb-0">Current Related Parts</h2>
+                <h2 class="h5 mb-0">Related Parts: <%= @part.related_parts.count %></h2>
             </div>
             <div class="card-body p-0">
                 <table class="table table-hover mb-0">
