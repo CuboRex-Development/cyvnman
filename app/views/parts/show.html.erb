@@ -15,30 +15,30 @@
                         <div class="row">
                             <% if @part.image.attached? %>
                             <!-- 画像を左側に配置 -->
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                                 <strong>Image:</strong>
                                 <div class="mt-2">
                                     <%= image_tag @part.image, class: "img-fluid rounded", alt: @part.part_name %>
                                 </div>
                             </div>
                             <!-- テキスト情報を右側に配置 -->
-                            <div class="col-md-9">
-                                <p class="mb-1"><strong>Part Number:</strong> <%= @part.part_number %></p>
-                                <p class="mb-1"><strong>Part Name:</strong> <%= @part.part_name %></p>
-                                <p class="mb-1"><strong>Material:</strong> <%= @part.material %></p>
-                                <p class="mb-1"><strong>Nominal Size:</strong> <%= @part.nominal_size %></p>
-                                <p class="mb-1"><strong>Part Name (English):</strong> <%= @part.part_name_eg %></p>
-                                <p class="mb-1"><strong>TotalQuantity:</strong> <%= @part.total_used_quantity %></p>
-                                <p class="mb-1"><strong>Price:</strong> <%= number_to_currency(@part.standard_price, precision: 0) %></p>
-                                <p class="mb-3"><strong>Description:</strong> <%= @part.description %></p>
+                            <div class="col-md-7">
+                                <p class="mb-1">Number: <strong><%= @part.part_number %></strong></p>
+                                <p class="mb-1">Name:<strong> <%= @part.part_name %></strong></p>
+                                <p class="mb-1">Material: <strong> <%= @part.material %></strong></p>
+                                <p class="mb-1">Nominal Size:<strong> <%= @part.nominal_size %></strong></p>
+                                <p class="mb-1">English Name:<strong> <%= @part.part_name_eg %></strong></p>
+                                <p class="mb-1">TotalQuantity:<strong> <%= @part.total_used_quantity %></strong></p>
+                                <p class="mb-1">Price:<strong> <%= number_to_currency(@part.standard_price, precision: 0) %></strong></p>
+                                <p class="mb-3">Description:<strong> <%= @part.description %></strong></p>
                             </div>
                             <% else %>
                             <div class="col-12">
-                                <p class="mb-1"><strong>Part Number:</strong> <%= @part.part_number %></p>
-                                <p class="mb-1"><strong>Part Name:</strong> <%= @part.part_name %></p>
+                                <p class="mb-1"><strong>Number:</strong> <%= @part.part_number %></p>
+                                <p class="mb-1"><strong>Name:</strong> <%= @part.part_name %></p>
                                 <p class="mb-1"><strong>Material:</strong> <%= @part.material %></p>
                                 <p class="mb-1"><strong>Nominal Size:</strong> <%= @part.nominal_size %></p>
-                                <p class="mb-1"><strong>Part Name (English):</strong> <%= @part.part_name_eg %></p>
+                                <p class="mb-1"><strong>English Name:</strong> <%= @part.part_name_eg %></p>
                                 <p class="mb-1"><strong>TotalQuantity:</strong> <%= @part.total_used_quantity %></p>
                                 <p class="mb-1"><strong>Price:</strong> <%= number_to_currency(@part.standard_price, precision: 0) %></p>
                                 <p class="mb-3"><strong>Description:</strong> <%= @part.description %></p>
