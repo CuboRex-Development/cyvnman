@@ -1,56 +1,51 @@
 <div id="<%= dom_id part %>">
-  <p>
-    <strong>Part number:</strong>
-    <%= part.part_number %>
-  </p>
+    <p>
+        <strong>Part number:</strong>
+        <%= part.part_number %>
+    </p>
 
-  <p>
-    <strong>Part name:</strong>
-    <%= part.part_name %>
-  </p>
+    <p>
+        <strong>Part name:</strong>
+        <%= part.part_name %>
+    </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= part.description %>
-  </p>
+    <p>
+        <strong>Description:</strong>
+        <%= part.description %>
+    </p>
 
-  <p>
-    <strong>Material:</strong>
-    <%= part.material %>
-  </p>
+    <p>
+        <strong>Material:</strong>
+        <%= part.material %>
+    </p>
 
-  <p>
-    <strong>Nominal Size:</strong>
-    <%= part.nominal_size %>
-  </p>
+    <p>
+        <strong>Nominal Size:</strong>
+        <%= part.nominal_size %>
+    </p>
 
-  <p>
-    <strong>Part Name (English):</strong>
-    <%= part.part_name_eg %>
-  </p>
+    <p>
+        <strong>Part Name (English):</strong>
+        <%= part.part_name_eg %>
+    </p>
 
-  <p>
-    <strong>Quantity:</strong>
-    <%= part.quantity %>
-  </p>
+    <p>
+        <strong>Image:</strong>
+        <% if part.image.attached? %>
+        <%= image_tag part.image, class: "img-fluid", alt: part.part_name %>
+        <% else %>
+        No image available
+        <% end %>
+    </p>
 
-  <p>
-    <strong>Image:</strong>
-    <% if part.image.attached? %>
-      <%= image_tag part.image, class: "img-fluid", alt: part.part_name %>
-    <% else %>
-      No image available
-    <% end %>
-  </p>
-
-  <p>
-    <strong>Blocks:</strong>
-    <% if part.blocks.present? %>
-      <% part.blocks.each do |block| %>
+    <p>
+        <strong>Blocks:</strong>
+        <% if part.blocks.present? %>
+        <% part.blocks.each do |block| %>
         <%= block.block_name %> (<%= block.block_number %>)<br>
-      <% end %>
-    <% else %>
-      No blocks associated
-    <% end %>
-  </p>
+        <% end %>
+        <% else %>
+        No blocks associated
+        <% end %>
+    </p>
 </div>

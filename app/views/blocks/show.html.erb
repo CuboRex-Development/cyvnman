@@ -1,6 +1,6 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
     <div class="card-body">
-        <h1 class="card-title h3 mb-4">Block: <%= @block.block_name %></h1>
+        <h1 class="card-title h3 mb-4"><%= @block.block_number %>: <%= @block.block_name %></h1>
 
         <!-- Block Details -->
         <div class="card border-0 shadow mb-4">
@@ -114,11 +114,6 @@
                         <div class="mb-3">
                             <%= form.label :nominal_size, class: 'form-label' %>
                             <%= form.text_field :nominal_size, class: 'form-control', placeholder: "Enter nominal size" %>
-                        </div>
-
-                        <div class="mb-3">
-                            <%= form.label :quantity, class: 'form-label' %>
-                            <%= form.number_field :quantity, class: 'form-control', placeholder: "Enter quantity", min: 0 %>
                         </div>
 
                         <div class="mb-3">
