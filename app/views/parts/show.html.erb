@@ -2,57 +2,84 @@
     <div class="card-body">
         <h1 class="card-title h3 mb-4"><%= @part.part_number %>: <%= @part.part_name %></h1>
 
-        <!-- Part Details -->
-        <div class="card border-0 shadow mb-4">
-            <div class="card-header bg-light">
-                <h2 class="h5 mb-0">Part Details</h2>
-            </div>
-            <div class="card-body">
-                <p class="mb-1"><strong>Part Number:</strong> <%= @part.part_number %></p>
-                <p class="mb-1"><strong>Part Name:</strong> <%= @part.part_name %></p>
-                <p class="mb-1"><strong>Material:</strong> <%= @part.material %></p>
-                <p class="mb-1"><strong>Nominal Size:</strong> <%= @part.nominal_size %></p>
-                <p class="mb-1"><strong>Part Name (English):</strong> <%= @part.part_name_eg %></p>
-                <p class="mb-1"><strong>TotalQuantity:</strong> <%= @part.total_used_quantity %></p>
-                <p class="mb-1"><strong>Price:</strong> <%= number_to_currency(@part.standard_price, precision: 0) %></p>
-                <p class="mb-3"><strong>Description:</strong> <%= @part.description %></p>
-                <% if @part.image.attached? %>
-                <div class="mb-3">
-                    <strong>Image:</strong>
-                    <div class="mt-2">
-                        <%= image_tag @part.image, class: "img-fluid rounded", alt: @part.part_name %>
+        <div class="row">
+            <!-- 左側: Part Details カード -->
+            <div class="col-md-5">
+                <div class="card border-0 shadow mb-4 fixed-card">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0">Part Details</h2>
+                        <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editPartModal" data-turbo="false">Edit</a>
+                    </div>
+                    <!-- 固定高さ内でスクロールする領域 -->
+                    <div class="card-body fixed-scroll">
+                        <div class="row">
+                            <% if @part.image.attached? %>
+                            <!-- 画像を左側に配置 -->
+                            <div class="col-md-3">
+                                <strong>Image:</strong>
+                                <div class="mt-2">
+                                    <%= image_tag @part.image, class: "img-fluid rounded", alt: @part.part_name %>
+                                </div>
+                            </div>
+                            <!-- テキスト情報を右側に配置 -->
+                            <div class="col-md-9">
+                                <p class="mb-1"><strong>Part Number:</strong> <%= @part.part_number %></p>
+                                <p class="mb-1"><strong>Part Name:</strong> <%= @part.part_name %></p>
+                                <p class="mb-1"><strong>Material:</strong> <%= @part.material %></p>
+                                <p class="mb-1"><strong>Nominal Size:</strong> <%= @part.nominal_size %></p>
+                                <p class="mb-1"><strong>Part Name (English):</strong> <%= @part.part_name_eg %></p>
+                                <p class="mb-1"><strong>TotalQuantity:</strong> <%= @part.total_used_quantity %></p>
+                                <p class="mb-1"><strong>Price:</strong> <%= number_to_currency(@part.standard_price, precision: 0) %></p>
+                                <p class="mb-3"><strong>Description:</strong> <%= @part.description %></p>
+                            </div>
+                            <% else %>
+                            <div class="col-12">
+                                <p class="mb-1"><strong>Part Number:</strong> <%= @part.part_number %></p>
+                                <p class="mb-1"><strong>Part Name:</strong> <%= @part.part_name %></p>
+                                <p class="mb-1"><strong>Material:</strong> <%= @part.material %></p>
+                                <p class="mb-1"><strong>Nominal Size:</strong> <%= @part.nominal_size %></p>
+                                <p class="mb-1"><strong>Part Name (English):</strong> <%= @part.part_name_eg %></p>
+                                <p class="mb-1"><strong>TotalQuantity:</strong> <%= @part.total_used_quantity %></p>
+                                <p class="mb-1"><strong>Price:</strong> <%= number_to_currency(@part.standard_price, precision: 0) %></p>
+                                <p class="mb-3"><strong>Description:</strong> <%= @part.description %></p>
+                            </div>
+                            <% end %>
+                        </div>
                     </div>
                 </div>
-                <% end %>
+            </div>
+
+            <!-- 右側: Versions カード -->
+            <div class="col-md-7">
+                <div class="card border-0 shadow mb-4 fixed-card">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0">Versions</h2>
+                        <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newVersionModal" data-turbo="false">New Version</a>
+                    </div>
+                    <!-- 固定高さ内でスクロールする領域 -->
+                    <div class="card-body fixed-scroll p-0">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Version Number</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% @part.versions.each do |version| %>
+                                <tr>
+                                    <td><%= link_to version.version_number, version, class: "text-decoration-none" %></td>
+                                    <td><%= truncate(version.description, length: 100) %></td>
+                                </tr>
+                                <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Related Versions (Table Format with Modal Trigger) -->
-        <div class="card border-0 shadow mb-4">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">Versions</h2>
-                <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newVersionModal" data-turbo="false">New Version</a>
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Version Number</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% @part.versions.each do |version| %>
-                        <tr>
-                            <td><%= link_to version.version_number, version, class: "text-decoration-none" %></td>
-                            <td><%= truncate(version.description, length: 100) %></td>
-                        </tr>
-                        <% end %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+        <!-- // Part Details 終了 -->
         <!-- New Version Modal -->
         <div class="modal fade" id="newVersionModal" tabindex="-1" aria-labelledby="newVersionModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -127,31 +154,145 @@
             </div>
         </div>
 
-        <!-- Related Blocks -->
-        <div class="card border-0 shadow mb-4">
-            <div class="card-header bg-light">
-                <h2 class="h5 mb-0">Related Blocks</h2>
-            </div>
-            <div class="card-body p-0">
-                <ul class="list-group list-group-flush">
-                    <% @part.blocks.each do |block| %>
-                    <li class="list-group-item">
-                        <%= link_to block.block_name, block, class: "text-decoration-none" %>
-                        <small class="text-muted d-block">Block Number: <%= block.block_number %></small>
-                    </li>
+        <div class="modal fade" id="editPartModal" tabindex="-1" aria-labelledby="editPartModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- フォーム開始 -->
+                    <%= form_with(model: @part, url: part_path(@part), method: :patch, local: true) do |form| %>
+
+                    <!-- モーダルヘッダー -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPartModalLabel">Edit Part</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- モーダルボディ -->
+                    <div class="modal-body">
+                        <!-- Part Name -->
+                        <div class="mb-3">
+                            <%= form.label :part_name, "Part Name", class: 'form-label' %>
+                            <%= form.text_field :part_name, class: 'form-control' %>
+                        </div>
+                        <!-- Material -->
+                        <div class="mb-3">
+                            <%= form.label :material, class: 'form-label' %>
+                            <%= form.text_field :material, class: 'form-control' %>
+                        </div>
+                        <!-- Nominal Size -->
+                        <div class="mb-3">
+                            <%= form.label :nominal_size, "Nominal Size", class: 'form-label' %>
+                            <%= form.text_field :nominal_size, class: 'form-control' %>
+                        </div>
+                        <!-- Part Name (English) -->
+                        <div class="mb-3">
+                            <%= form.label :part_name_eg, "Part Name (English)", class: 'form-label' %>
+                            <%= form.text_field :part_name_eg, class: 'form-control' %>
+                        </div>
+                        <!-- Price -->
+                        <div class="mb-3">
+                            <%= form.label :standard_price, "Price", class: 'form-label' %>
+                            <%= form.number_field :standard_price, class: 'form-control', step: 1 %>
+                        </div>
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <%= form.label :description, "Description", class: 'form-label' %>
+                            <%= form.text_area :description, class: 'form-control', rows: 3 %>
+                        </div>
+                        <!-- Image -->
+                        <div class="mb-3">
+                            <%= form.label :image, "Change Image", class: 'form-label' %>
+                            <%= form.file_field :image, class: 'form-control' %>
+                        </div>
+                    </div>
+
+                    <!-- モーダルフッター -->
+                    <div class="modal-footer">
+                        <%= form.submit 'Save Changes', class: 'btn btn-outline-primary' %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+
                     <% end %>
-                </ul>
+                    <!-- フォーム終了 -->
+                </div>
             </div>
         </div>
 
-        <!-- Current Related Parts (Table Format) -->
-        <!-- セクションに id="current-related-parts" を追加 -->
-        <div id="current-related-parts" class="card border-0 shadow mb-4">
-            <div class="card-header bg-light">
-                <h2 class="h5 mb-0">Related Parts: <%= @part.related_parts.count %></h2>
+    </div>
+
+
+    <!-- Related Blocks -->
+    <div class="card border-0 shadow mb-4">
+        <div class="card-header bg-light">
+            <h2 class="h5 mb-0">Related Blocks</h2>
+        </div>
+        <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+                <% @part.blocks.each do |block| %>
+                <li class="list-group-item">
+                    <%= link_to block.block_name, block, class: "text-decoration-none" %>
+                    <small class="text-muted d-block">Block Number: <%= block.block_number %></small>
+                </li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Current Related Parts (Table Format) -->
+    <!-- セクションに id="current-related-parts" を追加 -->
+    <div id="current-related-parts" class="card border-0 shadow mb-4">
+        <div class="card-header bg-light">
+            <h2 class="h5 mb-0">Related Parts: <%= @part.related_parts.count %></h2>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Part Number</th>
+                        <th>Part Name</th>
+                        <th>Image</th>
+                        <th>Material</th>
+                        <th>Nominal Size</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @related_parts.each do |related_part| %>
+                    <tr data-href="<%= part_path(related_part) %>" class="clickable-row">
+                        <td><%= related_part.part_number %></td>
+                        <td><%= related_part.part_name %></td>
+                        <td>
+                            <% if related_part.image.attached? %>
+                            <%= image_tag related_part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
+                            <% else %>
+                            <span class="text-muted">No Image</span>
+                            <% end %>
+                        </td>
+                        <td><%= related_part.material %></td>
+                        <td><%= related_part.nominal_size %></td>
+                        <td>
+                            <%= button_to 'Remove', remove_related_part_part_path(@part, related_part_id: related_part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                        </td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Related Part (Table Format with Action Column and Pagination) -->
+    <div class="card border-0 shadow mb-4">
+        <div class="card-header bg-light">
+            <h2 class="h5 mb-0">Add Related Part</h2>
+        </div>
+        <div class="card-body">
+            <!-- 検索入力 -->
+            <div class="mb-3">
+                <label for="related-part-search" class="form-label">Search Parts:</label>
+                <input type="text" id="related-part-search" class="form-control" placeholder="Type to search...">
             </div>
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
+            <!-- テーブル -->
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="related-parts-table">
                     <thead class="table-light">
                         <tr>
                             <th>Part Number</th>
@@ -163,87 +304,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% @related_parts.each do |related_part| %>
-                        <tr data-href="<%= part_path(related_part) %>" class="clickable-row">
-                            <td><%= related_part.part_number %></td>
-                            <td><%= related_part.part_name %></td>
+                        <% Part.where.not(id: @part.id).where.not(id: @related_parts.pluck(:id)).each do |p| %>
+                        <tr data-href="<%= part_path(p) %>" class="clickable-row">
+                            <td><%= p.part_number %></td>
+                            <td><%= p.part_name %></td>
                             <td>
-                                <% if related_part.image.attached? %>
-                                <%= image_tag related_part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
+                                <% if p.image.attached? %>
+                                <%= image_tag p.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
                                 <% else %>
                                 <span class="text-muted">No Image</span>
                                 <% end %>
                             </td>
-                            <td><%= related_part.material %></td>
-                            <td><%= related_part.nominal_size %></td>
+                            <td><%= p.material %></td>
+                            <td><%= p.nominal_size %></td>
                             <td>
-                                <%= button_to 'Remove', remove_related_part_part_path(@part, related_part_id: related_part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                                <%= button_to "Add", add_related_part_part_path(@part, related_part_id: p.id), method: :post, class: "btn btn-sm btn-outline-primary", data: { confirm: "Add this related part?" }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                             </td>
                         </tr>
                         <% end %>
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <!-- Add Related Part (Table Format with Action Column and Pagination) -->
-        <div class="card border-0 shadow mb-4">
-            <div class="card-header bg-light">
-                <h2 class="h5 mb-0">Add Related Part</h2>
-            </div>
-            <div class="card-body">
-                <!-- 検索入力 -->
-                <div class="mb-3">
-                    <label for="related-part-search" class="form-label">Search Parts:</label>
-                    <input type="text" id="related-part-search" class="form-control" placeholder="Type to search...">
-                </div>
-                <!-- テーブル -->
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0" id="related-parts-table">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Part Number</th>
-                                <th>Part Name</th>
-                                <th>Image</th>
-                                <th>Material</th>
-                                <th>Nominal Size</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% Part.where.not(id: @part.id).where.not(id: @related_parts.pluck(:id)).each do |p| %>
-                            <tr data-href="<%= part_path(p) %>" class="clickable-row">
-                                <td><%= p.part_number %></td>
-                                <td><%= p.part_name %></td>
-                                <td>
-                                    <% if p.image.attached? %>
-                                    <%= image_tag p.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
-                                    <% else %>
-                                    <span class="text-muted">No Image</span>
-                                    <% end %>
-                                </td>
-                                <td><%= p.material %></td>
-                                <td><%= p.nominal_size %></td>
-                                <td>
-                                    <%= button_to "Add", add_related_part_part_path(@part, related_part_id: p.id), method: :post, class: "btn btn-sm btn-outline-primary", data: { confirm: "Add this related part?" }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
-                                </td>
-                            </tr>
-                            <% end %>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- ページネーションコントロール (必要に応じて) -->
-                <div id="related-pagination" class="mt-3 d-flex justify-content-center"></div>
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="d-flex justify-content-between mt-4">
-            <%= link_to 'Edit', edit_part_path(@part), class: "btn btn-outline-primary" %>
-            <%= link_to 'Back to Parts', parts_path, class: "btn btn-outline-primary" %>
-            <%= button_to 'Delete', @part, method: :delete, data: { confirm: 'Are you sure you want to delete this part?' }, class: "btn btn-outline-danger" %>
+            <!-- ページネーションコントロール (必要に応じて) -->
+            <div id="related-pagination" class="mt-3 d-flex justify-content-center"></div>
         </div>
     </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+        <%= link_to 'Edit', edit_part_path(@part), class: "btn btn-outline-primary" %>
+        <%= link_to 'Back to Parts', parts_path, class: "btn btn-outline-primary" %>
+        <%= button_to 'Delete', @part, method: :delete, data: { confirm: 'Are you sure you want to delete this part?' }, class: "btn btn-outline-danger" %>
+    </div>
+</div>
 </div>
 
 <!-- クリックで行からリンクへ遷移するスクリプト -->
