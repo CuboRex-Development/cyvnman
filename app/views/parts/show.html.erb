@@ -67,8 +67,8 @@
                             </thead>
                             <tbody>
                                 <% @part.versions.each do |version| %>
-                                <tr>
-                                    <td><%= link_to version.version_number, version, class: "text-decoration-none" %></td>
+                                <tr data-href="<%= version_path(version) %>" class="clickable-row">
+                                    <td><%= version.version_number %></td>
                                     <td><%= truncate(version.description, length: 100) %></td>
                                 </tr>
                                 <% end %>
@@ -78,7 +78,6 @@
                 </div>
             </div>
         </div>
-
         <!-- // Part Details 終了 -->
         <!-- New Version Modal -->
         <div class="modal fade" id="newVersionModal" tabindex="-1" aria-labelledby="newVersionModalLabel" aria-hidden="true">

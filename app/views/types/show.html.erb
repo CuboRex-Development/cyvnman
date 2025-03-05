@@ -1,68 +1,68 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
-  <div class="card-body">
-    <h1 class="card-title h3 mb-4">Type: <%= @type.type_name %></h1>
+    <div class="card-body">
+        <h1 class="card-title h3 mb-4"> <%= @type.type_name %></h1>
 
-    <!-- Type Details -->
-    <div class="card border-0 shadow mb-4">
-      <div class="card-header bg-light">
-        <h2 class="h5 mb-0">Type Details</h2>
-      </div>
-      <div class="card-body">
-        <p class="mb-1"><strong>Type Number:</strong> <%= @type.type_number %></p>
-        <p class="mb-1"><strong>Category:</strong> <%= @type.category %></p>
-        <p class="mb-1"><strong>Type Name:</strong> <%= @type.type_name %></p>
-        <p class="mb-0"><strong>Description:</strong> <%= @type.description %></p>
-      </div>
-    </div>
-
-    <!-- Related Models and Blocks -->
-    <div class="card border-0 shadow mb-4">
-      <div class="card-header bg-light">
-        <h2 class="h5 mb-0">Model-Block Relations</h2>
-      </div>
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>Block Number / Model Name</th>
-                <% @type.models.each do |model| %>
-                  <th class="text-center">
-                    <%= link_to model.model_code, model, class: "text-decoration-none" %>
-                  </th>
-                <% end %>
-              </tr>
-            </thead>
-            <tbody>
-              <% @type.blocks.each do |block| %>
-                <tr>
-                  <td>
-                    <%= link_to block.block_number, block, class: "text-decoration-none" %>
-                  </td>
-                  <% @type.models.each do |model| %>
-                    <td class="text-center">
-                      <% if model.blocks.include?(block) %>
-                        <%= link_to block, class: "text-decoration-none" do %>
-                          <span class="badge bg-primary rounded-pill">✓</span>
-                        <% end %>
-                      <% else %>
-                        <span class="badge bg-light text-dark rounded-pill">-</span>
-                      <% end %>
-                    </td>
-                  <% end %>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+        <!-- Type Details -->
+        <div class="card border-0 shadow mb-4">
+            <div class="card-header bg-light">
+                <h2 class="h5 mb-0">Type Details</h2>
+            </div>
+            <div class="card-body">
+                <p class="mb-1"><strong>Type Number:</strong> <%= @type.type_number %></p>
+                <p class="mb-1"><strong>Category:</strong> <%= @type.category %></p>
+                <p class="mb-1"><strong>Type Name:</strong> <%= @type.type_name %></p>
+                <p class="mb-0"><strong>Description:</strong> <%= @type.description %></p>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Action Buttons -->
-    <div class="d-flex justify-content-between mt-4">
-      <%= link_to 'Edit', edit_type_path(@type), class: "btn btn-outline-primary" %>
-      <%= link_to 'Back to Types', types_path, class: "btn btn-outline-primary" %>
-      <%= button_to 'Delete', @type, method: :delete, data: { confirm: 'Are you sure you want to delete this type?' }, class: "btn btn-outline-danger" %>
+        <!-- Related Models and Blocks -->
+        <div class="card border-0 shadow mb-4">
+            <div class="card-header bg-light">
+                <h2 class="h5 mb-0">Model-Block Relations</h2>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Block Number / Model Name</th>
+                                <% @type.models.each do |model| %>
+                                <th class="text-center">
+                                    <%= link_to model.model_code, model, class: "text-decoration-none" %>
+                                </th>
+                                <% end %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @type.blocks.each do |block| %>
+                            <tr>
+                                <td>
+                                    <%= link_to block.block_number, block, class: "text-decoration-none" %>
+                                </td>
+                                <% @type.models.each do |model| %>
+                                <td class="text-center">
+                                    <% if model.blocks.include?(block) %>
+                                    <%= link_to block, class: "text-decoration-none" do %>
+                                    <span class="badge bg-primary rounded-pill">✓</span>
+                                    <% end %>
+                                    <% else %>
+                                    <span class="badge bg-light text-dark rounded-pill">-</span>
+                                    <% end %>
+                                </td>
+                                <% end %>
+                            </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between mt-4">
+            <%= link_to 'Edit', edit_type_path(@type), class: "btn btn-outline-primary" %>
+            <%= link_to 'Back to Types', types_path, class: "btn btn-outline-primary" %>
+            <%= button_to 'Delete', @type, method: :delete, data: { confirm: 'Are you sure you want to delete this type?' }, class: "btn btn-outline-danger" %>
+        </div>
     </div>
-  </div>
 </div>

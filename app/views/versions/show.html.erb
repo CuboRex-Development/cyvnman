@@ -1,24 +1,95 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
     <div class="card-body">
-        <h1 class="card-title h3 mb-4">Version: <%= @version.version_number %></h1>
+        <h1 class="card-title h3 mb-4"> <%= @version.version_number %></h1>
 
         <!-- Version Details -->
         <div class="card border-0 shadow mb-4">
-            <div class="card-header bg-light">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h2 class="h5 mb-0">Version Details</h2>
+                <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editVersionModal" data-turbo="false">Edit</a>
             </div>
             <div class="card-body">
-                <p class="mb-1"><strong>Version Number:</strong> <%= @version.version_number %></p>
-                <p class="mb-1"><strong>Part:</strong> <%= link_to @version.part.part_name, @version.part, class: "text-decoration-none" %></p>
-                <p class="mb-1"><strong>Description:</strong> <%= @version.description %></p>
-                <p class="mb-1"><strong>File Path:</strong> <%= @version.file_path %></p>
-                <p class="mb-1"><strong>Scale:</strong> <%= @version.scale %></p>
-                <p class="mb-1"><strong>Sheet Size:</strong> <%= @version.sheet_size %></p>
-                <p class="mb-1"><strong>Unit:</strong> <%= @version.unit %></p>
-                <p class="mb-1"><strong>Drawn By:</strong> <%= @version.drawn_by %></p>
-                <p class="mb-1"><strong>Checked By:</strong> <%= @version.checked_by %></p>
-                <p class="mb-1"><strong>Approved By:</strong> <%= @version.approved_by %></p>
-                <p class="mb-0"><strong>Drawn Date:</strong> <%= @version.drawn_date&.strftime('%Y-%m-%d') %></p>
+                <div class="row">
+                    <!-- 左側: その他の情報 -->
+                    <div class="col-md-4">
+                        <p class="mb-1"><strong>Version Number:</strong> <%= @version.version_number %></p>
+                        <p class="mb-1"><strong>Part:</strong> <%= link_to @version.part.part_name, @version.part, class: "text-decoration-none" %></p>
+                        <p class="mb-1"><strong>Scale:</strong> <%= @version.scale %></p>
+                        <p class="mb-1"><strong>Sheet Size:</strong> <%= @version.sheet_size %></p>
+                        <p class="mb-1"><strong>Unit:</strong> <%= @version.unit %></p>
+                        <p class="mb-1"><strong>Drawn By:</strong> <%= @version.drawn_by %></p>
+                        <p class="mb-1"><strong>Checked By:</strong> <%= @version.checked_by %></p>
+                        <p class="mb-1"><strong>Approved By:</strong> <%= @version.approved_by %></p>
+                        <p class="mb-0"><strong>Drawn Date:</strong> <%= @version.drawn_date&.strftime('%Y-%m-%d') %></p>
+                    </div>
+                    <!-- 右側: Description -->
+                    <div class="col-md-8">
+                        <p class="mb-1"><strong>Description:</strong></p>
+                        <p><%= @version.description %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editVersionModal" tabindex="-1" aria-labelledby="editVersionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <%= form_with(model: @version, url: version_path(@version), method: :patch, local: true) do |form| %>
+                    <!-- モーダルヘッダー -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editVersionModalLabel">Edit Version</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- モーダルボディ -->
+                    <div class="modal-body">
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <%= form.label :description, "Description", class: 'form-label' %>
+                            <%= form.text_area :description, class: 'form-control', rows: 3 %>
+                        </div>
+                        <!-- Scale -->
+                        <div class="mb-3">
+                            <%= form.label :scale, class: 'form-label' %>
+                            <%= form.text_field :scale, class: 'form-control' %>
+                        </div>
+                        <!-- Sheet Size -->
+                        <div class="mb-3">
+                            <%= form.label :sheet_size, "Sheet Size", class: 'form-label' %>
+                            <%= form.text_field :sheet_size, class: 'form-control' %>
+                        </div>
+                        <!-- Unit -->
+                        <div class="mb-3">
+                            <%= form.label :unit, class: 'form-label' %>
+                            <%= form.text_field :unit, class: 'form-control' %>
+                        </div>
+                        <!-- Drawn By -->
+                        <div class="mb-3">
+                            <%= form.label :drawn_by, "Drawn By", class: 'form-label' %>
+                            <%= form.text_field :drawn_by, class: 'form-control' %>
+                        </div>
+                        <!-- Checked By -->
+                        <div class="mb-3">
+                            <%= form.label :checked_by, "Checked By", class: 'form-label' %>
+                            <%= form.text_field :checked_by, class: 'form-control' %>
+                        </div>
+                        <!-- Approved By -->
+                        <div class="mb-3">
+                            <%= form.label :approved_by, "Approved By", class: 'form-label' %>
+                            <%= form.text_field :approved_by, class: 'form-control' %>
+                        </div>
+                        <!-- Drawn Date -->
+                        <div class="mb-3">
+                            <%= form.label :drawn_date, "Drawn Date", class: 'form-label' %>
+                            <%= form.date_field :drawn_date, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <!-- モーダルフッター -->
+                    <div class="modal-footer">
+                        <%= form.submit 'Save Changes', class: 'btn btn-outline-primary' %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    <% end %>
+                </div>
             </div>
         </div>
 
@@ -44,7 +115,7 @@
         <!-- Version History -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light">
-                <h2 class="h5 mb-0">Version History</h2>
+                <h2 class="h5 mb-0">History</h2>
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush">
@@ -60,7 +131,6 @@
 
         <!-- Action Buttons -->
         <div class="d-flex justify-content-between mt-4">
-            <%= link_to 'Edit', edit_version_path(@version), class: "btn btn-outline-primary" %>
             <%= link_to 'Back to Part', @version.part, class: "btn btn-outline-primary" %>
             <%= button_to 'Delete', @version, method: :delete, data: { confirm: 'Are you sure you want to delete this version?' }, class: "btn btn-outline-danger" %>
         </div>

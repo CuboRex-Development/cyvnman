@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>PartsManagementSystem</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
@@ -8,46 +9,47 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-  </head>
+</head>
 
-  <body>
+<body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand p-2" href="/">Parts Management System</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <%= link_to 'Types', types_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Models', models_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Blocks', blocks_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Parts', parts_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Versions', versions_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Comparisons', comparisons_path, class: 'nav-link' %>
-          </li>
-        </ul>
-      </div>
+        <a class="navbar-brand p-2" href="/">Parts Management System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <%= link_to 'Types', types_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'types'}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'Models', models_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'models'}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'Blocks', blocks_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'blocks'}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'Parts', parts_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'parts'}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'Versions', versions_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'versions'}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'Comparisons', comparisons_path, class: 'nav-link' %>
+                </li>
+            </ul>
+        </div>
     </nav>
 
     <div class="container mt-4">
-      <% flash.each do |type, message| %>
+        <% flash.each do |type, message| %>
         <div class="alert <%= type == 'notice' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show" role="alert">
-          <%= message %>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-      <% end %>
-      <%= yield %>
+        <% end %>
+        <%= yield %>
     </div>
-  </body>
+</body>
+
 </html>
