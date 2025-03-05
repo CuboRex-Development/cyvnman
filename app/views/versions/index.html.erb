@@ -1,31 +1,31 @@
-<h1>Versions</h1>
-
 <div class="mb-3">
-  <%= search_form_for @q, url: versions_path, method: :get, local: true do |form| %>
+    <%= search_form_for @q, url: versions_path, method: :get, local: true do |form| %>
     <div class="input-group">
-      <%= form.text_field :version_number_or_description_cont, class: "form-control", placeholder: "Search Versions" %>
-      <div class="input-group-append">
-        <%= form.submit "Search", class: "btn btn-outline-primary" %>
-      </div>
+        <%= form.text_field :version_number_or_description_cont, class: "form-control", placeholder: "Search Versions" %>
+        <div class="input-group-append">
+            <%= form.submit "Search", class: "btn btn-outline-primary" %>
+        </div>
     </div>
-  <% end %>
+    <% end %>
 </div>
 
 <table class="table shadow table-hover table-responsive">
-  <thead class="table-light">
-    <tr>
-      <th>Version Number</th>
-      <th>Part Number</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @versions.each do |version| %>
-      <tr data-href="<%= version_path(version) %>" class="clickable-row">
-        <td><%= version.version_number %></td>
-        <td><%= version.part.part_number if version.part %></td>
-        <td><%= version.description %></td>
-      </tr>
-    <% end %>
-  </tbody>
+    <thead class="table-light">
+        <tr>
+            <th>Version Number</th>
+            <th>Part Number</th>
+            <th>Part Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @versions.each do |version| %>
+        <tr data-href="<%= version_path(version) %>" class="clickable-row">
+            <td><%= version.version_number %></td>
+            <td><%= version.part.part_number if version.part %></td>
+            <td><%= version.part.part_name if version.part %></td>
+            <td><%= version.description %></td>
+        </tr>
+        <% end %>
+    </tbody>
 </table>

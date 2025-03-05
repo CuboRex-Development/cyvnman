@@ -43,7 +43,7 @@
                         <% part = bp.part %>
                         <tr data-href="<%= part_path(part) %>" class="clickable-row">
                             <td><%= part.part_number %></td>
-                            <td><%= link_to part.part_name, part, class: "text-decoration-none" %></td>
+                            <td><%= part.part_name %></td>
                             <td>
                                 <% if part.image.attached? %>
                                 <%= image_tag part.image.variant(resize_to_limit: [50, 50]), class: "img-thumbnail" %>

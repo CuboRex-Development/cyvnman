@@ -1,65 +1,65 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
-  <div class="card-body">
-    <h1 class="card-title h3 mb-4">Model: <%= @model.model_code %></h1>
+    <div class="card-body">
+        <h1 class="card-title h3 mb-4"> <%= @model.model_code %></h1>
 
-    <!-- Model Details -->
-    <div class="card border-0 shadow mb-4">
-      <div class="card-header bg-light">
-        <h2 class="h5 mb-0">Model Details</h2>
-      </div>
-      <div class="card-body">
-        <p class="mb-1"><strong>Model Code:</strong> <%= @model.model_code %></p>
-        <p class="mb-1"><strong>Type:</strong> <%= link_to @model.type.type_name, @model.type, class: "text-decoration-none" %></p>
-        <p class="mb-0"><strong>Description:</strong> <%= @model.description %></p>
-      </div>
-    </div>
-
-    <!-- Add Existing Block -->
-    <div class="card border-0 shadow mb-4">
-      <div class="card-header bg-light">
-        <h2 class="h5 mb-0">Add Existing Block</h2>
-      </div>
-      <div class="card-body">
-        <div class="custom-select mb-3">
-          <input type="text" id="custom-select-input" class="form-control" placeholder="Search blocks">
-          <ul id="custom-select-list" class="list-group">
-            <% Block.where.not(id: @model.blocks.pluck(:id)).each do |block| %>
-              <li class="list-group-item" data-value="<%= block.id %>"><%= "#{block.block_number} - #{block.block_name}" %></li>
-            <% end %>
-          </ul>
+        <!-- Model Details -->
+        <div class="card border-0 shadow mb-4">
+            <div class="card-header bg-light">
+                <h2 class="h5 mb-0">Model Details</h2>
+            </div>
+            <div class="card-body">
+                <p class="mb-1"><strong>Model Code:</strong> <%= @model.model_code %></p>
+                <p class="mb-1"><strong>Type:</strong> <%= link_to @model.type.type_name, @model.type, class: "text-decoration-none" %></p>
+                <p class="mb-0"><strong>Description:</strong> <%= @model.description %></p>
+            </div>
         </div>
-        <%= form_with(url: add_block_model_path(@model), method: :post, local: true) do |form| %>
-          <%= form.hidden_field :block_id, id: 'selected-block-id' %>
-          <%= form.submit "Add Block", class: 'btn btn-outline-primary', id: 'add-block-btn', disabled: true %>
-        <% end %>
-      </div>
-    </div>
 
-    <!-- Related Blocks -->
-    <div class="card border-0 shadow mb-4">
-      <div class="card-header bg-light">
-        <h2 class="h5 mb-0">Related Blocks</h2>
-      </div>
-      <div class="card-body p-0">
-        <ul class="list-group list-group-flush">
-          <% @model.blocks.each do |block| %>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <%= link_to block.block_name, block, class: "text-decoration-none" %>
-                <small class="text-muted d-block">Block Number: <%= block.block_number %></small>
-              </div>
-              <%= button_to 'Remove', remove_block_model_path(@model, block_id: block.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' } %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
+        <!-- Related Blocks -->
+        <div class="card border-0 shadow mb-4">
+            <div class="card-header bg-light">
+                <h2 class="h5 mb-0">Related Blocks</h2>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    <% @model.blocks.each do |block| %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <%= link_to block.block_name, block, class: "text-decoration-none" %>
+                            <small class="text-muted d-block">Block Number: <%= block.block_number %></small>
+                        </div>
+                        <%= button_to 'Remove', remove_block_model_path(@model, block_id: block.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' } %>
+                    </li>
+                    <% end %>
+                </ul>
+            </div>
+        </div>
 
-    <!-- Action Buttons -->
-    <div class="d-flex justify-content-between mt-4">
-      <%= link_to 'Edit', edit_model_path(@model), class: "btn btn-outline-primary" %>
-      <%= link_to 'Back to Models', models_path, class: "btn btn-outline-primary" %>
-      <%= button_to 'Delete', @model, method: :delete, data: { confirm: 'Are you sure you want to delete this model?' }, class: "btn btn-outline-danger" %>
+        <!-- Add Existing Block -->
+        <div class="card border-0 shadow mb-4">
+            <div class="card-header bg-light">
+                <h2 class="h5 mb-0">Add Existing Block</h2>
+            </div>
+            <div class="card-body">
+                <div class="custom-select mb-3">
+                    <input type="text" id="custom-select-input" class="form-control" placeholder="Search blocks">
+                    <ul id="custom-select-list" class="list-group">
+                        <% Block.where.not(id: @model.blocks.pluck(:id)).each do |block| %>
+                        <li class="list-group-item" data-value="<%= block.id %>"><%= "#{block.block_number} - #{block.block_name}" %></li>
+                        <% end %>
+                    </ul>
+                </div>
+                <%= form_with(url: add_block_model_path(@model), method: :post, local: true) do |form| %>
+                <%= form.hidden_field :block_id, id: 'selected-block-id' %>
+                <%= form.submit "Add Block", class: 'btn btn-outline-primary', id: 'add-block-btn', disabled: true %>
+                <% end %>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between mt-4">
+            <%= link_to 'Edit', edit_model_path(@model), class: "btn btn-outline-primary" %>
+            <%= link_to 'Back to Models', models_path, class: "btn btn-outline-primary" %>
+            <%= button_to 'Delete', @model, method: :delete, data: { confirm: 'Are you sure you want to delete this model?' }, class: "btn btn-outline-danger" %>
+        </div>
     </div>
-  </div>
 </div>

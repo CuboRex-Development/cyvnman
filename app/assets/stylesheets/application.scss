@@ -1,10 +1,12 @@
 $primary: #2784e8; // プライマリカラーの変更
 $font-family-base: 'Roboto',
-sans-serif; // フォントの変更
+    sans-serif; // フォントの変更
 @import "bootstrap";
+
 #block-list {
     .list-group-item {
         cursor: pointer;
+
         &:hover {
             background-color: #f8f9fa;
         }
@@ -25,9 +27,11 @@ body {
 
 .custom-select {
     position: relative;
+
     #custom-select-input {
         width: 100%;
     }
+
     #custom-select-list {
         display: none;
         position: absolute;
@@ -39,9 +43,11 @@ body {
         border-top: none;
         border-radius: 0 0 0.25rem 0.25rem;
         background-color: #fff;
+
         li {
             cursor: pointer;
             padding: 0.5rem;
+
             &:hover,
             &.active {
                 background-color: #f8f9fa;
@@ -52,4 +58,13 @@ body {
 
 #add-part-btn {
     margin-top: 1rem;
+}
+
+.fixed-card {
+    height: 350px;
+}
+
+.fixed-scroll {
+    overflow-y: auto;
+    height: calc(100% - 56px); // ヘッダー部分の高さに合わせて調整
 }
