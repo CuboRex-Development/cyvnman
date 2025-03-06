@@ -12,15 +12,15 @@
                 <div class="row">
                     <!-- 左側: その他の情報 -->
                     <div class="col-md-4">
-                        <p class="mb-1"><strong>Version Number:</strong> <%= @version.version_number %></p>
-                        <p class="mb-1"><strong>Part:</strong> <%= link_to @version.part.part_name, @version.part, class: "text-decoration-none" %></p>
-                        <p class="mb-1"><strong>Scale:</strong> <%= @version.scale %></p>
-                        <p class="mb-1"><strong>Sheet Size:</strong> <%= @version.sheet_size %></p>
-                        <p class="mb-1"><strong>Unit:</strong> <%= @version.unit %></p>
-                        <p class="mb-1"><strong>Drawn By:</strong> <%= @version.drawn_by %></p>
-                        <p class="mb-1"><strong>Checked By:</strong> <%= @version.checked_by %></p>
-                        <p class="mb-1"><strong>Approved By:</strong> <%= @version.approved_by %></p>
-                        <p class="mb-0"><strong>Drawn Date:</strong> <%= @version.drawn_date&.strftime('%Y-%m-%d') %></p>
+                        <p class="mb-1">Version Number:<strong> <%= @version.version_number %></strong></p>
+                        <p class="mb-1">Part:<strong> <%= link_to @version.part.part_name, @version.part, class: "text-decoration-none" %></strong></p>
+                        <p class="mb-1">Scale:<strong> <%= @version.scale %></strong></p>
+                        <p class="mb-1">Sheet Size:<strong> <%= @version.sheet_size %></strong></p>
+                        <p class="mb-1">Unit:<strong> <%= @version.unit %></strong></p>
+                        <p class="mb-1">Drawn By:<strong> <%= @version.drawn_by %></strong></p>
+                        <p class="mb-1">Checked By:<strong> <%= @version.checked_by %></strong></p>
+                        <p class="mb-1">Approved By:<strong> <%= @version.approved_by %></strong></p>
+                        <p class="mb-0">Drawn Date:<strong> <%= @version.drawn_date&.strftime('%Y-%m-%d') %></strong></p>
                     </div>
                     <!-- 右側: Description -->
                     <div class="col-md-8">
