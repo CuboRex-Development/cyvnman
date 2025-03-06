@@ -1,6 +1,12 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
     <div class="card-body">
         <h1 class="card-title h3 mb-4"> <%= @version.version_number %></h1>
+        <% unless @version.checked_by.present? %>
+        <%= button_to 'Check Version', check_version_path(@version), method: :patch, class: 'btn btn-outline-primary' %>
+        <% end %>
+        <% if @version.checked_by.present? && @version.approved_by.blank? %>
+        <%= button_to 'Approve Version', approve_version_path(@version), method: :patch, class: 'btn btn-outline-success' %>
+        <% end %>
 
         <!-- Version Details -->
         <div class="card border-0 shadow mb-4">
