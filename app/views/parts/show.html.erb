@@ -108,14 +108,24 @@
                             <%= form.text_area :description, class: 'form-control', rows: 3 %>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <!-- Scale -->
+                            <div class="mb-3">
                                 <%= form.label :scale, class: 'form-label' %>
-                                <%= form.text_field :scale, class: 'form-control' %>
+                                <%= form.select :scale,
+    ['1:1', '1:2', '1:5'],
+    { selected: '1:1', prompt: 'Select scale' },
+    class: 'form-control' %>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <%= form.label :sheet_size, class: 'form-label' %>
-                                <%= form.text_field :sheet_size, class: 'form-control' %>
+
+                            <!-- Sheet Size -->
+                            <div class="mb-3">
+                                <%= form.label :sheet_size, "Sheet Size", class: 'form-label' %>
+                                <%= form.select :sheet_size,
+    ['A2', 'A3', 'A4'],
+    { selected: 'A3', prompt: 'Select sheet size' },
+    class: 'form-control' %>
                             </div>
+
                             <div class="col-md-4 mb-3">
                                 <%= form.label :unit, class: 'form-label' %>
                                 <%= form.text_field :unit, class: 'form-control' %>
