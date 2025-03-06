@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   root 'home#index'
 
   resources :types
@@ -27,7 +28,12 @@ Rails.application.routes.draw do
       get 'download'
     end
   end
-  
+  resources :versions do
+    member do
+      patch :check
+      patch :approve
+    end
+  end
   resources :comparisons, only: [:index] do
     collection do
       get 'compare'

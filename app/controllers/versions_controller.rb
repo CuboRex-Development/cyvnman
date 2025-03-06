@@ -20,8 +20,8 @@ class VersionsController < ApplicationController
   end
 
   def create
-    # version_number_suffix は不要となり、採番はモデル側で自動処理
     @version = @part.versions.build(version_params)
+    @version.drawn_by = current_user
     if @version.save
       respond_success(@version, notice: "Version was successfully created.", redirect_url: @part)
     else
@@ -52,6 +52,30 @@ class VersionsController < ApplicationController
     end
   end
 
+  def check
+    @version = Version.find(params[:id])
+    # チェック操作：チェック済みでない場合のみ current_user をセット
+    if @version.checked_by.blank?
+      @version.update(checked_by: current_user)
+      flash[:notice] = "Version has been checked."
+    else
+      flash[:alert] = "Already checked."
+    end
+    redirect_to version_path(@version)
+  end
+  
+  def approve
+    @version = Version.find(params[:id])
+    # 承認操作：承認済みでない場合のみ current_user をセット
+    if @version.approved_by.blank? && @version.checked_by.present?
+      @version.update(approved_by: current_user)
+      flash[:notice] = "Version has been approved."
+    else
+      flash[:alert] = "Cannot approve. Either already approved or not checked."
+    end
+    redirect_to version_path(@version)
+  end  
+
   private
 
   def set_version
@@ -66,6 +90,6 @@ class VersionsController < ApplicationController
 
   def version_params
     # version_number_suffix は削除
-    params.require(:version).permit(:description, :part_id, :file_path, :scale, :sheet_size, :unit, :drawn_by, :checked_by, :approved_by, :drawn_date, :drawing_image)
+    params.require(:version).permit(:description, :scale, :sheet_size, :unit, :drawn_date, :file_path, :drawing_image)
   end
 end

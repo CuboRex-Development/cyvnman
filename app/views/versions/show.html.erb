@@ -1,6 +1,12 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
     <div class="card-body">
         <h1 class="card-title h3 mb-4"> <%= @version.version_number %></h1>
+        <% unless @version.checked_by.present? %>
+        <%= button_to 'Check Version', check_version_path(@version), method: :patch, class: 'btn btn-outline-primary' %>
+        <% end %>
+        <% if @version.checked_by.present? && @version.approved_by.blank? %>
+        <%= button_to 'Approve Version', approve_version_path(@version), method: :patch, class: 'btn btn-outline-success' %>
+        <% end %>
 
         <!-- Version Details -->
         <div class="card border-0 shadow mb-4">
@@ -61,21 +67,6 @@
                         <div class="mb-3">
                             <%= form.label :unit, class: 'form-label' %>
                             <%= form.text_field :unit, class: 'form-control' %>
-                        </div>
-                        <!-- Drawn By -->
-                        <div class="mb-3">
-                            <%= form.label :drawn_by, "Drawn By", class: 'form-label' %>
-                            <%= form.text_field :drawn_by, class: 'form-control' %>
-                        </div>
-                        <!-- Checked By -->
-                        <div class="mb-3">
-                            <%= form.label :checked_by, "Checked By", class: 'form-label' %>
-                            <%= form.text_field :checked_by, class: 'form-control' %>
-                        </div>
-                        <!-- Approved By -->
-                        <div class="mb-3">
-                            <%= form.label :approved_by, "Approved By", class: 'form-label' %>
-                            <%= form.text_field :approved_by, class: 'form-control' %>
                         </div>
                         <!-- Drawn Date -->
                         <div class="mb-3">
