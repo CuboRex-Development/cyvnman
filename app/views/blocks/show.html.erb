@@ -8,13 +8,13 @@
                 <h2 class="h5 mb-0">Block Details</h2>
             </div>
             <div class="card-body">
-                <p class="mb-1"><strong>Block Number:</strong> <%= @block.block_number %></p>
-                <p class="mb-1"><strong>Block Name:</strong> <%= @block.block_name %></p>
+                <p class="mb-1">Block Number: <strong><%= @block.block_number %></strong></p>
+                <p class="mb-1">Block Name: <strong><%= @block.block_name %></strong></p>
                 <p class="mb-1">
-                    <strong>Block Price:</strong>
-                    <%= number_to_currency(@block.total_related_price, precision: 0) %>
+                    Block Price:
+                    <strong> <%= number_to_currency(@block.total_related_price, precision: 0) %> </strong>
                 </p>
-                <p class="mb-0"><strong>Description:</strong> <%= @block.description %></p>
+                <p class="mb-0">Description: <%= @block.description %></p>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
         <!-- Related Parts (Table Format with Image Column) -->
         <div id="current-related-parts" class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">Related Parts: <%= @block.parts.count %></h2>
+                <h2 class="h5 mb-0"><%= @block.parts.count %> Parts </h2>
                 <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newPartModal">New Part</a>
             </div>
             <div class="card-body p-0">
@@ -132,7 +132,7 @@
         <!-- Add Existing Part (Table Format with Action Column) -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light">
-                <h2 class="h5 mb-0">Add Existing Part</h2>
+                <h2 class="h5 mb-0">Add Part</h2>
             </div>
             <div class="card-body">
                 <!-- Search Input -->

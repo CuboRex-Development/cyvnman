@@ -1,6 +1,5 @@
 $primary: #2784e8; // プライマリカラーの変更
-$font-family-base: 'Roboto',
-    sans-serif; // フォントの変更
+$font-family-base: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace; // フォントの変更
 @import "bootstrap";
 
 #block-list {
@@ -67,4 +66,14 @@ body {
 .fixed-scroll {
     overflow-y: auto;
     height: calc(100% - 56px); // ヘッダー部分の高さに合わせて調整
+}
+
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.clickable-row:hover {
+    background-color: #f8f9fa;
+    /* お好みの色に調整 */
 }
