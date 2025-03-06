@@ -2,6 +2,11 @@ class Version < ApplicationRecord
   belongs_to :part
   has_one_attached :drawing_image
 
+    # ユーザー関連の設定（optional: true にしておくことで、未設定の場合も許容）
+  belongs_to :drawn_by, class_name: 'User', optional: true
+  belongs_to :checked_by, class_name: 'User', optional: true
+  belongs_to :approved_by, class_name: 'User', optional: true
+
   before_validation :generate_version_number, on: :create
 
   def self.ransackable_attributes(auth_object = nil)

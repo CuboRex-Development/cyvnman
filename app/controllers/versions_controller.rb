@@ -20,8 +20,8 @@ class VersionsController < ApplicationController
   end
 
   def create
-    # version_number_suffix は不要となり、採番はモデル側で自動処理
     @version = @part.versions.build(version_params)
+    @version.drawn_by = current_user
     if @version.save
       respond_success(@version, notice: "Version was successfully created.", redirect_url: @part)
     else
