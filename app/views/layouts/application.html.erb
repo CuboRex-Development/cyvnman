@@ -18,7 +18,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <%= link_to 'Types', types_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'types'}" %>
                 </li>
@@ -38,6 +38,10 @@
                     <%= link_to 'Comparisons', comparisons_path, class: 'nav-link' %>
                 </li>
             </ul>
+            <%= form_with url: root_path, method: :get, local: true, class: "d-flex" do |form| %>
+            <%= form.text_field :q, class: "form-control me-2", placeholder: "Enter search term" %>
+            <%= form.submit "Search", class: "btn btn-outline-primary" %>
+            <% end %>
         </div>
     </nav>
 
