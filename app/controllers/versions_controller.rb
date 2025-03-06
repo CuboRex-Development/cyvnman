@@ -90,6 +90,6 @@ class VersionsController < ApplicationController
 
   def version_params
     # version_number_suffix は削除
-    params.require(:version).permit(:description, :part_id, :file_path, :scale, :sheet_size, :unit, :drawn_by, :checked_by, :approved_by, :drawn_date, :drawing_image)
+    params.require(:version).permit(:description, :scale, :sheet_size, :unit, :drawn_date, :file_path, :drawing_image)
   end
 end

@@ -45,9 +45,9 @@
 
             <% if user_signed_in? %>
             <span class="navbar-text ms-3">
-                Logged in as <strong><%= current_user.username.presence || current_user.email %></strong>
+                as <strong><%= current_user.username.presence || current_user.email %></strong>
             </span>
-            <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "nav-link ms-3" %>
+            <%= link_to 'Logout', destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link ms-3" %>
             <% else %>
             <%= link_to 'Login', new_user_session_path, class: "nav-link ms-3" %>
             <% end %>
