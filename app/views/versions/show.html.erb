@@ -11,7 +11,17 @@
         <!-- Version Details -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">Version Details</h2>
+                <h2 class="h5 mb-0">info: <% badge_class = case @version.status
+         when 'Approved'
+           'bg-success'
+         when 'Checked'
+           'bg-primary'
+         else
+           'bg-secondary'
+         end %>
+                    <span class="badge <%= badge_class %> fw-normal"><%= @version.status %></span>
+                </h2>
+
                 <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editVersionModal" data-turbo="false">Edit</a>
             </div>
             <div class="card-body">
