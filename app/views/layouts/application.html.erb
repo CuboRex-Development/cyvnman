@@ -37,6 +37,9 @@
                 <li class="nav-item">
                     <%= link_to 'Comparisons', comparisons_path, class: 'nav-link' %>
                 </li>
+                <li class="nav-item">
+                    <%= link_to 'Stocks', stocks_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'stocks'}" %>
+                </li>
             </ul>
             <%= form_with url: root_path, method: :get, local: true, class: "d-flex" do |form| %>
             <%= form.text_field :q, class: "form-control me-2", placeholder: "Enter search term" %>
