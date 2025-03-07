@@ -25,9 +25,99 @@
             <td><%= block.block_name %></td>
             <td><%= number_to_currency(block.total_related_price, precision: 0) %></td>
             <td><%= block.description %></td>
+            <td>
+                <!-- モーダル起動ボタン -->
+                <button type="button" class="btn btn-sm btn-outline-primary add-part-btn" data-bs-toggle="modal" data-bs-target="#newPartModal" data-block-id="<%= block.id %>" data-block-number="<%= block.block_number %>">
+                    New Part
+                </button>
+            </td>
         </tr>
         <% end %>
     </tbody>
 </table>
 
+<!-- Modal: New Part Registration Form -->
+<div class="modal fade" id="newPartModal" tabindex="-1" aria-labelledby="newPartModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <%= form_with(model: Part.new, url: '', local: true, html: { multipart: true, id: 'new-part-form' }) do |form| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="newPartModalLabel">New Part</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 説明用: ブロック番号に基づいてパート番号が自動生成される旨 -->
+                <p class="mb-3">
+                    Part Number will be automatically generated based on the Block Number:
+                    <strong id="modal-block-number"></strong>
+                </p>
+                <!-- hidden_field でブロックIDを保持 -->
+                <%= form.hidden_field :primary_block_id, id: 'modal-primary-block-id' %>
+
+                <div class="mb-3">
+                    <%= form.label :part_name, "Part Name", class: 'form-label' %>
+                    <%= form.text_field :part_name, class: 'form-control', required: true %>
+                </div>
+
+                <div class="mb-3">
+                    <%= form.label :description, class: 'form-label' %>
+                    <%= form.text_area :description, class: 'form-control' %>
+                </div>
+
+                <div class="mb-3">
+                    <%= form.label :material, class: 'form-label' %>
+                    <%= form.text_field :material, class: 'form-control', placeholder: "Enter material" %>
+                </div>
+
+                <div class="mb-3">
+                    <%= form.label :nominal_size, class: 'form-label' %>
+                    <%= form.text_field :nominal_size, class: 'form-control', placeholder: "Enter nominal size" %>
+                </div>
+
+                <div class="mb-3">
+                    <%= form.label :image, "Upload Image", class: 'form-label' %>
+                    <%= form.file_field :image, class: 'form-control' %>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%= form.submit 'Create Part', class: 'btn btn-outline-primary' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
 <%= link_to 'New Block', new_block_path, class: "btn btn-outline-primary" %>
+
+<script>
+    document.addEventListener('turbo:load', function() {
+        var newPartModal = document.getElementById('newPartModal');
+        if (newPartModal) {
+            newPartModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var blockId = button.getAttribute('data-block-id');
+                var blockNumber = button.getAttribute('data-block-number');
+
+                // モーダルタイトルの更新
+                var modalTitle = newPartModal.querySelector('.modal-title');
+                modalTitle.textContent = 'New Part for Block ' + blockNumber;
+
+                // ブロック番号表示の更新
+                var modalBlockNumber = newPartModal.querySelector('#modal-block-number');
+                if (modalBlockNumber) {
+                    modalBlockNumber.textContent = blockNumber;
+                }
+
+                // hidden field にブロックIDをセット
+                var primaryBlockField = newPartModal.querySelector('#modal-primary-block-id');
+                if (primaryBlockField) {
+                    primaryBlockField.value = blockId;
+                }
+
+                // フォームの action URL を更新 → ここでネストされた parts ルートを指定する
+                var form = newPartModal.querySelector('form');
+                form.action = '/blocks/' + blockId + '/parts';
+            });
+        }
+    });
+</script>
