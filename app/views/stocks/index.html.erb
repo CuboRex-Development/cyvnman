@@ -4,14 +4,14 @@
             <th>Part Number</th>
             <th>Part Name</th>
             <th>Price</th>
-            <th>Quantity</th>
+            <th>Stock Quantity</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         <% @stocks.each do |stock| %>
         <tr>
-            <%= form_with model: stock, local: true, method: :patch, html: { style: "display: contents;" } do |f| %>
+            <%= form_with model: stock, local: true, method: :patch, html: { style: "display: contents;", data: { turbo: false } } do |f| %>
             <td><%= stock.part.part_number %></td>
             <td><%= stock.part.part_name %></td>
             <td>

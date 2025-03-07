@@ -10,7 +10,7 @@ class StocksController < ApplicationController
   def update
     @stock = Stock.find(params[:id])
     if @stock.update(stock_params)
-      redirect_to stocks_path, notice: "在庫を更新しました。"
+      redirect_to stocks_path, notice: "Stock updated successfully"
     else
       flash.now[:alert] = @stock.errors.full_messages.join(", ")
       render :edit
