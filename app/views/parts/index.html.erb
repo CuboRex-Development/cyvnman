@@ -17,6 +17,7 @@
             <th>Nominal Size</th>
             <th>Part Name (English)</th>
             <th>Price</th>
+            <th>Actions</th> <!-- 追加 -->
         </tr>
     </thead>
     <tbody>
@@ -35,11 +36,104 @@
             <td><%= part.nominal_size %></td>
             <td><%= part.part_name_eg %></td>
             <td><%= part.standard_price %></td>
+            <td>
+                <!-- モーダル起動ボタン -->
+                <button type="button" class="btn btn-sm btn-outline-primary new-version-btn" data-bs-toggle="modal" data-bs-target="#newVersionModal" data-part-id="<%= part.id %>" data-part-number="<%= part.part_number %>">
+                    New Version
+                </button>
+            </td>
         </tr>
         <% end %>
     </tbody>
 </table>
-
+<!-- Modal: New Version Registration Form -->
+<div class="modal fade" id="newVersionModal" tabindex="-1" aria-labelledby="newVersionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <%= form_with(model: Version.new, url: '', local: true, html: { multipart: true, id: 'new-version-form' }) do |form| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="newVersionModalLabel">New Version</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 説明: 自動生成されるバージョン番号の元になる部品番号 -->
+                <p class="mb-3">
+                    Version Number will be automatically generated based on the Part Number:
+                    <strong id="modal-part-number"></strong>
+                </p>
+                <!-- バージョン作成フォーム -->
+                <div class="mb-3">
+                    <%= form.label :description, class: 'form-label' %>
+                    <%= form.text_area :description, class: 'form-control', rows: 3 %>
+                </div>
+                <div class="row">
+                    <!-- Scale -->
+                    <div class="mb-3">
+                        <%= form.label :scale, class: 'form-label' %>
+                        <%= form.select :scale,
+                  ['1:1', '1:2', '1:5'],
+                  { selected: '1:1', prompt: 'Select scale' },
+                  class: 'form-control' %>
+                    </div>
+                    <!-- Sheet Size -->
+                    <div class="mb-3">
+                        <%= form.label :sheet_size, "Sheet Size", class: 'form-label' %>
+                        <%= form.select :sheet_size,
+                  ['A2', 'A3', 'A4'],
+                  { selected: 'A3', prompt: 'Select sheet size' },
+                  class: 'form-control' %>
+                    </div>
+                    <!-- Unit -->
+                    <div class="col-md-4 mb-3">
+                        <%= form.label :unit, class: 'form-label' %>
+                        <%= form.text_field :unit, class: 'form-control' %>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :drawn_date, class: 'form-label' %>
+                    <%= form.date_field :drawn_date, class: 'form-control' %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :drawing_image, "Upload Drawing Image", class: 'form-label' %>
+                    <%= form.file_field :drawing_image, class: 'form-control' %>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%= form.submit 'Create Version', class: 'btn btn-outline-primary' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+<!-- Pagination -->
 <div class="d-flex justify-content-center mt-3">
     <%= paginate @parts, theme: 'bootstrap-5' %>
 </div>
+
+<script>
+    document.addEventListener('turbo:load', function() {
+        var newVersionModal = document.getElementById('newVersionModal');
+        if (newVersionModal) {
+            newVersionModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var partId = button.getAttribute('data-part-id');
+                var partNumber = button.getAttribute('data-part-number');
+
+                // モーダルタイトルの更新（必要に応じて）
+                var modalTitle = newVersionModal.querySelector('.modal-title');
+                modalTitle.textContent = 'New Version for Part ' + partNumber;
+
+                // 部品番号の表示更新
+                var modalPartNumber = newVersionModal.querySelector('#modal-part-number');
+                if (modalPartNumber) {
+                    modalPartNumber.textContent = partNumber;
+                }
+
+                // フォームの action URL を更新
+                var form = newVersionModal.querySelector('form');
+                form.action = '/parts/' + partId + '/versions';
+            });
+        }
+    });
+</script>
