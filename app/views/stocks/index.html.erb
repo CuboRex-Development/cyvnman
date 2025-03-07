@@ -1,0 +1,23 @@
+<!-- app/views/stocks/index.html.erb -->
+<h1>在庫一覧</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Part Number</th>
+            <th>Part Name</th>
+            <th>Quantity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @stocks.each do |stock| %>
+        <tr>
+            <td><%= stock.part.part_number %></td>
+            <td><%= stock.part.part_name %></td>
+            <td><%= stock.quantity %></td>
+            <td><%= link_to "Edit", edit_stock_path(stock) %></td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>

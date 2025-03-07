@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'stocks/index'
+  get 'stocks/edit'
+  get 'stocks/update'
   devise_for :users
   root 'home#index'
 
@@ -39,6 +42,8 @@ Rails.application.routes.draw do
       get 'compare'
     end
   end
+
+  resources :stocks, only: [:index, :edit, :update]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
