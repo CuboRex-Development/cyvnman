@@ -9,7 +9,7 @@ class StocksController < ApplicationController
 
   def update
     @stock = Stock.find(params[:id])
-    if @stock.update(stock_params)
+    if @stock.update(stock_params.merge(updated_by: current_user.username))
       redirect_to stocks_path, notice: "Stock updated successfully"
     else
       flash.now[:alert] = @stock.errors.full_messages.join(", ")

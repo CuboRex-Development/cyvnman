@@ -3,6 +3,8 @@
         <tr>
             <th>Part Number</th>
             <th>Part Name</th>
+            <th>Last Updated</th>
+            <th>Updated by</th>
             <th>Stock Quantity</th>
             <th>Actions</th>
         </tr>
@@ -14,6 +16,8 @@
             <%= form_with model: stock, local: true, method: :patch, html: { style: "display: contents;", data: { turbo: false } } do |f| %>
             <td><%= stock.part.part_number %></td>
             <td><%= stock.part.part_name %></td>
+            <td><%= stock.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td><%= stock.updated_by %></td>
             <td>
                 <%= f.number_field :quantity, class: "form-control", value: stock.quantity %>
             </td>

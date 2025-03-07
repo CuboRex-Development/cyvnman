@@ -34,7 +34,7 @@
             </td>
             <td><%= part.material %></td>
             <td><%= part.nominal_size %></td>
-            <td><%= part.standard_price %></td>
+            <td><%= number_to_currency(part.standard_price, precision: 0) %></td>
             <td><%= part.stock.present? ? part.stock.quantity : 0 %></td>
             <td>
                 <button type="button" class="btn btn-sm btn-outline-primary new-version-btn" data-bs-toggle="modal" data-bs-target="#newVersionModal" data-part-id="<%= part.id %>" data-part-number="<%= part.part_number %>">
