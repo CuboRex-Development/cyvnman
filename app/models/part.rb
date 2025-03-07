@@ -4,6 +4,7 @@ class Part < ApplicationRecord
   has_many :block_parts, dependent: :destroy
   has_many :blocks, through: :block_parts
   has_many :versions
+  has_one :stock, dependent: :destroy
 
   has_and_belongs_to_many :related_parts,
                           class_name: 'Part',

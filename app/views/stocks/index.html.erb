@@ -1,0 +1,34 @@
+<table class="table shadow table-hover table-responsive">
+    <thead class="table-light">
+        <tr>
+            <th>Part Number</th>
+            <th>Part Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @stocks.each do |stock| %>
+        <tr>
+            <%= form_with model: stock, local: true, method: :patch, html: { style: "display: contents;" } do |f| %>
+            <td><%= stock.part.part_number %></td>
+            <td><%= stock.part.part_name %></td>
+            <td>
+                <%= f.fields_for :part, stock.part do |pf| %>
+                <%= pf.number_field :standard_price, class: "form-control" %>
+                <% end %>
+            </td>
+            <td>
+                <%= f.number_field :quantity, class: "form-control", value: stock.quantity %>
+            </td>
+            <td>
+                <%= f.submit 'Save', class: "btn btn-sm btn-outline-primary" %>
+            </td>
+            <% end %>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<%= link_to 'Back to Dashboard', root_path, class: "btn btn-outline-primary" %>

@@ -1,0 +1,20 @@
+<!-- app/views/stocks/edit.html.erb -->
+<h1>Edit Stock</h1>
+
+<%= form_with(model: @stock, local: true) do |f| %>
+<div>
+    <strong>Part Number:</strong>
+    <%= @stock.part.part_number %>
+</div>
+<div>
+    <strong>Part Name:</strong>
+    <%= @stock.part.part_name %>
+</div>
+<div>
+    <%= f.label :quantity, "在庫数" %><br>
+    <%= f.number_field :quantity, min: 0 %>
+</div>
+<div>
+    <%= f.submit "更新" %>
+</div>
+<% end %>
