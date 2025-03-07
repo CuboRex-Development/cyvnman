@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_07_033327) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_07_093435) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -120,6 +120,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_07_033327) do
     t.index ["parent_part_id"], name: "index_parts_on_parent_part_id"
   end
 
+  create_table "stocks", force: :cascade do |t|
+    t.integer "part_id", null: false
+    t.integer "quantity", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["part_id"], name: "index_stocks_on_part_id"
+  end
+
   create_table "types", force: :cascade do |t|
     t.string "type_name"
     t.string "type_number"
@@ -173,6 +181,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_07_033327) do
   add_foreign_key "part_relationships", "parts", column: "child_part_id"
   add_foreign_key "part_relationships", "parts", column: "parent_part_id"
   add_foreign_key "parts", "parts", column: "parent_part_id"
+  add_foreign_key "stocks", "parts"
   add_foreign_key "versions", "parts"
   add_foreign_key "versions", "users", column: "approved_by_id"
   add_foreign_key "versions", "users", column: "checked_by_id"
