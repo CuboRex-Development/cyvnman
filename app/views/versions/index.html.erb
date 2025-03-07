@@ -13,8 +13,8 @@
     <thead class="table-light">
         <tr>
             <th>Version Number</th>
-            <th>Part Number</th>
             <th>Part Name</th>
+            <th><%= sort_link(@q, :status, "Status") %></th>
             <th>Description</th>
         </tr>
     </thead>
@@ -22,8 +22,18 @@
         <% @versions.each do |version| %>
         <tr data-href="<%= version_path(version) %>" class="clickable-row">
             <td><%= version.version_number %></td>
-            <td><%= version.part.part_number if version.part %></td>
             <td><%= version.part.part_name if version.part %></td>
+            <td>
+                <% badge_class = case version.status
+               when 'Approved'
+                 'bg-success'
+               when 'Checked'
+                 'bg-primary'
+               else
+                 'bg-secondary'
+               end %>
+                <span class="badge <%= badge_class %> fw-normal"><%= version.status %></span>
+            </td>
             <td><%= version.description %></td>
         </tr>
         <% end %>

@@ -10,7 +10,7 @@ class Version < ApplicationRecord
   before_validation :generate_version_number, on: :create
 
   def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "description", "id", "version_number", "part_id", "file_path", "scale", "sheet_size", "unit", "drawn_by", "checked_by", "approved_by", "drawn_date", "updated_at"]
+    ["created_at", "description", "id", "version_number", "part_id", "file_path", "scale", "sheet_size", "unit", "drawn_by", "checked_by", "approved_by", "drawn_date", "status", "updated_at"]
   end
 
   def self.ransackable_associations(auth_object = nil)

@@ -54,27 +54,28 @@ class VersionsController < ApplicationController
 
   def check
     @version = Version.find(params[:id])
-    # チェック操作：チェック済みでない場合のみ current_user をセット
+    # チェック済みでない場合のみ current_user をセットし、statusを更新
     if @version.checked_by.blank?
-      @version.update(checked_by: current_user)
+      @version.update(checked_by: current_user, status: 'Checked')
       flash[:notice] = "Version has been checked."
     else
       flash[:alert] = "Already checked."
     end
     redirect_to version_path(@version)
   end
-  
+
   def approve
     @version = Version.find(params[:id])
-    # 承認操作：承認済みでない場合のみ current_user をセット
+    # 承認済みでなく、かつチェック済みの場合のみ current_user をセットし、statusを更新
     if @version.approved_by.blank? && @version.checked_by.present?
-      @version.update(approved_by: current_user)
+      @version.update(approved_by: current_user, status: 'Approved')
       flash[:notice] = "Version has been approved."
     else
       flash[:alert] = "Cannot approve. Either already approved or not checked."
     end
     redirect_to version_path(@version)
-  end  
+  end
+  
 
   private
 
