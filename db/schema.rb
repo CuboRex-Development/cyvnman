@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_06_091130) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_07_033327) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -158,6 +158,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_06_091130) do
     t.integer "drawn_by_id"
     t.integer "checked_by_id"
     t.integer "approved_by_id"
+    t.string "status", default: "Draft"
     t.index ["approved_by_id"], name: "index_versions_on_approved_by_id"
     t.index ["checked_by_id"], name: "index_versions_on_checked_by_id"
     t.index ["drawn_by_id"], name: "index_versions_on_drawn_by_id"
