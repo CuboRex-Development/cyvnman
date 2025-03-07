@@ -9,7 +9,8 @@
     </thead>
     <tbody>
         <% @stocks.each do |stock| %>
-        <tr>
+        <!-- 行全体にクリック時の遷移先（該当パーツの show ページ）を設定 -->
+        <tr data-href="<%= part_path(stock.part) %>" class="clickable-row">
             <%= form_with model: stock, local: true, method: :patch, html: { style: "display: contents;", data: { turbo: false } } do |f| %>
             <td><%= stock.part.part_number %></td>
             <td><%= stock.part.part_name %></td>
@@ -26,3 +27,20 @@
 </table>
 
 <%= link_to 'Back to Dashboard', root_path, class: "btn btn-outline-primary" %>
+
+<!-- JavaScript: 行クリックで該当パーツの詳細ページへ遷移 -->
+<script>
+    document.addEventListener("turbo:load", function() {
+        document.querySelectorAll("tr.clickable-row").forEach(function(row) {
+            row.addEventListener("click", function(e) {
+                // 入力フォームやボタン、リンク上でのクリックは無視する
+                const ignoreTags = ["INPUT", "BUTTON", "SELECT", "TEXTAREA", "A"];
+                if (ignoreTags.includes(e.target.tagName)) return;
+                const href = row.getAttribute("data-href");
+                if (href) {
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+</script>
