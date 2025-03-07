@@ -3,7 +3,6 @@
         <tr>
             <th>Part Number</th>
             <th>Part Name</th>
-            <th>Price</th>
             <th>Stock Quantity</th>
             <th>Actions</th>
         </tr>
@@ -14,11 +13,6 @@
             <%= form_with model: stock, local: true, method: :patch, html: { style: "display: contents;", data: { turbo: false } } do |f| %>
             <td><%= stock.part.part_number %></td>
             <td><%= stock.part.part_name %></td>
-            <td>
-                <%= f.fields_for :part, stock.part do |pf| %>
-                <%= pf.number_field :standard_price, class: "form-control" %>
-                <% end %>
-            </td>
             <td>
                 <%= f.number_field :quantity, class: "form-control", value: stock.quantity %>
             </td>
