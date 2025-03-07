@@ -7,7 +7,7 @@
             <div class="col-md-5">
                 <div class="card border-0 shadow mb-4 fixed-card">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                        <h2 class="h5 mb-0">Part Details</h2>
+                        <h2 class="h5 mb-0">Info</h2>
                         <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editPartModal" data-turbo="false">Edit</a>
                     </div>
                     <!-- 固定高さ内でスクロールする領域 -->
@@ -53,7 +53,7 @@
             <div class="col-md-7">
                 <div class="card border-0 shadow mb-4 fixed-card">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                        <h2 class="h5 mb-0">Versions</h2>
+                        <h2 class="h5 mb-0"> Versions </h2>
                         <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newVersionModal" data-turbo="false">New Version</a>
                     </div>
                     <!-- 固定高さ内でスクロールする領域 -->
@@ -62,6 +62,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>Version Number</th>
+                                    <th>Status</th>
                                     <th>Description</th>
                                 </tr>
                             </thead>
@@ -69,6 +70,17 @@
                                 <% @part.versions.each do |version| %>
                                 <tr data-href="<%= version_path(version) %>" class="clickable-row">
                                     <td><%= version.version_number %></td>
+                                    <td>
+                                        <% badge_class = case version.status
+               when 'Approved'
+                 'bg-success'
+               when 'Checked'
+                 'bg-primary'
+               else
+                 'bg-secondary'
+               end %>
+                                        <span class="badge <%= badge_class %> fw-normal"><%= version.status %></span>
+                                    </td>
                                     <td><%= truncate(version.description, length: 100) %></td>
                                 </tr>
                                 <% end %>
@@ -218,7 +230,7 @@
     <!-- Related Blocks -->
     <div class="card border-0 shadow mb-4">
         <div class="card-header bg-light">
-            <h2 class="h5 mb-0">Related Blocks</h2>
+            <h2 class="h5 mb-0">Belongs to:</h2>
         </div>
         <div class="card-body p-0">
             <ul class="list-group list-group-flush">
@@ -236,7 +248,7 @@
     <!-- セクションに id="current-related-parts" を追加 -->
     <div id="current-related-parts" class="card border-0 shadow mb-4">
         <div class="card-header bg-light">
-            <h2 class="h5 mb-0">Related Parts: <%= @part.related_parts.count %></h2>
+            <h2 class="h5 mb-0"><%= @part.related_parts.count %> Relations:</h2>
         </div>
         <div class="card-body p-0">
             <table class="table table-hover mb-0">
@@ -277,7 +289,7 @@
     <!-- Add Related Part (Table Format with Action Column and Pagination) -->
     <div class="card border-0 shadow mb-4">
         <div class="card-header bg-light">
-            <h2 class="h5 mb-0">Add Related Part</h2>
+            <h2 class="h5 mb-0">Add Relation</h2>
         </div>
         <div class="card-body">
             <!-- 検索入力 -->
