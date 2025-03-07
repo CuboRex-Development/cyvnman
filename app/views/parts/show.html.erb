@@ -319,11 +319,16 @@
                             <td><%= p.part_name %></td>
                             <td>
                                 <% if p.image.attached? %>
+                                <% if p.image.variable? %>
                                 <%= image_tag p.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
+                                <% else %>
+                                <%= image_tag p.image, class: "img-thumbnail" %>
+                                <% end %>
                                 <% else %>
                                 <span class="text-muted">No Image</span>
                                 <% end %>
                             </td>
+
                             <td><%= p.material %></td>
                             <td><%= p.nominal_size %></td>
                             <td>
