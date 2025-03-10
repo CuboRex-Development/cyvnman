@@ -1,6 +1,7 @@
 class StocksController < ApplicationController
   def index
-    @stocks = Stock.includes(:part).all
+    @q = Stock.ransack(params[:q])
+    @stocks = @q.result.includes(:part)
   end
 
   def edit

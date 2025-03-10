@@ -1,3 +1,14 @@
+<div class="mb-3">
+    <%= search_form_for @q, url: stocks_path, method: :get, local: true do |form| %>
+    <div class="input-group">
+        <%= form.text_field :part_part_number_or_part_part_name_cont, class: "form-control", placeholder: "Search Stocks" %>
+        <div class="input-group-append">
+            <%= form.submit "Search", class: "btn btn-outline-primary" %>
+        </div>
+    </div>
+    <% end %>
+</div>
+
 <table class="table shadow table-hover table-responsive">
     <thead class="table-light">
         <tr>
