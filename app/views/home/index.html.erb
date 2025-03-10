@@ -1,123 +1,121 @@
-<h1>Dashboard</h1>
-
 <div class="row">
-  <div class="col-md-4">
-    <div class="card border-0 shadow p-2 mb-4">
-      <div class="card-title fs-5 mb-3 p-2">
-        Statistics
-      </div>
-      <div class="card-body">
-        <p><strong>Types:</strong> <%= @stats[:types] %></p>
-        <p><strong>Models:</strong> <%= @stats[:models] %></p>
-        <p><strong>Blocks:</strong> <%= @stats[:blocks] %></p>
-        <p><strong>Parts:</strong> <%= @stats[:parts] %></p>
-        <p><strong>Versions:</strong> <%= @stats[:versions] %></p>
-      </div>
-    </div>
-
-    <div class="card border-0 shadow p-2">
-      <div class="card-title fs-5 mb-3 p-2">
-        Recent Updates
-      </div>
-      <div class="card-body">
-        <h5>Types</h5>
-        <ul>
-          <% @recent_updates[:types].each do |type| %>
-            <li><%= link_to type.type_name, type %> (Updated at: <%= type.updated_at %>)</li>
-          <% end %>
-        </ul>
-
-        <h5>Models</h5>
-        <ul>
-          <% @recent_updates[:models].each do |model| %>
-            <li><%= link_to model.model_code, model %> (Updated at: <%= model.updated_at %>)</li>
-          <% end %>
-        </ul>
-
-        <h5>Blocks</h5>
-        <ul>
-          <% @recent_updates[:blocks].each do |block| %>
-            <li><%= link_to block.block_name, block %> (Updated at: <%= block.updated_at %>)</li>
-          <% end %>
-        </ul>
-
-        <h5>Parts</h5>
-        <ul>
-          <% @recent_updates[:parts].each do |part| %>
-            <li><%= link_to part.part_name, part %> (Updated at: <%= part.updated_at %>)</li>
-          <% end %>
-        </ul>
-
-        <h5>Versions</h5>
-        <ul>
-          <% @recent_updates[:versions].each do |version| %>
-            <li><%= link_to version.version_number, version %> (Updated at: <%= version.updated_at %>)</li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-8">
-    <div class="card border-0 shadow p-2">
-      <div class="card-body">
-        <%= form_with url: root_path, method: :get, local: true, class: "mb-3" do |form| %>
-          <div class="input-group">
-            <%= form.text_field :q, value: @q, class: "form-control", placeholder: "Enter search term" %>
-            <div class="input-group-append">
-              <%= form.submit "Search", class: "btn btn-outline-primary" %>
+    <div class="col-md-4">
+        <div class="card border-0 shadow p-2 mb-4">
+            <div class="card-title fs-5 mb-3 p-2">
+                Statistics
             </div>
-          </div>
-        <% end %>
+            <div class="card-body">
+                <p><strong>Types:</strong> <%= @stats[:types] %></p>
+                <p><strong>Models:</strong> <%= @stats[:models] %></p>
+                <p><strong>Blocks:</strong> <%= @stats[:blocks] %></p>
+                <p><strong>Parts:</strong> <%= @stats[:parts] %></p>
+                <p><strong>Versions:</strong> <%= @stats[:versions] %></p>
+            </div>
+        </div>
 
-        <% if @q.present? %>
-          <h4>Search Results</h4>
-          <% if @types.present? %>
-            <h5>Types</h5>
-            <ul>
-              <% @types.each do |type| %>
-                <li><%= link_to type.type_name, type %></li>
-              <% end %>
-            </ul>
-          <% end %>
+        <div class="card border-0 shadow p-2">
+            <div class="card-title fs-5 mb-3 p-2">
+                Recent Updates
+            </div>
+            <div class="card-body">
+                <h5>Types</h5>
+                <ul>
+                    <% @recent_updates[:types].each do |type| %>
+                    <li><%= link_to type.type_name, type %> (Updated at: <%= type.updated_at %>)</li>
+                    <% end %>
+                </ul>
 
-          <% if @models.present? %>
-            <h5>Models</h5>
-            <ul>
-              <% @models.each do |model| %>
-                <li><%= link_to model.model_code, model %></li>
-              <% end %>
-            </ul>
-          <% end %>
+                <h5>Models</h5>
+                <ul>
+                    <% @recent_updates[:models].each do |model| %>
+                    <li><%= link_to model.model_code, model %> (Updated at: <%= model.updated_at %>)</li>
+                    <% end %>
+                </ul>
 
-          <% if @blocks.present? %>
-            <h5>Blocks</h5>
-            <ul>
-              <% @blocks.each do |block| %>
-                <li><%= link_to block.block_name, block %></li>
-              <% end %>
-            </ul>
-          <% end %>
+                <h5>Blocks</h5>
+                <ul>
+                    <% @recent_updates[:blocks].each do |block| %>
+                    <li><%= link_to block.block_name, block %> (Updated at: <%= block.updated_at %>)</li>
+                    <% end %>
+                </ul>
 
-          <% if @parts.present? %>
-            <h5>Parts</h5>
-            <ul>
-              <% @parts.each do |part| %>
-                <li><%= link_to part.part_name, part %></li>
-              <% end %>
-            </ul>
-          <% end %>
+                <h5>Parts</h5>
+                <ul>
+                    <% @recent_updates[:parts].each do |part| %>
+                    <li><%= link_to part.part_name, part %> (Updated at: <%= part.updated_at %>)</li>
+                    <% end %>
+                </ul>
 
-          <% if @versions.present? %>
-            <h5>Versions</h5>
-            <ul>
-              <% @versions.each do |version| %>
-                <li><%= link_to version.version_number, version %></li>
-              <% end %>
-            </ul>
-          <% end %>
-        <% end %>
-      </div>
+                <h5>Versions</h5>
+                <ul>
+                    <% @recent_updates[:versions].each do |version| %>
+                    <li><%= link_to version.version_number, version %> (Updated at: <%= version.updated_at %>)</li>
+                    <% end %>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <div class="col-md-8">
+        <div class="card border-0 shadow p-2">
+            <div class="card-body">
+                <%= form_with url: root_path, method: :get, local: true, class: "mb-3" do |form| %>
+                <div class="input-group">
+                    <%= form.text_field :q, value: @q, class: "form-control", placeholder: "Enter search term" %>
+                    <div class="input-group-append">
+                        <%= form.submit "Search", class: "btn btn-outline-primary" %>
+                    </div>
+                </div>
+                <% end %>
+
+                <% if @q.present? %>
+                <h4>Search Results</h4>
+                <% if @types.present? %>
+                <h5>Types</h5>
+                <ul>
+                    <% @types.each do |type| %>
+                    <li><%= link_to type.type_name, type %></li>
+                    <% end %>
+                </ul>
+                <% end %>
+
+                <% if @models.present? %>
+                <h5>Models</h5>
+                <ul>
+                    <% @models.each do |model| %>
+                    <li><%= link_to model.model_code, model %></li>
+                    <% end %>
+                </ul>
+                <% end %>
+
+                <% if @blocks.present? %>
+                <h5>Blocks</h5>
+                <ul>
+                    <% @blocks.each do |block| %>
+                    <li><%= link_to block.block_name, block %></li>
+                    <% end %>
+                </ul>
+                <% end %>
+
+                <% if @parts.present? %>
+                <h5>Parts</h5>
+                <ul>
+                    <% @parts.each do |part| %>
+                    <li><%= link_to part.part_name, part %></li>
+                    <% end %>
+                </ul>
+                <% end %>
+
+                <% if @versions.present? %>
+                <h5>Versions</h5>
+                <ul>
+                    <% @versions.each do |version| %>
+                    <li><%= link_to version.version_number, version %></li>
+                    <% end %>
+                </ul>
+                <% end %>
+                <% end %>
+            </div>
+        </div>
+    </div>
 </div>
