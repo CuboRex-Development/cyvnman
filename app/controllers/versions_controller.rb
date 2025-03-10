@@ -1,4 +1,5 @@
 class VersionsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_version, only: %i[show edit update destroy download]
   before_action :set_part, only: %i[new create edit update]
 

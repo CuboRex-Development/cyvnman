@@ -1,4 +1,5 @@
 class ModelsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_model, only: [:show, :edit, :update, :destroy, :add_block, :remove_block]
 
   def index

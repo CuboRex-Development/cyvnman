@@ -1,4 +1,6 @@
 class StocksController < ApplicationController
+  before_action :authenticate_user!, except: [:index]
+
   def index
     @q = Stock.ransack(params[:q])
     @stocks = @q.result.includes(:part)

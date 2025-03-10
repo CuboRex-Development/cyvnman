@@ -1,4 +1,5 @@
 class PartsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_part, only: %i[show edit update destroy add_related_part remove_related_part]
   before_action :set_block, only: %i[new create]
 
