@@ -21,11 +21,11 @@ class PartsController < ApplicationController
 
   def edit
   end
-  
+
   def create
     @part = Part.new(part_params)
     @part.primary_block_id = @block.id
-  
+
     if @part.save
       quantity = params[:part][:quantity].to_i
       quantity = 1 if quantity.zero?
@@ -35,7 +35,6 @@ class PartsController < ApplicationController
       respond_failure(@part, :new)
     end
   end
-  
 
   def update
     if @part.update(part_params)
