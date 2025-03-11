@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StocksController < ApplicationController
   before_action :authenticate_user!, except: [:index]
 
@@ -13,9 +15,9 @@ class StocksController < ApplicationController
   def update
     @stock = Stock.find(params[:id])
     if @stock.update(stock_params.merge(updated_by: current_user.username))
-      redirect_to stocks_path, notice: "Stock updated successfully"
+      redirect_to stocks_path, notice: 'Stock updated successfully'
     else
-      flash.now[:alert] = @stock.errors.full_messages.join(", ")
+      flash.now[:alert] = @stock.errors.full_messages.join(', ')
       render :edit
     end
   end
@@ -23,6 +25,6 @@ class StocksController < ApplicationController
   private
 
   def stock_params
-    params.require(:stock).permit(:quantity, part_attributes: [:id, :standard_price])
-  end  
+    params.require(:stock).permit(:quantity, part_attributes: %i[id standard_price])
+  end
 end

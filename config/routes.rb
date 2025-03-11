@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   get 'stocks/index'
   get 'stocks/edit'
@@ -17,14 +19,14 @@ Rails.application.routes.draw do
       post 'add_part'
       delete 'remove_part'
     end
-    resources :parts, only: [:new, :create]
+    resources :parts, only: %i[new create]
   end
   resources :parts do
     member do
       post 'add_related_part'
       delete 'remove_related_part'
     end
-    resources :versions, only: [:new, :create]
+    resources :versions, only: %i[new create]
   end
   resources :versions do
     member do
@@ -43,13 +45,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :stocks, only: [:index, :edit, :update]
+  resources :stocks, only: %i[index edit update]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
   # Defines the root path route ("/")
   # root "posts#index"

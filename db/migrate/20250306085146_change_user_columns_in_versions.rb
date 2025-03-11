@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeUserColumnsInVersions < ActiveRecord::Migration[7.1]
   def change
     # 既存の文字列型カラムを削除（必要に応じて、既存データの移行処理を検討）

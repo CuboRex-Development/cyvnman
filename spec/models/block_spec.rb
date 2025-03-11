@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Block, type: :model do
@@ -5,8 +7,8 @@ RSpec.describe Block, type: :model do
     block = Block.new
     expect(block).not_to be_valid
 
-    block.block_number = "T-001"
-    block.block_name = "Block A"
+    block.block_number = 'T-001'
+    block.block_name = 'Block A'
     expect(block).to be_valid
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ComparisonsController < ApplicationController
   def index
     @blocks = Block.order(:block_number)
