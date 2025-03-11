@@ -5,8 +5,12 @@
             <!-- Block Info -->
             <div class="col-md-4">
                 <div class="card border-0 shadow mb-4">
-                    <div class="card-header bg-light">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
                         <h2 class="h5 mb-0">Info</h2>
+                        <!-- Info カード右端に Edit ボタン -->
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editBlockModal">
+                            Edit
+                        </button>
                     </div>
                     <div class="card-body">
                         <p class="mb-1">Block Number: <strong><%= @block.block_number %></strong></p>
@@ -106,14 +110,13 @@
                             </td>
                             <td>
                                 <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id),
-                      method: :delete,
-                      class: "btn btn-sm btn-outline-danger",
-                      onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                        method: :delete,
+                        class: "btn btn-sm btn-outline-danger",
+                        onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                             </td>
                         </tr>
                         <% end %>
                     </tbody>
-
                 </table>
             </div>
         </div>
@@ -177,6 +180,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Add Existing Part (Table Format with Action Column) -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light">
@@ -220,10 +224,10 @@
                                 <td><%= part.standard_price %></td>
                                 <td>
                                     <%= form_with url: add_part_block_path(@block, part_id: part.id),
-                              method: :post,
-                              scope: nil,
-                              local: true,
-                              data: { turbo: false } do |f| %>
+                          method: :post,
+                          scope: nil,
+                          local: true,
+                          data: { turbo: false } do |f| %>
                                     <div class="input-group">
                                         <%= f.number_field :quantity, value: 1, min: 1, class: "form-control", style: "width: 80px;" %>
                                         <%= f.submit "Add", class: "btn btn-sm btn-outline-primary" %>
@@ -238,18 +242,51 @@
             </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Bottom Action Buttons (Edit リンクは削除) -->
         <div class="d-flex justify-content-between">
-            <%= link_to 'Edit', edit_block_path(@block), class: "btn btn-outline-primary" %>
             <%= link_to 'Back to Blocks', blocks_path, class: "btn btn-outline-primary" %>
             <%= button_to 'Delete', @block, method: :delete, data: { confirm: 'Are you sure you want to delete this block?' }, class: "btn btn-outline-danger" %>
         </div>
     </div>
 </div>
 
+<!-- Modal: Edit Block Form -->
+<div class="modal fade" id="editBlockModal" tabindex="-1" aria-labelledby="editBlockModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <%= form_with(model: @block, local: true, html: { id: "edit-block-form" }) do |form| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBlockModalLabel">Edit Block</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Block Number は自動採番のため読み取り専用 -->
+                <div class="mb-3">
+                    <%= form.label :block_number, "Block Number", class: "form-label" %>
+                    <%= form.text_field :block_number, class: "form-control", readonly: true %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :block_name, "Block Name", class: "form-label" %>
+                    <%= form.text_field :block_name, class: "form-control", required: true %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :description, "Description", class: "form-label" %>
+                    <%= form.text_area :description, class: "form-control" %>
+                </div>
+                <!-- 必要に応じてその他のフィールドも追加 -->
+            </div>
+            <div class="modal-footer">
+                <%= form.submit "Update Block", class: "btn btn-outline-primary" %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Add event listener for row clicks, but skip if a button, link, or input is clicked
     document.addEventListener('turbo:load', function() {
+        // テーブル行クリック時、ボタンやリンク、input を除いて詳細ページへ遷移
         document.querySelectorAll(".clickable-row").forEach(function(row) {
             row.addEventListener("click", function(e) {
                 if (e.target.closest("a, button, input")) return;
@@ -257,7 +294,7 @@
             });
         });
 
-        // Existing Part table search filter
+        // Existing Part テーブルの検索フィルター
         const partSearch = document.getElementById('existing-part-search');
         const partTable = document.getElementById('existing-parts-table');
         if (partSearch && partTable) {
