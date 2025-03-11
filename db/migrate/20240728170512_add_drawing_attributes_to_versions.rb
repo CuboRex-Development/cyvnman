@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDrawingAttributesToVersions < ActiveRecord::Migration[7.1]
   def change
     add_column :versions, :file_path, :string

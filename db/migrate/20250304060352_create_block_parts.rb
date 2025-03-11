@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateBlockParts < ActiveRecord::Migration[7.1]
   def change
     create_table :block_parts do |t|

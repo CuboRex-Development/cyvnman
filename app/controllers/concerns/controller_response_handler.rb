@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/controllers/concerns/controller_response_handler.rb
 module ControllerResponseHandler
   extend ActiveSupport::Concern
@@ -10,7 +12,7 @@ module ControllerResponseHandler
 
   # 失敗時のレンダリングとエラーメッセージ設定
   def respond_failure(resource, action)
-    flash.now[:alert] = resource.errors.full_messages.join(", ")
+    flash.now[:alert] = resource.errors.full_messages.join(', ')
     render action, status: :unprocessable_entity
   end
 end

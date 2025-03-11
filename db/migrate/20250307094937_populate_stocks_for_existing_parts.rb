@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PopulateStocksForExistingParts < ActiveRecord::Migration[7.1]
   class MigrationPart < ApplicationRecord
     self.table_name = 'parts'
@@ -6,9 +8,7 @@ class PopulateStocksForExistingParts < ActiveRecord::Migration[7.1]
 
   def up
     MigrationPart.find_each do |part|
-      unless part.stock
-        Stock.create!(part_id: part.id, quantity: 0)
-      end
+      Stock.create!(part_id: part.id, quantity: 0) unless part.stock
     end
   end
 

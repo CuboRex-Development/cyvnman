@@ -1,45 +1,51 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class PartsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @part = parts(:one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get parts_url
     assert_response :success
   end
 
-  test "should get new" do
+  test 'should get new' do
     get new_part_url
     assert_response :success
   end
 
-  test "should create part" do
-    assert_difference("Part.count") do
-      post parts_url, params: { part: { block_id: @part.block_id, description: @part.description, part_name: @part.part_name, part_number: @part.part_number } }
+  test 'should create part' do
+    assert_difference('Part.count') do
+      post parts_url,
+           params: { part: { block_id: @part.block_id, description: @part.description, part_name: @part.part_name,
+                             part_number: @part.part_number } }
     end
 
     assert_redirected_to part_url(Part.last)
   end
 
-  test "should show part" do
+  test 'should show part' do
     get part_url(@part)
     assert_response :success
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get edit_part_url(@part)
     assert_response :success
   end
 
-  test "should update part" do
-    patch part_url(@part), params: { part: { block_id: @part.block_id, description: @part.description, part_name: @part.part_name, part_number: @part.part_number } }
+  test 'should update part' do
+    patch part_url(@part),
+          params: { part: { block_id: @part.block_id, description: @part.description, part_name: @part.part_name,
+                            part_number: @part.part_number } }
     assert_redirected_to part_url(@part)
   end
 
-  test "should destroy part" do
-    assert_difference("Part.count", -1) do
+  test 'should destroy part' do
+    assert_difference('Part.count', -1) do
       delete part_url(@part)
     end
 

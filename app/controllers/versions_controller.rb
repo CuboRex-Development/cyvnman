@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VersionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_version, only: %i[show edit update destroy download]
@@ -9,8 +11,7 @@ class VersionsController < ApplicationController
     @versions = @q.result(distinct: true)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @version = @part.versions.build
@@ -24,7 +25,7 @@ class VersionsController < ApplicationController
     @version = @part.versions.build(version_params)
     @version.drawn_by = current_user
     if @version.save
-      respond_success(@version, notice: "Version was successfully created.", redirect_url: @part)
+      respond_success(@version, notice: 'Version was successfully created.', redirect_url: @part)
     else
       respond_failure(@version, :new)
     end
@@ -32,7 +33,7 @@ class VersionsController < ApplicationController
 
   def update
     if @version.update(version_params)
-      respond_success(@version, notice: "Version was successfully updated.")
+      respond_success(@version, notice: 'Version was successfully updated.')
     else
       respond_failure(@version, :edit)
     end
@@ -40,7 +41,7 @@ class VersionsController < ApplicationController
 
   def destroy
     @version.destroy
-    redirect_to versions_url, notice: "Version was successfully destroyed."
+    redirect_to versions_url, notice: 'Version was successfully destroyed.'
   end
 
   def download
@@ -58,9 +59,9 @@ class VersionsController < ApplicationController
     # チェック済みでない場合のみ current_user をセットし、statusを更新
     if @version.checked_by.blank?
       @version.update(checked_by: current_user, status: 'Checked')
-      flash[:notice] = "Version has been checked."
+      flash[:notice] = 'Version has been checked.'
     else
-      flash[:alert] = "Already checked."
+      flash[:alert] = 'Already checked.'
     end
     redirect_to version_path(@version)
   end
@@ -70,13 +71,12 @@ class VersionsController < ApplicationController
     # 承認済みでなく、かつチェック済みの場合のみ current_user をセットし、statusを更新
     if @version.approved_by.blank? && @version.checked_by.present?
       @version.update(approved_by: current_user, status: 'Approved')
-      flash[:notice] = "Version has been approved."
+      flash[:notice] = 'Version has been approved.'
     else
-      flash[:alert] = "Cannot approve. Either already approved or not checked."
+      flash[:alert] = 'Cannot approve. Either already approved or not checked.'
     end
     redirect_to version_path(@version)
   end
-  
 
   private
 

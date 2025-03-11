@@ -1,26 +1,26 @@
+# frozen_string_literal: true
+
 class ModelsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_model, only: [:show, :edit, :update, :destroy, :add_block, :remove_block]
+  before_action :set_model, only: %i[show edit update destroy add_block remove_block]
 
   def index
     @q = Model.ransack(params[:q])
     @models = @q.result(distinct: true)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @model = Model.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @model = Model.new(model_params)
     if @model.save
-      respond_success(@model, notice: "Model was successfully created.")
+      respond_success(@model, notice: 'Model was successfully created.')
     else
       respond_failure(@model, :new)
     end
@@ -28,7 +28,7 @@ class ModelsController < ApplicationController
 
   def update
     if @model.update(model_params)
-      respond_success(@model, notice: "Model was successfully updated.")
+      respond_success(@model, notice: 'Model was successfully updated.')
     else
       respond_failure(@model, :edit)
     end
@@ -36,17 +36,17 @@ class ModelsController < ApplicationController
 
   def destroy
     @model.destroy
-    redirect_to models_url, notice: "Model was successfully destroyed."
+    redirect_to models_url, notice: 'Model was successfully destroyed.'
   end
 
   def add_block
     block = Block.find(params[:block_id])
-    unless @model.blocks.include?(block)
-      @model.blocks << block
-      respond_success(@model, notice: 'Block was successfully added to the model.')
-    else
+    if @model.blocks.include?(block)
       flash[:alert] = 'This block is already in the model.'
       redirect_to @model
+    else
+      @model.blocks << block
+      respond_success(@model, notice: 'Block was successfully added to the model.')
     end
   end
 

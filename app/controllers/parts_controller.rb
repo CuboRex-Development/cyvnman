@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PartsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_part, only: %i[show edit update destroy add_related_part remove_related_part]
@@ -19,8 +21,7 @@ class PartsController < ApplicationController
     @part = Part.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @part = Part.new(part_params)
@@ -30,7 +31,7 @@ class PartsController < ApplicationController
       quantity = params[:part][:quantity].to_i
       quantity = 1 if quantity.zero?
       @block.add_part!(@part, quantity)
-      respond_success(@block, notice: "Part was successfully created and added to block.")
+      respond_success(@block, notice: 'Part was successfully created and added to block.')
     else
       respond_failure(@part, :new)
     end
@@ -38,7 +39,7 @@ class PartsController < ApplicationController
 
   def update
     if @part.update(part_params)
-      respond_success(@part, notice: "Part was successfully updated.")
+      respond_success(@part, notice: 'Part was successfully updated.')
     else
       respond_failure(@part, :edit)
     end
@@ -46,7 +47,7 @@ class PartsController < ApplicationController
 
   def destroy
     @part.destroy
-    redirect_to parts_url, notice: "Part was successfully destroyed."
+    redirect_to parts_url, notice: 'Part was successfully destroyed.'
   end
 
   def add_related_part
@@ -77,6 +78,7 @@ class PartsController < ApplicationController
 
   def part_params
     # 採番用のパラメータ（part_number_suffix）は不要になったため、許可しない
-    params.require(:part).permit(:part_name, :description, :material, :nominal_size, :part_name_eg, :quantity,:standard_price, :image, related_part_ids: [])
+    params.require(:part).permit(:part_name, :description, :material, :nominal_size, :part_name_eg, :quantity,
+                                 :standard_price, :image, related_part_ids: [])
   end
 end
