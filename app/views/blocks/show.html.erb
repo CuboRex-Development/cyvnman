@@ -70,7 +70,7 @@
         <!-- Related Parts (Table Format with Image Column) -->
         <div id="current-related-parts" class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0"><%= @block.parts.count %> Parts </h2>
+                <h2 class="h5 mb-0"><%= @block_parts.size %> Parts</h2>
                 <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newPartModal">New Part</a>
             </div>
             <div class="card-body p-0">
@@ -87,7 +87,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% @block.block_parts.each do |bp| %>
+                        <% @block_parts.each do |bp| %>
                         <% part = bp.part %>
                         <tr data-href="<%= part_path(part) %>" class="clickable-row">
                             <td><%= part.part_number %></td>
@@ -105,14 +105,12 @@
                             </td>
                             <td><%= bp.quantity %></td>
                             <td><%= number_to_currency(part.standard_price || 0, precision: 0) %></td>
-                            <td>
-                                <%= number_to_currency((part.standard_price || 0) * bp.quantity, precision: 0) %>
-                            </td>
+                            <td><%= number_to_currency((part.standard_price || 0) * bp.quantity, precision: 0) %></td>
                             <td>
                                 <%= button_to 'Remove', remove_part_block_path(@block, part_id: part.id),
-                        method: :delete,
-                        class: "btn btn-sm btn-outline-danger",
-                        onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                  method: :delete,
+                  class: "btn btn-sm btn-outline-danger",
+                  onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
                             </td>
                         </tr>
                         <% end %>
@@ -120,6 +118,7 @@
                 </table>
             </div>
         </div>
+
 
         <!-- Modal: New Part Registration Form -->
         <div class="modal fade" id="newPartModal" tabindex="-1" aria-labelledby="newPartModalLabel" aria-hidden="true">

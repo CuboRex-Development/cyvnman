@@ -19,6 +19,12 @@ class BlocksController < ApplicationController
 
   def show
     @block = Block.find(params[:id])
+    @block_parts = @block.block_parts.includes(:part)
+    # Ruby側で数値化して並び替え
+    @block_parts = @block_parts.sort_by do |bp|
+      bp.part.part_number.split('-').map(&:to_i)
+    end
+
     @part = Part.new
   end
 
