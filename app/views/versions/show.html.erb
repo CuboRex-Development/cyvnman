@@ -18,11 +18,16 @@
                         <span class="badge <%= badge_class %> fw-normal"><%= @version.status %></span>
                     </h2>
                     <% unless @version.checked_by.present? %>
-                    to&nbsp; <%= button_to 'Check', check_version_path(@version), method: :patch, class: 'btn btn-outline-primary btn-sm me-2' %>
+                    to&nbsp; <%= button_to 'Check', check_version_path(@version), method: :patch, class: 'btn btn-outline-primary btn-sm me-2', data: { confirm: "Make sure to be CHECKED" } %>
                     <% end %>
                     <% if @version.checked_by.present? && @version.approved_by.blank? %>
-                    to&nbsp; <%= button_to 'Approve', approve_version_path(@version), method: :patch, class: 'btn btn-outline-success btn-sm' %>
+                    to&nbsp;
+                    <%= button_to 'Approve', approve_version_path(@version),
+        method: :patch,
+        class: 'btn btn-outline-success btn-sm',
+        data: { bootstrap_confirm: true, confirm: "Make sure to be APPROVED" } %>
                     <% end %>
+
                 </div>
                 <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editVersionModal" data-turbo="false">Edit</a>
             </div>
@@ -30,8 +35,7 @@
                 <div class="row">
                     <!-- 左側: その他の情報 -->
                     <div class="col-md-4">
-                        <p class="mb-1">Version Number: <strong><%= @version.version_number %></strong></p>
-                        <p class="mb-1">Part: <strong><%= link_to @version.part.part_name, @version.part, class: "text-decoration-none" %></strong></p>
+                        <p class="mb-1">Belongs to: <strong><%= link_to @version.part.part_name, @version.part, class: "text-decoration-none" %></strong></p>
                         <p class="mb-1">Scale: <strong><%= @version.scale %></strong></p>
                         <p class="mb-1">Sheet Size: <strong><%= @version.sheet_size %></strong></p>
                         <p class="mb-1">Unit: <strong><%= @version.unit %></strong></p>
