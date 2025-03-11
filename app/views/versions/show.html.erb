@@ -18,16 +18,11 @@
                         <span class="badge <%= badge_class %> fw-normal"><%= @version.status %></span>
                     </h2>
                     <% unless @version.checked_by.present? %>
-                    to&nbsp; <%= button_to 'Check', check_version_path(@version), method: :patch, class: 'btn btn-outline-primary btn-sm me-2', data: { confirm: "Make sure to be CHECKED" } %>
+                    to&nbsp; <%= button_to 'Check', check_version_path(@version), method: :patch, class: 'btn btn-outline-primary btn-sm me-2' %>
                     <% end %>
                     <% if @version.checked_by.present? && @version.approved_by.blank? %>
-                    to&nbsp;
-                    <%= button_to 'Approve', approve_version_path(@version),
-        method: :patch,
-        class: 'btn btn-outline-success btn-sm',
-        data: { bootstrap_confirm: true, confirm: "Make sure to be APPROVED" } %>
+                    to&nbsp; <%= button_to 'Approve', approve_version_path(@version), method: :patch, class: 'btn btn-outline-success btn-sm' %>
                     <% end %>
-
                 </div>
                 <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editVersionModal" data-turbo="false">Edit</a>
             </div>
