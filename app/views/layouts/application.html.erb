@@ -69,3 +69,22 @@
 </body>
 
 </html>
+
+<script>
+    document.addEventListener('turbo:load', function() {
+        // ページが表示されてから2秒後にフェードアウト開始
+        setTimeout(function() {
+            // 「alert-dismissible.fade.show」が付いているフラッシュを全て取得
+            const alerts = document.querySelectorAll('.alert-dismissible.fade.show');
+            alerts.forEach(function(alert) {
+                // .show を外すと .fade のアニメーションが働いてフェードアウト
+                alert.classList.remove('show');
+
+                // フェードが終わるまでの待ち時間 (Bootstrapのデフォルト0.3s) 後に要素自体を削除
+                setTimeout(function() {
+                    alert.remove();
+                }, 300);
+            });
+        }, 2000); // 2秒後に実行
+    });
+</script>
