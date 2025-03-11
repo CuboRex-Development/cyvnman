@@ -47,44 +47,47 @@
             </div>
         </div>
 
+        <!-- Modal: Edit Version Form -->
         <div class="modal fade" id="editVersionModal" tabindex="-1" aria-labelledby="editVersionModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <%= form_with(model: @version, url: version_path(@version), method: :patch, local: true) do |form| %>
-                    <!-- モーダルヘッダー -->
                     <div class="modal-header">
                         <h5 class="modal-title" id="editVersionModalLabel">Edit Version</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <!-- モーダルボディ -->
                     <div class="modal-body">
+                        <!-- Version Number: 読み取り専用 -->
+                        <div class="mb-3">
+                            <%= form.label :version_number, "Version Number", class: "form-label" %>
+                            <%= form.text_field :version_number, class: "form-control", readonly: true %>
+                        </div>
                         <!-- Description -->
                         <div class="mb-3">
-                            <%= form.label :description, "Description", class: 'form-label' %>
-                            <%= form.text_area :description, class: 'form-control', rows: 3 %>
+                            <%= form.label :description, "Description", class: "form-label" %>
+                            <%= form.text_area :description, class: "form-control", rows: 3 %>
                         </div>
                         <!-- Scale -->
                         <div class="mb-3">
-                            <%= form.label :scale, class: 'form-label' %>
-                            <%= form.text_field :scale, class: 'form-control' %>
+                            <%= form.label :scale, class: "form-label" %>
+                            <%= form.text_field :scale, class: "form-control" %>
                         </div>
                         <!-- Sheet Size -->
                         <div class="mb-3">
-                            <%= form.label :sheet_size, "Sheet Size", class: 'form-label' %>
-                            <%= form.text_field :sheet_size, class: 'form-control' %>
+                            <%= form.label :sheet_size, "Sheet Size", class: "form-label" %>
+                            <%= form.text_field :sheet_size, class: "form-control" %>
                         </div>
                         <!-- Unit -->
                         <div class="mb-3">
-                            <%= form.label :unit, class: 'form-label' %>
-                            <%= form.text_field :unit, class: 'form-control' %>
+                            <%= form.label :unit, class: "form-label" %>
+                            <%= form.text_field :unit, class: "form-control" %>
                         </div>
                         <!-- Drawn Date -->
                         <div class="mb-3">
-                            <%= form.label :drawn_date, "Drawn Date", class: 'form-label' %>
-                            <%= form.date_field :drawn_date, class: 'form-control' %>
+                            <%= form.label :drawn_date, "Drawn Date", class: "form-label" %>
+                            <%= form.date_field :drawn_date, class: "form-control" %>
                         </div>
                     </div>
-                    <!-- モーダルフッター -->
                     <div class="modal-footer">
                         <%= form.submit 'Save Changes', class: 'btn btn-outline-primary' %>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
