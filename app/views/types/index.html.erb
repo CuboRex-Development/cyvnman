@@ -15,6 +15,7 @@
             <th>Type Number</th>
             <th>Type Name</th>
             <th>Description</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -23,9 +24,132 @@
             <td><%= type.type_number %></td>
             <td><%= type.type_name %></td>
             <td><%= type.description %></td>
+            <td>
+                <!-- 各行の New Block ボタン -->
+                <button type="button" class="btn btn-sm btn-outline-primary new-block-btn" data-bs-toggle="modal" data-bs-target="#newBlockModal" data-type-id="<%= type.id %>" data-type-number="<%= type.type_number %>">
+                    New Block
+                </button>
+            </td>
         </tr>
         <% end %>
     </tbody>
 </table>
 
-<%= link_to 'New Type', new_type_path, class: "btn btn-outline-primary" %>
+<!-- New Type ボタン：テーブル下部に配置 -->
+<button type="button" class="btn btn-outline-primary mt-3" data-bs-toggle="modal" data-bs-target="#newTypeModal">
+    New Type
+</button>
+
+<!-- Modal: New Block Registration Form -->
+<div class="modal fade" id="newBlockModal" tabindex="-1" aria-labelledby="newBlockModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <%= form_with(model: Block.new, url: blocks_path, local: true, html: { id: 'new-block-form' }) do |form| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="newBlockModalLabel">New Block</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3">
+                    Block will be automatically assigned a Block Number based on the selected Type:
+                    <strong id="modal-type-number"></strong>
+                </p>
+                <!-- hidden_field で該当 Type の id をセット -->
+                <%= form.hidden_field :type_id, id: "modal-type-id" %>
+                <div class="mb-3">
+                    <%= form.label :block_name, "Block Name", class: 'form-label' %>
+                    <%= form.text_field :block_name, class: 'form-control', required: true %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :description, class: 'form-label' %>
+                    <%= form.text_area :description, class: 'form-control' %>
+                </div>
+                <p class="text-muted">Block Number will be auto-generated upon creation.</p>
+            </div>
+            <div class="modal-footer">
+                <%= form.submit 'Create Block', class: 'btn btn-outline-primary' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: New Type Registration Form -->
+<div class="modal fade" id="newTypeModal" tabindex="-1" aria-labelledby="newTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <%= form_with(model: Type.new, url: types_path, local: true, html: { id: 'new-type-form' }) do |form| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="newTypeModalLabel">New Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <%= form.label :type_number, "Type Number", class: 'form-label' %>
+                    <%= form.text_field :type_number, class: 'form-control', placeholder: "Auto-generated if left blank" %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :type_name, "Type Name", class: 'form-label' %>
+                    <%= form.text_field :type_name, class: 'form-control', required: true %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :category, "Category", class: 'form-label' %>
+                    <%= form.select :category,
+                  options_for_select([['Carry', 'Carry'], ['Applicate', 'Applicate'], ['Collect', 'Collect'], ['Other', 'Other']]),
+                  { prompt: 'Select Category' },
+                  class: 'form-select', required: true %>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :description, class: 'form-label' %>
+                    <%= form.text_area :description, class: 'form-control' %>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%= form.submit 'Create Type', class: 'btn btn-outline-primary' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('turbo:load', function() {
+        // New Block モーダル起動時に、押されたボタンから Type の情報を取得しモーダル内に反映
+        var newBlockModal = document.getElementById('newBlockModal');
+        if (newBlockModal) {
+            newBlockModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var typeId = button.getAttribute('data-type-id');
+                var typeNumber = button.getAttribute('data-type-number');
+
+                // モーダルタイトルの更新
+                var modalTitle = newBlockModal.querySelector('.modal-title');
+                modalTitle.textContent = 'New Block for Type ' + typeNumber;
+
+                // 表示用の Type Number を更新
+                var modalTypeNumber = newBlockModal.querySelector('#modal-type-number');
+                if (modalTypeNumber) {
+                    modalTypeNumber.textContent = typeNumber;
+                }
+
+                // hidden_field に Type の id をセット
+                var hiddenTypeField = newBlockModal.querySelector('#modal-type-id');
+                if (hiddenTypeField) {
+                    hiddenTypeField.value = typeId;
+                }
+            });
+        }
+
+        // テーブル行クリック時、ボタン部分以外をクリックしたら詳細ページへ遷移
+        var rows = document.querySelectorAll('.clickable-row');
+        rows.forEach(function(row) {
+            row.addEventListener('click', function(e) {
+                if (!e.target.closest('button')) {
+                    window.location = row.getAttribute('data-href');
+                }
+            });
+        });
+    });
+</script>
