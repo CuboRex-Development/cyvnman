@@ -1,42 +1,56 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
     <div class="card-body">
-        <h1 class="card-title h3 mb-4"> <%= @version.version_number %></h1>
-        <% unless @version.checked_by.present? %>
-        <%= button_to 'Check Version', check_version_path(@version), method: :patch, class: 'btn btn-outline-primary' %>
-        <% end %>
-        <% if @version.checked_by.present? && @version.approved_by.blank? %>
-        <%= button_to 'Approve Version', approve_version_path(@version), method: :patch, class: 'btn btn-outline-success' %>
-        <% end %>
-
+        <h1 class="card-title h3 mb-4"><%= @version.version_number %></h1>
         <!-- Version Details -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">info: <% badge_class = case @version.status
-         when 'Approved'
-           'bg-success'
-         when 'Checked'
-           'bg-primary'
-         else
-           'bg-secondary'
-         end %>
-                    <span class="badge <%= badge_class %> fw-normal"><%= @version.status %></span>
-                </h2>
-
+                <div class="d-flex align-items-center">
+                    <% badge_class = case @version.status
+               when 'Approved'
+                 'bg-success'
+               when 'Checked'
+                 'bg-primary'
+               else
+                 'bg-secondary'
+             end %>
+                    <h2 class="h5 mb-0 me-3">
+                        Info:
+                        <span class="badge <%= badge_class %> fw-normal"><%= @version.status %></span>
+                    </h2>
+                    <% unless @version.checked_by.present? %>
+                    to&nbsp; <%= button_to 'Check', check_version_path(@version), method: :patch, class: 'btn btn-outline-primary btn-sm me-2' %>
+                    <% end %>
+                    <% if @version.checked_by.present? && @version.approved_by.blank? %>
+                    to&nbsp; <%= button_to 'Approve', approve_version_path(@version), method: :patch, class: 'btn btn-outline-success btn-sm' %>
+                    <% end %>
+                </div>
                 <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editVersionModal" data-turbo="false">Edit</a>
             </div>
             <div class="card-body">
                 <div class="row">
                     <!-- 左側: その他の情報 -->
                     <div class="col-md-4">
-                        <p class="mb-1">Version Number:<strong> <%= @version.version_number %></strong></p>
-                        <p class="mb-1">Part:<strong> <%= link_to @version.part.part_name, @version.part, class: "text-decoration-none" %></strong></p>
-                        <p class="mb-1">Scale:<strong> <%= @version.scale %></strong></p>
-                        <p class="mb-1">Sheet Size:<strong> <%= @version.sheet_size %></strong></p>
-                        <p class="mb-1">Unit:<strong> <%= @version.unit %></strong></p>
-                        <p class="mb-1">Drawn By:<strong> <%= @version.drawn_by %></strong></p>
-                        <p class="mb-1">Checked By:<strong> <%= @version.checked_by %></strong></p>
-                        <p class="mb-1">Approved By:<strong> <%= @version.approved_by %></strong></p>
-                        <p class="mb-0">Drawn Date:<strong> <%= @version.drawn_date&.strftime('%Y-%m-%d') %></strong></p>
+                        <p class="mb-1">Version Number: <strong><%= @version.version_number %></strong></p>
+                        <p class="mb-1">Part: <strong><%= link_to @version.part.part_name, @version.part, class: "text-decoration-none" %></strong></p>
+                        <p class="mb-1">Scale: <strong><%= @version.scale %></strong></p>
+                        <p class="mb-1">Sheet Size: <strong><%= @version.sheet_size %></strong></p>
+                        <p class="mb-1">Unit: <strong><%= @version.unit %></strong></p>
+                        <p class="mb-1">Drawn By: <strong><%= @version.drawn_by %></strong></p>
+                        <p class="mb-1">
+                            Checked By: <strong><%= @version.checked_by %></strong>
+                            <% if @version.checked_by.present? %>
+                            at <%= @version.updated_at.strftime("%Y-%m-%d %H:%M") %>
+                            <% end %>
+                        </p>
+                        <p class="mb-1">
+                            Approved By: <strong><%= @version.approved_by %></strong>
+                            <% if @version.approved_by.present? %>
+                            at <%= @version.updated_at.strftime("%Y-%m-%d %H:%M") %>
+                            <% end %>
+                        </p>
+
+
+                        <p class="mb-0">Drawn Date: <strong><%= @version.drawn_date&.strftime('%Y-%m-%d') %></strong></p>
                     </div>
                     <!-- 右側: Description -->
                     <div class="col-md-8">
@@ -134,7 +148,6 @@
                 </ul>
             </div>
         </div>
-
 
         <!-- Action Buttons -->
         <div class="d-flex justify-content-between mt-4">
