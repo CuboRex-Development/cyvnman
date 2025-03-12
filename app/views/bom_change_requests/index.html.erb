@@ -1,0 +1,55 @@
+<div class="mb-3">
+    <h1 class="h3">BOM Change Requests</h1>
+    <%= link_to 'New Change Request', new_bom_change_request_path, class: "btn btn-outline-primary mb-3" %>
+</div>
+
+<table class="table table-hover table-responsive shadow">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Base BOM Version</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Requested By</th>
+            <th>Submitted At</th>
+            <th>Reviewed At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @bom_change_requests.each do |req| %>
+        <tr data-href="<%= bom_change_request_path(req) %>" class="clickable-row">
+            <td><%= req.id %></td>
+            <td>
+                <% if req.base_bom_version.present? %>
+                <%= req.base_bom_version.version_label %>
+                <% else %>
+                -
+                <% end %>
+            </td>
+            <td><%= truncate(req.reason, length: 50) %></td>
+            <td><%= req.status.capitalize %></td>
+            <td><%= req.requested_by %></td>
+            <td><%= req.submitted_at.present? ? l(req.submitted_at, format: :short) : '-' %></td>
+            <td><%= req.reviewed_at.present? ? l(req.reviewed_at, format: :short) : '-' %></td>
+            <td>
+                <%= link_to 'Show', bom_change_request_path(req), class: "btn btn-sm btn-outline-primary" %>
+                <% if req.status == 'draft' %>
+                <%= link_to 'Edit', edit_bom_change_request_path(req), class: "btn btn-sm btn-outline-secondary" %>
+                <% end %>
+            </td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".clickable-row").forEach(function(row) {
+            row.addEventListener("click", function(e) {
+                if (e.target.closest("a, button, input")) return;
+                window.location = this.dataset.href;
+            });
+        });
+    });
+</script>

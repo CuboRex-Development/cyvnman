@@ -47,6 +47,18 @@ Rails.application.routes.draw do
 
   resources :stocks, only: %i[index edit update]
 
+  resources :bom_change_requests do
+    member do
+      patch :submit
+      patch :approve
+      patch :reject
+    end
+    resources :bom_change_details, only: %i[create destroy]
+  end
+
+  # BOMVersion の閲覧用ルーティング（必要に応じて）
+  resources :bom_versions, only: %i[index show]
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

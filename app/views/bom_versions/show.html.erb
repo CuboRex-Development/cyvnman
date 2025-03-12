@@ -1,0 +1,75 @@
+<div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
+    <div class="card-body">
+        <h1 class="card-title h3 mb-4">BOM Version: <%= @bom_version.version_label %></h1>
+        <div class="row">
+            <!-- 左側: BOM Version 情報 -->
+            <div class="col-md-5">
+                <div class="card border-0 shadow mb-4 fixed-card">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0">Version Info</h2>
+                    </div>
+                    <div class="card-body fixed-scroll">
+                        <p><strong>Description:</strong> <%= @bom_version.description %></p>
+                        <p><strong>Fixed At:</strong> <%= @bom_version.fixed_at.present? ? l(@bom_version.fixed_at, format: :short) : '-' %></p>
+                        <p><strong>Approved By:</strong> <%= @bom_version.approved_by %></p>
+                        <p><strong>Status:</strong> <%= @bom_version.status.capitalize %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側: BOM 明細 (BOMVersionLine) 一覧 -->
+            <div class="col-md-7">
+                <div class="card border-0 shadow mb-4 fixed-card">
+                    <div class="card-header bg-light">
+                        <h2 class="h5 mb-0">BOM Details</h2>
+                    </div>
+                    <div class="card-body fixed-scroll">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Block / Part</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% @bom_version.bom_version_lines.each do |line| %>
+                                <tr>
+                                    <td>
+                                        <% if line.block.present? %>
+                                        Block: <%= line.block.block_name %> (<%= line.block.block_number %>)
+                                        <% elsif line.part.present? %>
+                                        Part: <%= line.part.part_name %> (<%= line.part.part_number %>)
+                                        <% else %>
+                                        -
+                                        <% end %>
+                                    </td>
+                                    <td><%= line.quantity %></td>
+                                </tr>
+                                <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% if @bom_change_request %>
+        <div class="mb-3">
+            <%= link_to "View Associated Change Request", bom_change_request_path(@bom_change_request), class: "btn btn-outline-primary" %>
+        </div>
+        <% end %>
+        <div class="d-flex justify-content-between mt-4">
+            <%= link_to 'Back to BOM Versions', bom_versions_path, class: "btn btn-outline-primary" %>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".clickable-row").forEach(function(row) {
+            row.addEventListener("click", function(e) {
+                if (e.target.closest("a, button, input")) return;
+                window.location = this.dataset.href;
+            });
+        });
+    });
+</script>

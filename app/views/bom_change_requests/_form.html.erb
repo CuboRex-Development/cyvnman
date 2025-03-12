@@ -1,0 +1,95 @@
+<%= form_with(model: bom_change_request, local: true) do |f| %>
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="h5 mb-0">BOM Change Request Form</h2>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <%= f.label :base_bom_version_id, "Base BOM Version" %>
+            <%= f.collection_select :base_bom_version_id, BomVersion.all, :id, :version_label, { prompt: "Select Base BOM Version" }, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+            <%= f.label :reason, "Reason for Change" %>
+            <%= f.text_area :reason, class: "form-control", rows: 3 %>
+        </div>
+
+        <!-- 差分入力 -->
+        <h3>Change Details</h3>
+        <div id="bom-change-details">
+            <%= f.fields_for :bom_change_details do |detail_fields| %>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <%= detail_fields.label :change_type %>
+                            <%= detail_fields.select :change_type, options_for_select([["Add", "add"], ["Remove", "remove"], ["Update", "update"]]), {}, class: "form-control" %>
+                        </div>
+                        <div class="col-md-2">
+                            <%= detail_fields.label :old_quantity %>
+                            <%= detail_fields.number_field :old_quantity, class: "form-control" %>
+                        </div>
+                        <div class="col-md-2">
+                            <%= detail_fields.label :new_quantity %>
+                            <%= detail_fields.number_field :new_quantity, class: "form-control" %>
+                        </div>
+                        <div class="col-md-5">
+                            <%= detail_fields.label :change_description, "Description" %>
+                            <%= detail_fields.text_field :change_description, class: "form-control" %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% end %>
+        </div>
+        <!-- ボタン：追加 (JavaScript により新規入力フィールドを追加) -->
+        <div class="mb-3">
+            <button type="button" id="add-detail-btn" class="btn btn-outline-secondary">Add Detail</button>
+        </div>
+    </div>
+    <div class="card-footer text-end">
+        <%= f.submit "Save", class: "btn btn-outline-primary" %>
+        <%= link_to "Cancel", bom_change_requests_path, class: "btn btn-secondary" %>
+    </div>
+</div>
+<% end %>
+
+<script>
+    // 差分入力フィールドを動的に追加する簡易的な例
+    document.addEventListener("DOMContentLoaded", function() {
+        const addDetailBtn = document.getElementById("add-detail-btn");
+        const detailsContainer = document.getElementById("bom-change-details");
+
+        addDetailBtn.addEventListener("click", function() {
+            const timestamp = new Date().getTime();
+            const newFields = `
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <label for="bom_change_request_bom_change_details_attributes_${timestamp}_change_type">Change Type</label>
+                <select name="bom_change_request[bom_change_details_attributes][${timestamp}][change_type]" id="bom_change_request_bom_change_details_attributes_${timestamp}_change_type" class="form-control">
+                  <option value="add">Add</option>
+                  <option value="remove">Remove</option>
+                  <option value="update">Update</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label for="bom_change_request_bom_change_details_attributes_${timestamp}_old_quantity">Old Quantity</label>
+                <input type="number" name="bom_change_request[bom_change_details_attributes][${timestamp}][old_quantity]" id="bom_change_request_bom_change_details_attributes_${timestamp}_old_quantity" class="form-control">
+              </div>
+              <div class="col-md-2">
+                <label for="bom_change_request_bom_change_details_attributes_${timestamp}_new_quantity">New Quantity</label>
+                <input type="number" name="bom_change_request[bom_change_details_attributes][${timestamp}][new_quantity]" id="bom_change_request_bom_change_details_attributes_${timestamp}_new_quantity" class="form-control">
+              </div>
+              <div class="col-md-5">
+                <label for="bom_change_request_bom_change_details_attributes_${timestamp}_change_description">Description</label>
+                <input type="text" name="bom_change_request[bom_change_details_attributes][${timestamp}][change_description]" id="bom_change_request_bom_change_details_attributes_${timestamp}_change_description" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+            detailsContainer.insertAdjacentHTML('beforeend', newFields);
+        });
+    });
+</script>

@@ -1,0 +1,101 @@
+<div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
+    <div class="card-body">
+        <h1 class="card-title h3 mb-4">BOM Change Request #<%= @bom_change_request.id %></h1>
+
+        <div class="row">
+            <!-- 左側: リクエスト情報 -->
+            <div class="col-md-5">
+                <div class="card border-0 shadow mb-4 fixed-card">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0">Request Info</h2>
+                        <% if @bom_change_request.status == 'draft' %>
+                        <%= link_to 'Edit', edit_bom_change_request_path(@bom_change_request), class: "btn btn-sm btn-outline-primary" %>
+                        <% end %>
+                    </div>
+                    <div class="card-body fixed-scroll">
+                        <p><strong>Base BOM Version:</strong>
+                            <% if @bom_change_request.base_bom_version.present? %>
+                            <%= @bom_change_request.base_bom_version.version_label %>
+                            <% else %>
+                            -
+                            <% end %>
+                        </p>
+                        <p><strong>Reason:</strong> <%= @bom_change_request.reason %></p>
+                        <p><strong>Status:</strong> <%= @bom_change_request.status.capitalize %></p>
+                        <p><strong>Requested By:</strong> <%= @bom_change_request.requested_by %></p>
+                        <p><strong>Submitted At:</strong> <%= @bom_change_request.submitted_at.present? ? l(@bom_change_request.submitted_at, format: :short) : '-' %></p>
+                        <p><strong>Reviewed At:</strong> <%= @bom_change_request.reviewed_at.present? ? l(@bom_change_request.reviewed_at, format: :short) : '-' %></p>
+                        <p><strong>Reviewed By:</strong> <%= @bom_change_request.reviewed_by %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側: 差分（Change Details）の一覧 -->
+            <div class="col-md-7">
+                <div class="card border-0 shadow mb-4 fixed-card">
+                    <div class="card-header bg-light">
+                        <h2 class="h5 mb-0">Change Details</h2>
+                    </div>
+                    <div class="card-body fixed-scroll">
+                        <% if @bom_change_request.bom_change_details.any? %>
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Block/Part</th>
+                                    <th>Old Qty</th>
+                                    <th>New Qty</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% @bom_change_request.bom_change_details.each do |detail| %>
+                                <tr>
+                                    <td><%= detail.change_type.capitalize %></td>
+                                    <td>
+                                        <% if detail.block.present? %>
+                                        Block: <%= detail.block.block_name %> (<%= detail.block.block_number %>)
+                                        <% elsif detail.part.present? %>
+                                        Part: <%= detail.part.part_name %> (<%= detail.part.part_number %>)
+                                        <% else %>
+                                        -
+                                        <% end %>
+                                    </td>
+                                    <td><%= detail.old_quantity || '-' %></td>
+                                    <td><%= detail.new_quantity || '-' %></td>
+                                    <td><%= detail.change_description %></td>
+                                </tr>
+                                <% end %>
+                            </tbody>
+                        </table>
+                        <% else %>
+                        <p>No change details have been added.</p>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- アクションボタン -->
+        <div class="d-flex justify-content-between mt-4">
+            <% if @bom_change_request.status == 'draft' %>
+            <%= button_to 'Submit Request', submit_bom_change_request_path(@bom_change_request), method: :patch, class: "btn btn-outline-primary" %>
+            <% elsif @bom_change_request.status == 'submitted' %>
+            <%= button_to 'Approve', approve_bom_change_request_path(@bom_change_request), method: :patch, class: "btn btn-outline-success" %>
+            <%= button_to 'Reject', reject_bom_change_request_path(@bom_change_request), method: :patch, class: "btn btn-outline-danger" %>
+            <% end %>
+            <%= link_to 'Back to List', bom_change_requests_path, class: "btn btn-outline-secondary" %>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".clickable-row").forEach(function(row) {
+            row.addEventListener("click", function(e) {
+                if (e.target.closest("a, button, input")) return;
+                window.location = this.dataset.href;
+            });
+        });
+    });
+</script>

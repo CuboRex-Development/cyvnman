@@ -1,0 +1,47 @@
+<div class="mb-3">
+    <h1 class="h3">BOM Versions</h1>
+    <%= link_to 'Back', root_path, class: "btn btn-outline-secondary mb-3" %>
+</div>
+
+<table class="table table-hover table-responsive shadow">
+    <thead class="table-light">
+        <tr>
+            <th>Version Label</th>
+            <th>Description</th>
+            <th>Fixed At</th>
+            <th>Approved By</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @bom_versions.each do |bom| %>
+        <tr data-href="<%= bom_version_path(bom) %>" class="clickable-row">
+            <td>
+                <%= bom.version_label %>
+                <% if defined?(@current_bom_version) && bom == @current_bom_version %>
+                <span class="badge bg-success">現行BOM</span>
+                <% end %>
+            </td>
+            <td><%= truncate(bom.description, length: 100) %></td>
+            <td><%= bom.fixed_at.present? ? l(bom.fixed_at, format: :short) : '-' %></td>
+            <td><%= bom.approved_by %></td>
+            <td><%= bom.status.capitalize %></td>
+            <td>
+                <%= link_to 'View', bom_version_path(bom), class: "btn btn-sm btn-outline-primary" %>
+            </td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".clickable-row").forEach(function(row) {
+            row.addEventListener("click", function(e) {
+                if (e.target.closest("a, button, input")) return;
+                window.location = this.dataset.href;
+            });
+        });
+    });
+</script>
