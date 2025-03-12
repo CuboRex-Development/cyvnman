@@ -32,6 +32,12 @@
                     <%= link_to 'Parts', parts_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'parts'}" %>
                 </li>
                 <li class="nav-item">
+                    <%= link_to 'ChangeRequests', bom_change_requests_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'bom_change_requests'}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'BOM Versions', bom_versions_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'bom_versions'}" %>
+                </li>
+                <li class="nav-item">
                     <%= link_to 'Versions', versions_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'versions'}" %>
                 </li>
                 <li class="nav-item">
@@ -72,19 +78,15 @@
 
 <script>
     document.addEventListener('turbo:load', function() {
-        // ページが表示されてから2秒後にフェードアウト開始
+        // ページ表示後2秒でフラッシュをフェードアウト
         setTimeout(function() {
-            // 「alert-dismissible.fade.show」が付いているフラッシュを全て取得
             const alerts = document.querySelectorAll('.alert-dismissible.fade.show');
             alerts.forEach(function(alert) {
-                // .show を外すと .fade のアニメーションが働いてフェードアウト
                 alert.classList.remove('show');
-
-                // フェードが終わるまでの待ち時間 (Bootstrapのデフォルト0.3s) 後に要素自体を削除
                 setTimeout(function() {
                     alert.remove();
                 }, 300);
             });
-        }, 2000); // 2秒後に実行
+        }, 2000);
     });
 </script>
