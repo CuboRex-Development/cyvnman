@@ -1,52 +1,63 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
     <div class="card-body">
-        <h1 class="card-title h3 mb-4">Change Request 作成（差分表示）</h1>
+        <h1 class="card-title h3 mb-4">Change Request for <%= @type.type_name %></h1>
         <p>
-            最新の BOM Version と現在の <strong><%= @type.type_name %></strong> の状態との差分が以下に表示されています。
-            差分に対して理由や補足を入力し、変更リクエストとしてコミットしてください。
-        </p>
-        <%= form_with(model: @bom_change_request, local: true) do |f| %>
+            Make sure the differences between the latest and the current state of <strong><%= @type.type_name %></strong>. </p>
+        <%= form_with(model: @bom_change_request, local: true, html: { "data-turbo" => "false" }) do |f| %>
+        <%= f.hidden_field :type_id, value: @bom_change_request.type_id %>
         <div class="mb-3">
-            <%= f.label :reason, "変更理由" %>
+            <%= f.label :reason, "Description" %>
             <%= f.text_area :reason, class: "form-control", rows: 3 %>
         </div>
 
-        <h3>BOM 差分内容</h3>
+        <h3>Diffs</h3>
         <table class="table table-hover table-responsive shadow">
             <thead class="table-light">
                 <tr>
                     <th>Block / Part</th>
-                    <th>変更前数量</th>
-                    <th>変更後数量</th>
-                    <th>変更種別</th>
-                    <th>補足コメント</th>
+                    <th>Category</th>
+                    <th>from</th>
+                    <th>to be</th>
+                    <th>Comment</th>
                 </tr>
             </thead>
             <tbody>
                 <%= f.fields_for :bom_change_details do |detail_fields| %>
                 <tr>
                     <td>
-                        <% if detail_fields.object.block.present? %>
-                        Block: <%= detail_fields.object.block.block_name %> (<%= detail_fields.object.block.block_number %>)
-                        <% elsif detail_fields.object.part.present? %>
+                        <% if detail_fields.object.part.present? %>
                         Part: <%= detail_fields.object.part.part_name %> (<%= detail_fields.object.part.part_number %>)
+                        <% elsif detail_fields.object.block.present? %>
+                        Block: <%= detail_fields.object.block.block_name %> (<%= detail_fields.object.block.block_number %>)
                         <% else %>
                         -
                         <% end %>
                     </td>
-                    <td><%= detail_fields.object.old_quantity %></td>
-                    <td><%= detail_fields.object.new_quantity %></td>
-                    <td><%= detail_fields.object.change_type.capitalize %></td>
                     <td>
-                        <%= detail_fields.text_field :change_description, class: "form-control", placeholder: "コメントを入力" %>
+                        <%= detail_fields.object.change_type.present? ? detail_fields.object.change_type.capitalize : '-' %>
+                    </td>
+                    <td>
+                        <%= detail_fields.object.old_quantity %>
+                    </td>
+                    <td>
+                        <%= detail_fields.object.new_quantity %>
+                    </td>
+                    <td>
+                        <%= detail_fields.text_field :change_description, class: "form-control", placeholder: "Why?" %>
                     </td>
                 </tr>
+                <!-- ここで差分の属性を hidden_field として埋め込む -->
+                <%= detail_fields.hidden_field :block_id %>
+                <%= detail_fields.hidden_field :part_id %>
+                <%= detail_fields.hidden_field :old_quantity %>
+                <%= detail_fields.hidden_field :new_quantity %>
+                <%= detail_fields.hidden_field :change_type %>
                 <% end %>
             </tbody>
         </table>
         <div class="text-end">
-            <%= f.submit "Change Request を送信", class: "btn btn-outline-primary" %>
-            <%= link_to "キャンセル", type_path(@type), class: "btn btn-secondary" %>
+            <%= f.submit "Commit", class: "btn btn-outline-primary" %>
+            <%= link_to "Cancel", type_path(@type), class: "btn btn-secondary" %>
         </div>
         <% end %>
     </div>

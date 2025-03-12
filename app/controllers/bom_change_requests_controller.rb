@@ -54,13 +54,18 @@ class BomChangeRequestsController < ApplicationController
     @bom_change_request = BomChangeRequest.new(bom_change_request_params)
     @bom_change_request.status = 'draft'
     @bom_change_request.requested_by = current_user.to_s
-
+  
     if @bom_change_request.save
       redirect_to @bom_change_request, notice: 'BOM Change Request was successfully created.'
     else
-      render :new
+      # 保存に失敗した場合は new_from_diff でエラー内容を表示できるように、
+      # 必要な変数（@type や @differences）を再セットアップする
+      @type = Type.find(@bom_change_request.type_id)
+      @differences = BomDiffService.new(@type).differences
+      render :new_from_diff
     end
   end
+  
 
   # GET /bom_change_requests/:id/edit
   def edit
