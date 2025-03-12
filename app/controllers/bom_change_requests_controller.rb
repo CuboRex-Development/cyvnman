@@ -36,14 +36,13 @@ class BomChangeRequestsController < ApplicationController
     )
     # ネスト属性を利用して、差分を ChangeDetail に変換して埋め込む
     @differences.each do |diff|
-      built = @bom_change_request.bom_change_details.build(
+      @bom_change_request.bom_change_details.build(
         block_id: diff[:block_id],
         part_id: diff[:part_id],
         old_quantity: diff[:old_quantity],
         new_quantity: diff[:new_quantity],
         change_type: diff[:change_type]
       )
-      Rails.logger.debug "Built BomChangeDetail: #{built.inspect}"
     end
 
     render :new_from_diff

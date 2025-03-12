@@ -7,7 +7,6 @@ class BomChangeRequest < ApplicationRecord
   accepts_nested_attributes_for :bom_change_details
 
   validates :status, presence: true
-  # 提出状態のときは変更理由の入力を必須にする例
   validates :reason, presence: true, if: -> { status == 'submitted' }
 
   # 承認処理の例
@@ -23,14 +22,17 @@ class BomChangeRequest < ApplicationRecord
     update!(status: 'rejected', reviewed_at: Time.current, reviewed_by: approver_name)
   end
 
-  # 承認時に、base_bom_version をコピーし、差分を適用した新規 BOMVersion を生成する例
+  # 承認時に、base_bom_version（または対象 Type の最新 BOM）をコピーし、
+  # 差分を適用した新規 BOMVersion を生成する
   def create_new_bom_version!
-    return unless base_bom_version
+    # base_bom_version が nil なら、対象の Type の最新 BOMVersion をフォールバックとして利用
+    base = base_bom_version || BomVersion.latest_for_type(type.id)
+    return unless base
 
     new_bom_version = BomVersion.create!(
-      type_id: base_bom_version.type_id,
-      model_id: base_bom_version.model_id,
-      version_label: next_version_label,
+      type_id: base.type_id,
+      model_id: base.model_id,
+      version_label: next_version_label(base),
       description: "Created by BOMChangeRequest #{id}",
       status: 'approved',
       fixed_at: Time.current,
@@ -39,7 +41,7 @@ class BomChangeRequest < ApplicationRecord
     )
 
     # 既存の BOMVersionLine をコピー
-    base_bom_version.bom_version_lines.find_each do |line|
+    base.bom_version_lines.find_each do |line|
       BomVersionLine.create!(
         bom_version: new_bom_version,
         block_id: line.block_id,
@@ -84,9 +86,9 @@ class BomChangeRequest < ApplicationRecord
   end
 
   # 新しいバージョンラベルを連番で生成する（例："001", "002", ...）
-  def next_version_label
-    if base_bom_version && base_bom_version.version_label =~ /\A\d+\z/
-      new_version = base_bom_version.version_label.to_i + 1
+  def next_version_label(base)
+    if base.version_label =~ /\A\d+\z/
+      new_version = base.version_label.to_i + 1
       format('%03d', new_version)
     else
       "001"
