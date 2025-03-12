@@ -83,14 +83,13 @@ class BomChangeRequest < ApplicationRecord
     end
   end
 
-  # 新しいバージョンラベルを生成する例
+  # 新しいバージョンラベルを連番で生成する（例："001", "002", ...）
   def next_version_label
-    if base_bom_version.version_label =~ /(\d+)\z/
-      num = Regexp.last_match(1).to_i
-      base_str = base_bom_version.version_label.sub(/(\d+)\z/, '')
-      "#{base_str}#{format('%03d', num + 1)}"
+    if base_bom_version && base_bom_version.version_label =~ /\A\d+\z/
+      new_version = base_bom_version.version_label.to_i + 1
+      format('%03d', new_version)
     else
-      "#{base_bom_version.version_label}-001"
+      "001"
     end
   end
 end
