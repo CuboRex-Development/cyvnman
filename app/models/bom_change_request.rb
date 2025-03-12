@@ -3,7 +3,8 @@ class BomChangeRequest < ApplicationRecord
   belongs_to :model, optional: true
   belongs_to :base_bom_version, class_name: 'BomVersion', optional: true
 
-  has_many :bom_change_details, dependent: :destroy
+  has_many :bom_change_details, inverse_of: :bom_change_request, dependent: :destroy
+  accepts_nested_attributes_for :bom_change_details
 
   validates :status, presence: true
   # 提出状態のときは変更理由の入力を必須にする例

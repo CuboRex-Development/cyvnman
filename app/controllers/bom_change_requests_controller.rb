@@ -20,6 +20,35 @@ class BomChangeRequestsController < ApplicationController
     @bom_change_request = BomChangeRequest.new
   end
 
+  def new_from_diff
+    @type = Type.find(params[:type_id])
+    # 差分を取得する
+    diff_service = BomDiffService.new(@type)
+    @differences = diff_service.differences
+
+    # 新規 ChangeRequest を初期化。最新の BOMVersion をベースにする場合：
+    latest_bom = BomVersion.latest_for_type(@type.id)
+    @bom_change_request = BomChangeRequest.new(
+      type_id: @type.id,
+      base_bom_version_id: latest_bom&.id,
+      requested_by: current_user.to_s,
+      status: 'draft'
+    )
+    # ネスト属性を利用して、差分を ChangeDetail に変換して埋め込む
+    @differences.each do |diff|
+      built = @bom_change_request.bom_change_details.build(
+        block_id: diff[:block_id],
+        part_id: diff[:part_id],
+        old_quantity: diff[:old_quantity],
+        new_quantity: diff[:new_quantity],
+        change_type: diff[:change_type]
+      )
+      Rails.logger.debug "Built BomChangeDetail: #{built.inspect}"
+    end
+
+    render :new_from_diff
+  end
+
   # POST /bom_change_requests
   def create
     @bom_change_request = BomChangeRequest.new(bom_change_request_params)
@@ -92,7 +121,9 @@ class BomChangeRequestsController < ApplicationController
   end
 
   def bom_change_request_params
-    # 変更リクエスト作成時に必要なパラメータ（base_bom_version_id, reason, type_id, model_id など）
-    params.require(:bom_change_request).permit(:type_id, :model_id, :base_bom_version_id, :reason)
+    params.require(:bom_change_request).permit(
+      :type_id, :model_id, :base_bom_version_id, :reason, :requested_by, :status,
+      bom_change_details_attributes: [:id, :block_id, :part_id, :old_quantity, :new_quantity, :change_description, :change_type, :_destroy]
+    )
   end
 end
