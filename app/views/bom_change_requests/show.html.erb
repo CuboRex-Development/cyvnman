@@ -53,10 +53,10 @@
                                 <tr>
                                     <td><%= detail.change_type.capitalize %></td>
                                     <td>
-                                        <% if detail.block.present? %>
-                                        Block: <%= detail.block.block_name %> (<%= detail.block.block_number %>)
-                                        <% elsif detail.part.present? %>
+                                        <% if detail.part.present? %>
                                         Part: <%= detail.part.part_name %> (<%= detail.part.part_number %>)
+                                        <% elsif detail.block.present? %>
+                                        Block: <%= detail.block.block_name %> (<%= detail.block.block_number %>)
                                         <% else %>
                                         -
                                         <% end %>
