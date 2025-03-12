@@ -32,13 +32,13 @@
                     <%= link_to 'Parts', parts_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'parts'}" %>
                 </li>
                 <li class="nav-item">
-                    <%= link_to 'ChangeRequests', bom_change_requests_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'bom_change_requests'}" %>
-                </li>
-                <li class="nav-item">
-                    <%= link_to 'BOM Versions', bom_versions_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'bom_versions'}" %>
-                </li>
-                <li class="nav-item">
                     <%= link_to 'Versions', versions_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'versions'}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'Requests', bom_change_requests_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'bom_change_requests'}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'History', bom_versions_path, class: "nav-link #{'active bg-black text-white fw-bold' if controller.controller_name == 'bom_versions'}" %>
                 </li>
                 <li class="nav-item">
                     <%= link_to 'Comparisons', comparisons_path, class: 'nav-link' %>
