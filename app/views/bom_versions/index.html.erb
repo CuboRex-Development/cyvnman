@@ -6,6 +6,7 @@
 <table class="table table-hover table-responsive shadow">
     <thead class="table-light">
         <tr>
+            <th>Type</th>
             <th>Version Label</th>
             <th>Description</th>
             <th>Fixed At</th>
@@ -17,6 +18,10 @@
     <tbody>
         <% @bom_versions.each do |bom| %>
         <tr data-href="<%= bom_version_path(bom) %>" class="clickable-row">
+            <td>
+                <%# Type が設定されていればその名前や番号を表示。なければ "-" を表示 %>
+                <%= bom.type.present? ? "#{bom.type.type_name} (#{bom.type.type_number})" : "-" %>
+            </td>
             <td>
                 <%= bom.version_label %>
                 <% if defined?(@current_bom_version) && bom == @current_bom_version %>

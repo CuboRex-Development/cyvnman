@@ -53,8 +53,16 @@ Rails.application.routes.draw do
       patch :approve
       patch :reject
     end
+    collection do
+      get 'new_from_diff'
+    end
     resources :bom_change_details, only: %i[create destroy]
   end
+  # resources :bom_change_requests do
+  #   collection do
+  #     get 'new_from_diff'
+  #   end
+  # end
 
   # BOMVersion の閲覧用ルーティング（必要に応じて）
   resources :bom_versions, only: %i[index show]

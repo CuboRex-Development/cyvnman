@@ -65,6 +65,7 @@
         <!-- 下部のアクションボタン -->
         <div class="d-flex justify-content-between mt-4">
             <%= link_to 'Back to Types', types_path, class: "btn btn-outline-primary" %>
+            <%= link_to 'Change Request', new_from_diff_bom_change_requests_path(type_id: @type.id), class: "btn btn-outline-primary" %>
             <%= button_to 'Delete', @type, method: :delete, data: { confirm: 'Are you sure you want to delete this type?' }, class: "btn btn-outline-danger" %>
         </div>
     </div>

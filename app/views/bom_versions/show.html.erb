@@ -1,6 +1,6 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
     <div class="card-body">
-        <h1 class="card-title h3 mb-4">BOM Version: <%= @bom_version.version_label %></h1>
+        <h1 class="card-title h3 mb-4"><%= @bom_version.version_label%>:<%= @bom_version.type.present? ? "#{@bom_version.type.type_name}(#{@bom_version.type.type_number})" : "-" %></h1>
         <div class="row">
             <!-- 左側: BOM Version 情報 -->
             <div class="col-md-5">
@@ -9,6 +9,7 @@
                         <h2 class="h5 mb-0">Version Info</h2>
                     </div>
                     <div class="card-body fixed-scroll">
+                        <p><strong>Type:</strong> <%= @bom_version.type.present? ? "#{@bom_version.type.type_name} (#{@bom_version.type.type_number})" : "-" %></p>
                         <p><strong>Description:</strong> <%= @bom_version.description %></p>
                         <p><strong>Fixed At:</strong> <%= @bom_version.fixed_at.present? ? l(@bom_version.fixed_at, format: :short) : '-' %></p>
                         <p><strong>Approved By:</strong> <%= @bom_version.approved_by %></p>
