@@ -36,11 +36,13 @@
                                 <tr>
                                     <td>
                                         <% if line.block.present? %>
-                                        Block: <%= line.block.block_name %> (<%= line.block.block_number %>)
-                                        <% elsif line.part.present? %>
-                                        Part: <%= line.part.part_name %> (<%= line.part.part_number %>)
-                                        <% else %>
-                                        -
+                                        <div>Block: <%= line.block.block_name %> (<%= line.block.block_number %>)</div>
+                                        <% end %>
+                                        <% if line.part.present? %>
+                                        <div>Part: <%= line.part.part_name %> (<%= line.part.part_number %>)</div>
+                                        <% end %>
+                                        <% unless line.block.present? || line.part.present? %>
+                                        <div>-</div>
                                         <% end %>
                                     </td>
                                     <td><%= line.quantity %></td>
