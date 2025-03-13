@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BomVersionLine < ApplicationRecord
   belongs_to :bom_version
   belongs_to :block, optional: true

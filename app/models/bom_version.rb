@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BomVersion < ApplicationRecord
   belongs_to :type, optional: true
   belongs_to :model, optional: true
@@ -12,6 +14,6 @@ class BomVersion < ApplicationRecord
 
   # 例: 指定した製品の最新の承認済み BOM を取得する
   def self.latest_for_type(type_id)
-    approved.where(type_id: type_id).order(fixed_at: :desc).first
+    approved.where(type_id:).order(fixed_at: :desc).first
   end
 end

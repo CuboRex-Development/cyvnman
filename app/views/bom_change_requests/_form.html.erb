@@ -4,6 +4,11 @@
         <h2 class="h5 mb-0">BOM Change Request Form</h2>
     </div>
     <div class="card-body">
+        <!-- タイトル入力フィールドを追加 -->
+        <div class="mb-3">
+            <%= f.label :title, "Title" %>
+            <%= f.text_field :title, class: "form-control" %>
+        </div>
         <div class="mb-3">
             <%= f.label :base_bom_version_id, "Base BOM Version" %>
             <%= f.collection_select :base_bom_version_id, BomVersion.all, :id, :version_label, { prompt: "Select Base BOM Version" }, class: "form-control" %>

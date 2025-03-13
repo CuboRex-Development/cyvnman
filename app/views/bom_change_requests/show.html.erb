@@ -1,6 +1,6 @@
 <div class="card border-0 shadow-sm rounded-3 p-3 mb-4">
     <div class="card-body">
-        <h1 class="card-title h3 mb-4">BOM Change Request #<%= @bom_change_request.id %></h1>
+        <h1 class="card-title h3 mb-4"><%= @bom_change_request.title %> #<%= @bom_change_request.id %></h1>
 
         <div class="row">
             <!-- 左側: リクエスト情報 -->
@@ -23,8 +23,8 @@
                         <p><strong>Reason:</strong> <%= @bom_change_request.reason %></p>
                         <p><strong>Status:</strong> <%= @bom_change_request.status.capitalize %></p>
                         <p><strong>Requested By:</strong> <%= @bom_change_request.requested_by %></p>
-                        <p><strong>Submitted At:</strong> <%= @bom_change_request.submitted_at.present? ? l(@bom_change_request.submitted_at, format: :short) : '-' %></p>
-                        <p><strong>Reviewed At:</strong> <%= @bom_change_request.reviewed_at.present? ? l(@bom_change_request.reviewed_at, format: :short) : '-' %></p>
+                        <p><strong>Submitted At:</strong> <%= @bom_change_request.submitted_at.present? ? (@bom_change_request.submitted_at.strftime("%Y-%m-%d %H:%M")) : '-' %></p>
+                        <p><strong>Reviewed At:</strong> <%= @bom_change_request.reviewed_at.present? ? (@bom_change_request.reviewed_at.strftime("%Y-%m-%d %H:%M")) : '-' %></p>
                         <p><strong>Reviewed By:</strong> <%= @bom_change_request.reviewed_by %></p>
                     </div>
                 </div>
@@ -43,8 +43,8 @@
                                 <tr>
                                     <th>Type</th>
                                     <th>Block/Part</th>
-                                    <th>Old Qty</th>
-                                    <th>New Qty</th>
+                                    <th>from</th>
+                                    <th>to</th>
                                     <th>Description</th>
                                 </tr>
                             </thead>
