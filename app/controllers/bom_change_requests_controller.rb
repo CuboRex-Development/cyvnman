@@ -126,7 +126,7 @@ class BomChangeRequestsController < ApplicationController
 
   def bom_change_request_params
     params.require(:bom_change_request).permit(
-      :type_id, :model_id, :base_bom_version_id, :reason, :requested_by, :status,
+      :title, :type_id, :model_id, :base_bom_version_id, :reason, :requested_by, :status,
       bom_change_details_attributes: [:id, :block_id, :part_id, :old_quantity, :new_quantity, :change_description, :change_type, :_destroy]
     )
   end

@@ -2,9 +2,17 @@
     <div class="card-body">
         <h1 class="card-title h3 mb-4">Change Request for <%= @type.type_name %></h1>
         <p>
-            Make sure the differences between the latest and the current state of <strong><%= @type.type_name %></strong>. </p>
+            Make sure the differences between the latest and the current state of <strong><%= @type.type_name %></strong>.
+        </p>
         <%= form_with(model: @bom_change_request, local: true, html: { "data-turbo" => "false" }) do |f| %>
         <%= f.hidden_field :type_id, value: @bom_change_request.type_id %>
+
+        <!-- タイトル入力フィールドを追加 -->
+        <div class="mb-3">
+            <%= f.label :title, "Title" %>
+            <%= f.text_field :title, class: "form-control" %>
+        </div>
+
         <div class="mb-3">
             <%= f.label :reason, "Description" %>
             <%= f.text_area :reason, class: "form-control", rows: 3 %>
@@ -17,7 +25,7 @@
                     <th>Block / Part</th>
                     <th>Category</th>
                     <th>from</th>
-                    <th>to be</th>
+                    <th>to</th>
                     <th>Comment</th>
                 </tr>
             </thead>
@@ -46,7 +54,7 @@
                         <%= detail_fields.text_field :change_description, class: "form-control", placeholder: "Why?" %>
                     </td>
                 </tr>
-                <!-- ここで差分の属性を hidden_field として埋め込む -->
+                <!-- 差分の属性を hidden_field として埋め込む -->
                 <%= detail_fields.hidden_field :block_id %>
                 <%= detail_fields.hidden_field :part_id %>
                 <%= detail_fields.hidden_field :old_quantity %>

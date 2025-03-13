@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BomVersionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
 

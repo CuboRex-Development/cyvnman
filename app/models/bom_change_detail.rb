@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BomChangeDetail < ApplicationRecord
   belongs_to :bom_change_request
 

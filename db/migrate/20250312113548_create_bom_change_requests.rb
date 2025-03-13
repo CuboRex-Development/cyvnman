@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class CreateBomChangeRequests < ActiveRecord::Migration[7.1]
   def change
     create_table :bom_change_requests do |t|
-      t.references :type, foreign_key: true, null: true          # 製品（Type）単位の場合。必要に応じて model に調整
+      t.references :type, foreign_key: true, null: true # 製品（Type）単位の場合。必要に応じて model に調整
       t.references :model, foreign_key: true, null: true
       t.references :base_bom_version, null: true, foreign_key: { to_table: :bom_versions } # 変更のベースとなる BOMVersion
       t.text :reason                                             # 変更理由・背景

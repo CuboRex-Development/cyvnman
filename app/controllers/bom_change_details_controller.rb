@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/controllers/bom_change_details_controller.rb
 class BomChangeDetailsController < ApplicationController
   before_action :authenticate_user!
@@ -27,6 +29,7 @@ class BomChangeDetailsController < ApplicationController
   end
 
   def bom_change_detail_params
-    params.require(:bom_change_detail).permit(:block_id, :part_id, :old_quantity, :new_quantity, :change_description, :change_type)
+    params.require(:bom_change_detail).permit(:block_id, :part_id, :old_quantity, :new_quantity, :change_description,
+                                              :change_type)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/services/bom_diff_service.rb
 class BomDiffService
   # 比較対象は Type の現在の状態と、最新の BOMVersion
@@ -17,28 +19,32 @@ class BomDiffService
     # 現在の状態を走査し、snapshot に存在するか、数量が変わっているかを比較
     current_data.each do |key, current_qty|
       snapshot_qty = snapshot_data[key] || 0
-      if current_qty != snapshot_qty
-        diffs << {
-          block_id: key[:block_id],
-          part_id: key[:part_id],
-          old_quantity: snapshot_qty,
-          new_quantity: current_qty,
-          change_type: snapshot_qty.zero? ? 'add' : (current_qty.zero? ? 'remove' : 'update')
-        }
-      end
+      next unless current_qty != snapshot_qty
+
+      diffs << {
+        block_id: key[:block_id],
+        part_id: key[:part_id],
+        old_quantity: snapshot_qty,
+        new_quantity: current_qty,
+        change_type: if snapshot_qty.zero?
+                       'add'
+                     else
+                       (current_qty.zero? ? 'remove' : 'update')
+                     end
+      }
     end
 
     # snapshot にあって current に存在しない場合（削除されたケース）
     snapshot_data.each do |key, snapshot_qty|
-      unless current_data.key?(key)
-        diffs << {
-          block_id: key[:block_id],
-          part_id: key[:part_id],
-          old_quantity: snapshot_qty,
-          new_quantity: 0,
-          change_type: 'remove'
-        }
-      end
+      next if current_data.key?(key)
+
+      diffs << {
+        block_id: key[:block_id],
+        part_id: key[:part_id],
+        old_quantity: snapshot_qty,
+        new_quantity: 0,
+        change_type: 'remove'
+      }
     end
 
     diffs

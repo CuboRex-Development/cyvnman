@@ -2,12 +2,12 @@
     <h1 class="h3">Change Requests</h1>
 </div>
 
-<table class="table table-hover table-responsive shadow">
+<table class="table shadow table-hover table-responsive">
     <thead class="table-light">
         <tr>
             <th>ID</th>
-            <th>Base BOM Version</th>
-            <th>Reason</th>
+            <th>Title</th>
+            <th>For</th>
             <th>Status</th>
             <th>Requested By</th>
             <th>Submitted At</th>
@@ -16,24 +16,30 @@
         </tr>
     </thead>
     <tbody>
-        <% @bom_change_requests.each do |req| %>
+        <% @bom_change_requests.order(id: :desc).each do |req| %>
         <tr data-href="<%= bom_change_request_path(req) %>" class="clickable-row">
             <td><%= req.id %></td>
+            <td><%= req.title %></td>
+            <td><%= req.type.present? ? req.type.type_name : '-' %></td>
             <td>
-                <% if req.base_bom_version.present? %>
-                <%= req.base_bom_version.version_label %>
-                <% else %>
-                -
-                <% end %>
+                <% badge_class = case req.status.downcase
+                           when 'draft'
+                             'bg-secondary'
+                           when 'submitted'
+                             'bg-primary'
+                           when 'approved'
+                             'bg-success'
+                           else
+                             'bg-light'
+                           end %>
+                <span class="badge <%= badge_class %> fw-normal"><%= req.status.capitalize %></span>
             </td>
-            <td><%= truncate(req.reason, length: 50) %></td>
-            <td><%= req.status.capitalize %></td>
             <td><%= req.requested_by %></td>
-            <td><%= req.submitted_at.present? ? l(req.submitted_at, format: :short) : '-' %></td>
-            <td><%= req.reviewed_at.present? ? l(req.reviewed_at, format: :short) : '-' %></td>
+            <td><%= req.submitted_at.present? ? req.submitted_at.strftime("%Y-%m-%d %H:%M") : '-' %></td>
+            <td><%= req.reviewed_at.present? ? req.reviewed_at.strftime("%Y-%m-%d %H:%M") : '-' %></td>
             <td>
                 <%= link_to 'Show', bom_change_request_path(req), class: "btn btn-sm btn-outline-primary" %>
-                <% if req.status == 'draft' %>
+                <% if req.status.downcase == 'draft' %>
                 <%= link_to 'Edit', edit_bom_change_request_path(req), class: "btn btn-sm btn-outline-secondary" %>
                 <% end %>
             </td>

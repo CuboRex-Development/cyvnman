@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BomChangeRequest < ApplicationRecord
   belongs_to :type, optional: true
   belongs_to :model, optional: true
@@ -8,6 +10,7 @@ class BomChangeRequest < ApplicationRecord
 
   validates :status, presence: true
   validates :reason, presence: true, if: -> { status == 'submitted' }
+  validates :title, presence: true, if: -> { status == 'submitted' }
 
   # 承認処理の例
   def approve!(approver_name)
@@ -62,7 +65,7 @@ class BomChangeRequest < ApplicationRecord
       case detail.change_type
       when 'add'
         BomVersionLine.create!(
-          bom_version: bom_version,
+          bom_version:,
           block_id: detail.block_id,
           part_id: detail.part_id,
           quantity: detail.new_quantity
@@ -91,7 +94,7 @@ class BomChangeRequest < ApplicationRecord
       new_version = base.version_label.to_i + 1
       format('%03d', new_version)
     else
-      "001"
+      '001'
     end
   end
 end
