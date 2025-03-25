@@ -244,7 +244,11 @@
         <!-- Bottom Action Buttons (Edit リンクは削除) -->
         <div class="d-flex justify-content-between">
             <%= link_to 'Back to Blocks', blocks_path, class: "btn btn-outline-primary" %>
+            <%
+=begin%>
             <%= button_to 'Delete', @block, method: :delete, data: { confirm: 'Are you sure you want to delete this block?' }, class: "btn btn-outline-danger" %>
+            <%
+=end%>
         </div>
     </div>
 </div>
