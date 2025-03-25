@@ -352,7 +352,11 @@
 <!-- Action Buttons -->
 <div class="d-flex justify-content-between mt-4">
     <%= link_to 'Back to Parts', parts_path, class: "btn btn-outline-primary" %>
+    <%
+=begin%>
     <%= button_to 'Delete', @part, method: :delete, data: { confirm: 'Are you sure you want to delete this part?' }, class: "btn btn-outline-danger" %>
+    <%
+=end%>
 </div>
 </div>
 </div>
