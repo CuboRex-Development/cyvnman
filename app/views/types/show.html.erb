@@ -29,7 +29,7 @@
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Block Number / Model Name</th>
+                                <th>Block Name / Model Name</th>
                                 <% @type.models.each do |model| %>
                                 <th class="text-center">
                                     <%= link_to model.model_code, model, class: "text-decoration-none" %>
@@ -41,7 +41,7 @@
                             <% @type.blocks.each do |block| %>
                             <tr>
                                 <td>
-                                    <%= link_to block.block_number, block, class: "text-decoration-none" %>
+                                    <%= link_to block.block_name, block, class: "text-decoration-none" %>
                                 </td>
                                 <% @type.models.each do |model| %>
                                 <td class="text-center">
