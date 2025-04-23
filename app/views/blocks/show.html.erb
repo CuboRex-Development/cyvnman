@@ -212,7 +212,9 @@
                                 <td>
                                     <% if part.image.attached? %>
                                     <% if part.image.variable? %>
-                                    <%= image_tag part.image.variant(resize_to_limit: [50,50]), class: "img-thumbnail" %>
+                                    <%= image_tag part.image.variant(resize_to_limit: [50,50]), 
+                                    loading: "lazy", decoding: "async",
+                                    class: "img-thumbnail" %>
                                     <% else %>
                                     <%= image_tag part.image, class: "img-thumbnail" %>
                                     <% end %>
