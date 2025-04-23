@@ -12,10 +12,27 @@ class PartsController < ApplicationController
   end
 
   def show
-    @part = Part.find(params[:id])
-    @version = Version.new
+    # ─── ① 本体 ───────────────────────────────────────
+    @part = Part
+              .includes(image_attachment: :blob)
+              .find(params[:id])
+  
+    @version = Version.new      # New-Version 用の空レコード
+  
+    # ─── ② すでに結び付いている部品 ──────────────────
     @related_parts = @part.related_parts
+                           .includes(image_attachment: :blob)
+                           .order(:part_number)
+  
+    # ─── ③ Add-Relation 候補  ★ここを Kaminari ページング★ ─
+    excluded_ids    = @related_parts.pluck(:id) << @part.id
+    @candidate_parts = Part.where.not(id: excluded_ids)
+                           .includes(image_attachment: :blob)
+                           .order(:part_number)
+                           .page(params[:cand_page])  # ← Kaminari
+                           .per(10)                   #    1 ページ 50 行
   end
+  
 
   def new
     @part = Part.new
