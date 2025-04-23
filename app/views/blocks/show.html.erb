@@ -70,9 +70,10 @@
         <!-- Related Parts (Table Format with Image Column) -->
         <div id="current-related-parts" class="card border-0 shadow mb-4">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0"><%= @block_parts.size %> Parts</h2>
-                <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newPartModal">New Part</a>
+                <h2 class="h5 mb-0"><%= @block_parts.total_count %> Parts</h2>
+                <a class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newPartModal">New Part</a>
             </div>
+
             <div class="card-body p-0">
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
@@ -116,143 +117,151 @@
                         <% end %>
                     </tbody>
                 </table>
+                <div class="p-2 d-flex justify-content-center">
+                    <%= paginate @block_parts, param_name: :parts_page, theme: "bootstrap-5" %>
+                </div>
             </div>
         </div>
+    </div>
+</div>
 
 
-        <!-- Modal: New Part Registration Form -->
-        <div class="modal fade" id="newPartModal" tabindex="-1" aria-labelledby="newPartModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <%= form_with(model: @part, url: block_parts_path(@block), local: true, html: { multipart: true }) do |form| %>
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="newPartModalLabel">New Part</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <% if @part.errors.any? %>
-                        <div id="error_explanation" class="alert alert-danger">
-                            <h2><%= pluralize(@part.errors.count, "error") %> prohibited this part from being saved:</h2>
-                            <ul>
-                                <% @part.errors.full_messages.each do |message| %>
-                                <li><%= message %></li>
-                                <% end %>
-                            </ul>
-                        </div>
+<!-- Modal: New Part Registration Form -->
+<div class="modal fade" id="newPartModal" tabindex="-1" aria-labelledby="newPartModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <%= form_with(model: @part, url: block_parts_path(@block), local: true, html: { multipart: true }) do |form| %>
+            <div class="modal-header">
+                <h5 class="modal-title" id="newPartModalLabel">New Part</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <% if @part.errors.any? %>
+                <div id="error_explanation" class="alert alert-danger">
+                    <h2><%= pluralize(@part.errors.count, "error") %> prohibited this part from being saved:</h2>
+                    <ul>
+                        <% @part.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
                         <% end %>
+                    </ul>
+                </div>
+                <% end %>
 
-                        <p class="mb-3">
-                            Part Number will be automatically generated based on the Block Number:
-                            <strong><%= @block.block_number %></strong>
-                        </p>
+                <p class="mb-3">
+                    Part Number will be automatically generated based on the Block Number:
+                    <strong><%= @block.block_number %></strong>
+                </p>
 
-                        <div class="mb-3">
-                            <%= form.label :part_name, "Part Name", class: 'form-label' %>
-                            <%= form.text_field :part_name, class: 'form-control', required: true %>
-                        </div>
+                <div class="mb-3">
+                    <%= form.label :part_name, "Part Name", class: 'form-label' %>
+                    <%= form.text_field :part_name, class: 'form-control', required: true %>
+                </div>
 
-                        <div class="mb-3">
-                            <%= form.label :description, class: 'form-label' %>
-                            <%= form.text_area :description, class: 'form-control' %>
-                        </div>
+                <div class="mb-3">
+                    <%= form.label :description, class: 'form-label' %>
+                    <%= form.text_area :description, class: 'form-control' %>
+                </div>
 
-                        <div class="mb-3">
-                            <%= form.label :material, class: 'form-label' %>
-                            <%= form.text_field :material, class: 'form-control', placeholder: "Enter material" %>
-                        </div>
+                <div class="mb-3">
+                    <%= form.label :material, class: 'form-label' %>
+                    <%= form.text_field :material, class: 'form-control', placeholder: "Enter material" %>
+                </div>
 
-                        <div class="mb-3">
-                            <%= form.label :nominal_size, class: 'form-label' %>
-                            <%= form.text_field :nominal_size, class: 'form-control', placeholder: "Enter nominal size" %>
-                        </div>
+                <div class="mb-3">
+                    <%= form.label :nominal_size, class: 'form-label' %>
+                    <%= form.text_field :nominal_size, class: 'form-control', placeholder: "Enter nominal size" %>
+                </div>
 
-                        <div class="mb-3">
-                            <%= form.label :image, "Upload Image", class: 'form-label' %>
-                            <%= form.file_field :image, class: 'form-control' %>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <%= form.submit 'Create Part', class: 'btn btn-outline-primary' %>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                    <% end %>
+                <div class="mb-3">
+                    <%= form.label :image, "Upload Image", class: 'form-label' %>
+                    <%= form.file_field :image, class: 'form-control' %>
                 </div>
             </div>
+            <div class="modal-footer">
+                <%= form.submit 'Create Part', class: 'btn btn-outline-primary' %>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<!-- Add Existing Part (Table Format with Action Column) -->
+<div class="card border-0 shadow mb-4">
+    <div class="card-header bg-light">
+        <h2 class="h5 mb-0">Add Part</h2>
+    </div>
+    <div class="card-body">
+        <!-- Search Input -->
+        <div class="mb-3">
+            <label for="existing-part-search" class="form-label">Search Parts:</label>
+            <input type="text" id="existing-part-search" class="form-control" placeholder="Type to search...">
         </div>
 
-        <!-- Add Existing Part (Table Format with Action Column) -->
-        <div class="card border-0 shadow mb-4">
-            <div class="card-header bg-light">
-                <h2 class="h5 mb-0">Add Part</h2>
-            </div>
-            <div class="card-body">
-                <!-- Search Input -->
-                <div class="mb-3">
-                    <label for="existing-part-search" class="form-label">Search Parts:</label>
-                    <input type="text" id="existing-part-search" class="form-control" placeholder="Type to search...">
-                </div>
-
-                <!-- Table Display -->
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0" id="existing-parts-table">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Part Number</th>
-                                <th>Part Name</th>
-                                <th>Image</th>
-                                <th>Price</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% Part.where.not(id: @block.parts.pluck(:id)).each do |part| %>
-                            <tr data-href="<%= part_path(part) %>" class="clickable-row">
-                                <td><%= part.part_number %></td>
-                                <td><%= part.part_name %></td>
-                                <td>
-                                    <% if part.image.attached? %>
-                                    <% if part.image.variable? %>
-                                    <%= image_tag part.image.variant(resize_to_limit: [50,50]), 
+        <!-- Table Display -->
+        <div class="table-responsive">
+            <table id="candidate-table" class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Part Number</th>
+                        <th>Part Name</th>
+                        <th>Image</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @candidate_parts.each do |part| %>
+                    <tr data-href="<%= part_path(part) %>" class="clickable-row">
+                        <td><%= part.part_number %></td>
+                        <td><%= part.part_name %></td>
+                        <td>
+                            <% if part.image.attached? %>
+                            <% if part.image.variable? %>
+                            <%= image_tag part.image.variant(resize_to_limit: [50,50]), 
                                     loading: "lazy", decoding: "async",
                                     class: "img-thumbnail" %>
-                                    <% else %>
-                                    <%= image_tag part.image, class: "img-thumbnail" %>
-                                    <% end %>
-                                    <% else %>
-                                    <span class="text-muted">No Image</span>
-                                    <% end %>
-                                </td>
-                                <td><%= part.standard_price %></td>
-                                <td>
-                                    <%= form_with url: add_part_block_path(@block, part_id: part.id),
+                            <% else %>
+                            <%= image_tag part.image, class: "img-thumbnail" %>
+                            <% end %>
+                            <% else %>
+                            <span class="text-muted">No Image</span>
+                            <% end %>
+                        </td>
+                        <td><%= part.standard_price %></td>
+                        <td>
+                            <%= form_with url: add_part_block_path(@block, part_id: part.id),
                           method: :post,
                           scope: nil,
                           local: true,
                           data: { turbo: false } do |f| %>
-                                    <div class="input-group">
-                                        <%= f.number_field :quantity, value: 1, min: 1, class: "form-control", style: "width: 80px;" %>
-                                        <%= f.submit "Add", class: "btn btn-sm btn-outline-primary" %>
-                                    </div>
-                                    <% end %>
-                                </td>
-                            </tr>
+                            <div class="input-group">
+                                <%= f.number_field :quantity, value: 1, min: 1, class: "form-control", style: "width: 80px;" %>
+                                <%= f.submit "Add", class: "btn btn-sm btn-outline-primary" %>
+                            </div>
                             <% end %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                        </td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
         </div>
-
-        <!-- Bottom Action Buttons (Edit リンクは削除) -->
-        <div class="d-flex justify-content-between">
-            <%= link_to 'Back to Blocks', blocks_path, class: "btn btn-outline-primary" %>
-            <%
-=begin%>
-            <%= button_to 'Delete', @block, method: :delete, data: { confirm: 'Are you sure you want to delete this block?' }, class: "btn btn-outline-danger" %>
-            <%
-=end%>
+        <div class="pt-3 d-flex justify-content-center">
+            <%= paginate @candidate_parts, param_name: :cand_page, theme: "bootstrap-5" %>
         </div>
     </div>
+</div>
+
+<!-- Bottom Action Buttons (Edit リンクは削除) -->
+<div class="d-flex justify-content-between">
+    <%= link_to 'Back to Blocks', blocks_path, class: "btn btn-outline-primary" %>
+    <%
+=begin%>
+    <%= button_to 'Delete', @block, method: :delete, data: { confirm: 'Are you sure you want to delete this block?' }, class: "btn btn-outline-danger" %>
+    <%
+=end%>
+</div>
+</div>
 </div>
 
 <!-- Modal: Edit Block Form -->

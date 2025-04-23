@@ -18,25 +18,25 @@ class BlocksController < ApplicationController
   def edit; end
 
   def show
-    @block = Block.find(params[:id])
-  
-    # ① 画像を含めて**完全に**先読み (part → image_attachment → blob)
-    @block_parts = @block.block_parts
-                         .includes(part: { image_attachment: :blob })
-  
-    # ② ページング（行が増えてきたら必須）
-    #    kaminari / pagy どちらでも OK。ここでは kaminari を例示。
-    @block_parts = @block_parts.page(params[:page]).per(50)
-  
-    # ③ SQL で自然順ソートできない場合だけ Ruby で整列
-    #    「100-2-3」 < 「100-10-1」のようにしたいなら下記で十分
-    @block_parts = @block_parts.sort_by do |bp|
-      bp.part.part_number.split('-').map(&:to_i)
-    end
-  
-    # ④ ビュー側で使う空のフォーム用インスタンス
-    @part = Part.new
+      @block = Block.find(params[:id])
+    
+      # ── Related Parts ─────────────────────────────────────────────
+      raw = @block.block_parts.includes(part: { image_attachment: :blob })
+      sorted = raw.sort_by { |bp| bp.part.part_number.split('-').map(&:to_i) }
+      @block_parts = Kaminari.paginate_array(sorted)
+                             .page(params[:page]).per(10)
+    
+      # ★ ここを忘れていた → Add-Part 候補をページング付きで用意
+      excluded_ids     = @block.parts.pluck(:id)
+      @candidate_parts = Part.where.not(id: excluded_ids)
+                             .includes(image_attachment: :blob)
+                             .order(:part_number)
+                             .page(params[:cand_page])  # ← これだけで OK
+                             .per(10)
+    
+      @part = Part.new  
   end
+  
 
   def create
     # ブロックの基本情報は block_params から取得し、採番用のタイプIDはフォームから params[:block][:type_id] を利用
