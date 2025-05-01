@@ -69,11 +69,15 @@ class PartsController < ApplicationController
 
   def add_related_part
     related_part = Part.find(params[:related_part_id])
-    unless @part.related_parts.include?(related_part)
-      @part.related_parts << related_part
-      related_part.related_parts << @part
+    qty          = params[:quantity].to_i
+  
+    begin
+      @part.add_related_part!(related_part, qty)
+      respond_success(@part, notice: "Related part を数量 #{qty} で追加しました。")
+    rescue ArgumentError => e
+      flash[:alert] = e.message
+      redirect_to @part
     end
-    respond_success(@part, notice: 'Related part was successfully added.')
   end
 
   def remove_related_part
