@@ -38,6 +38,17 @@ class Part < ApplicationRecord
     "#{part_number} - #{part_name}"
   end
 
+  def add_related_part!(other_part, qty = 1)
+    qty = qty.to_i
+    raise ArgumentError, '数量は 1 以上で指定してください' if qty <= 0
+    return if related_parts.exists?(other_part.id) # 重複防止
+
+    Part.transaction do
+      related_parts << other_part                 # HABTM へ挿入
+      sync_block_parts_quantity(other_part, qty)  # ← 数量同期 (下で定義)
+    end
+  end
+
   private
 
   def generate_part_number
@@ -50,5 +61,10 @@ class Part < ApplicationRecord
         max_suffix = existing_numbers.map { |num| num.split('-').last.to_i }.max || 0
         new_suffix = (max_suffix + 1).to_s.rjust(3, '0')
         self.part_number = "#{block.block_number}-#{new_suffix}"
+  end
+
+  def sync_block_parts_quantity(other_part, qty)
+    blocks.each { |b| b.add_part!(other_part, qty) }
+    other_part.blocks.each { |b| b.add_part!(self, qty) }
   end
 end
