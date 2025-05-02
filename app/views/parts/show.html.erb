@@ -284,8 +284,24 @@
                     </td>
                     <td><%= related_part.material %></td>
                     <td><%= related_part.nominal_size %></td>
-                    <td>
-                        <%= button_to 'Remove', remove_related_part_part_path(@part, related_part_id: related_part.id), method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: 'Are you sure?' }, onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                    <td class="text-nowrap">
+                        <%= form_with url: remove_related_part_part_path(@part),
+                method: :delete,
+                local: true,
+                html: { class: 'd-flex gap-1 align-items-center',
+                        onsubmit: 'event.stopPropagation();' } do |f| %>
+
+                        <!-- 対象パーツ ID -->
+                        <%= hidden_field_tag :related_part_id, related_part.id %>
+
+                        <!-- 何個戻すか (デフォルト 1) -->
+                        <%= number_field_tag :quantity, 1, min: 1,
+         class: 'form-control form-control-sm',
+         style: 'width:4.5rem;' %>
+
+                        <!-- 送信ボタン -->
+                        <%= f.submit 'Remove', class: 'btn btn-sm btn-outline-danger' %>
+                        <% end %>
                     </td>
                 </tr>
                 <% end %>

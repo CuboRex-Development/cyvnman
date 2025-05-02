@@ -24,6 +24,20 @@ class Block < ApplicationRecord
     bp
   end
 
+  # app/models/block.rb
+  def subtract_part!(part, qty = 1)
+    bp = block_parts.find_by(part_id: part.id)
+    return unless bp
+
+    new_qty = bp.quantity - qty
+    if new_qty <= 0
+      bp.destroy                 # 0 以下なら行ごと削除
+    else
+      bp.update(quantity: new_qty)
+    end
+  end
+
+
   def remove_part!(part)
     block_parts.find_by(part:)&.destroy
   end
