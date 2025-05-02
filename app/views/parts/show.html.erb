@@ -339,12 +339,25 @@
                         <td><%= p.material     %></td>
                         <td><%= p.nominal_size %></td>
                         <td>
-                            <%= button_to "Add",
-                              add_related_part_part_path(@part, related_part_id: p.id),
-                              method: :post,
-                              class: "btn btn-sm btn-outline-primary",
-                              data: { confirm: "Add this related part?" },
-                              onclick: "event.stopPropagation(); focusCurrentRelatedParts();" %>
+                            <!-- 旧 button_to を ↓ に差し替え -->
+                            <%= form_with url: add_related_part_part_path(@part),
+                method: :post,
+                local: true,
+                html: { class: 'd-flex gap-1 align-items-center',
+                        onsubmit: 'event.stopPropagation();' } do |f| %>
+
+                            <!-- 対象パーツ ID -->
+                            <%= hidden_field_tag :related_part_id, p.id %>
+
+                            <!-- 数量を入力 (デフォルト1) -->
+                            <%= number_field_tag :quantity, 1, min: 1,
+                         class: 'form-control form-control-sm',
+                         style: 'width:5rem;' %>
+
+                            <!-- 送信ボタン -->
+                            <%= f.submit 'Add', class: 'btn btn-sm btn-outline-primary' %>
+                            <% end %>
+                        </td>
                         </td>
                     </tr>
                     <% end %>
