@@ -25,6 +25,22 @@ class Part < ApplicationRecord
     BlockPart.where(part_id: id).sum(:quantity)
   end
 
+  # app/models/part.rb
+  def remove_related_part!(other_part, qty = 1)
+    qty = qty.to_i
+    raise ArgumentError, '数量は 1 以上' if qty <= 0
+
+    Part.transaction do
+      # ① BOM を双方のブロックで -qty
+      blocks.each          { |b| b.subtract_part!(other_part, qty) }
+      other_part.blocks.each { |b| b.subtract_part!(self,       qty) }
+
+      # ② HABTM を物理的に外す（残り数量ゼロになった時だけ外したいなら条件分岐も可）
+      related_parts.destroy(other_part)
+    end
+  end
+
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[created_at description id part_name part_number updated_at material nominal_size
        part_name_eg quantity image]

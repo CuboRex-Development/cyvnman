@@ -89,9 +89,13 @@ class PartsController < ApplicationController
 
   def remove_related_part
     related_part = Part.find(params[:related_part_id])
-    @part.related_parts.delete(related_part)
-    related_part.related_parts.delete(@part)
-    respond_success(@part, notice: 'Related part was successfully removed.')
+    qty          = params[:quantity].to_i
+
+    @part.remove_related_part!(related_part, qty)   # ← Model サービスを呼ぶ
+    respond_success(@part, notice: "Removed #{qty} pcs of #{related_part.part_number}.")
+  rescue ArgumentError => e
+    flash[:alert] = e.message
+    redirect_to @part
   end
 
   private
