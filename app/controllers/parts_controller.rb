@@ -8,7 +8,14 @@ class PartsController < ApplicationController
   def index
     @q = Part.ransack(params[:q])
     @q.sorts = 'part_number asc' if @q.sorts.empty?
-    @parts = @q.result(distinct: true).page(params[:page]).per(10)
+  
+    # ▼ 追加: block_parts を JOIN して一発集計
+    @parts =
+      @q.result(distinct: true)
+        .left_joins(:block_parts)
+        .select('parts.*, COALESCE(SUM(block_parts.quantity), 0) AS total_quantity')
+        .group('parts.id')
+        .page(params[:page]).per(10)
   end
 
   def show
