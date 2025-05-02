@@ -17,6 +17,7 @@
             <th>Nominal Size</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Total Qty</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -36,6 +37,7 @@
             <td><%= part.nominal_size %></td>
             <td><%= number_to_currency(part.standard_price, precision: 0) %></td>
             <td><%= part.stock.present? ? part.stock.quantity : 0 %></td>
+            <td><%= part.total_used_quantity.present? ? part.total_used_quantity : 0 %></td>
             <td>
                 <button type="button" class="btn btn-sm btn-outline-primary new-version-btn" data-bs-toggle="modal" data-bs-target="#newVersionModal" data-part-id="<%= part.id %>" data-part-number="<%= part.part_number %>">
                     New Version
