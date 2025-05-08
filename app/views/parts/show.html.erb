@@ -409,85 +409,61 @@
 
 <!-- クリックで行からリンクへ遷移するスクリプト -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".clickable-row").forEach(function(row) {
-            row.addEventListener("click", function(e) {
-                // ボタン、リンク、input などの子要素がクリックされた場合は何もしない
-                if (e.target.closest("a, button, input")) return;
-                window.location = this.dataset.href;
+    /* =====  ページ読込ごとに初期化  ===== */
+    document.addEventListener('turbo:load', () => {
+        /* ---------- ① クリックで行遷移 ---------- */
+        document.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', e => {
+                if (e.target.closest('a,button,input,form')) return; // 子要素が押されたら無視
+                window.location = row.dataset.href;
             });
         });
 
-        // Add Related Part テーブル内の検索フィルタ
-        const partSearch = document.getElementById('related-part-search');
-        const partTable = document.getElementById('related-parts-table');
-        if (partSearch && partTable) {
-            partSearch.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                const rows = partTable.querySelectorAll('tbody tr');
-                rows.forEach(function(row) {
-                    row.style.display = row.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
+        /* ---------- ② Add-Relation 検索フィルタ ---------- */
+        const searchInput = document.getElementById('candidate-search');
+        const table = document.getElementById('candidate-table');
+        if (searchInput && table) {
+            const rows = table.querySelectorAll('tbody tr');
+            searchInput.addEventListener('input', () => {
+                const term = searchInput.value.toLowerCase();
+                rows.forEach(row => {
+                    row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
                 });
             });
         }
-    });
 
-    // Current Related Parts セクションへスクロールする関数
-    function focusCurrentRelatedParts() {
-        var section = document.getElementById('current-related-parts');
-        if (section) {
-            section.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    }
-    document.addEventListener('turbo:load', function() {
-        const table = document.getElementById('versions-table');
-        if (!table) return;
+        /* ---------- ③ Versions テーブルのソート ---------- */
+        const vTable = document.getElementById('versions-table');
+        if (vTable) {
+            const tbody = vTable.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            let asc = true;
 
-        const tbody = table.querySelector('tbody');
-        // tbody内の行を配列として取る
-        const rows = Array.from(tbody.querySelectorAll('tr'));
-
-        // 昇順 / 降順を切り替えるフラグ
-        let versionAsc = true;
-
-        // 「Version Number」列ヘッダをクリックしたらソート
-        const versionHeader = document.getElementById('sort-version-number');
-        if (versionHeader) {
-            versionHeader.addEventListener('click', function() {
-                rows.sort((rowA, rowB) => {
-                    // rowAのVersion Number
-                    const aText = rowA.cells[0].innerText.trim(); // tdの0番目がVersion Number
-                    // rowBのVersion Number
-                    const bText = rowB.cells[0].innerText.trim();
-
-                    // "1001-001-002-001" を [1001, 1, 2, 1] のように分割 + 数値変換
-                    const aNums = aText.split('-').map(part => parseInt(part, 10));
-                    const bNums = bText.split('-').map(part => parseInt(part, 10));
-
-                    // 左から順番に比較する。長さは同じ想定？
-                    for (let i = 0; i < aNums.length; i++) {
-                        if (aNums[i] !== bNums[i]) {
-                            // 昇順の場合は a-b, 降順の場合は b-a
-                            return versionAsc ? (aNums[i] - bNums[i]) : (bNums[i] - aNums[i]);
+            const header = document.getElementById('sort-version-number');
+            const icon = document.getElementById('icon-version-number');
+            if (header) {
+                header.addEventListener('click', () => {
+                    rows.sort((a, b) => {
+                        const aNums = a.cells[0].innerText.trim().split('-').map(Number);
+                        const bNums = b.cells[0].innerText.trim().split('-').map(Number);
+                        for (let i = 0; i < aNums.length; i++) {
+                            if (aNums[i] !== bNums[i]) return asc ? aNums[i] - bNums[i] : bNums[i] - aNums[i];
                         }
-                    }
-                    return 0; // 完全に同じ場合
+                        return 0;
+                    });
+                    rows.forEach(r => tbody.appendChild(r));
+                    asc = !asc;
+                    if (icon) icon.textContent = asc ? '▲' : '▼';
                 });
-
-                // 並べ替えた行を再挿入
-                rows.forEach(row => tbody.appendChild(row));
-
-                // 昇順/降順をトグル
-                versionAsc = !versionAsc;
-
-                // アイコン切り替え（任意）
-                const iconVN = document.getElementById('icon-version-number');
-                if (iconVN) {
-                    iconVN.textContent = versionAsc ? '▲' : '▼';
-                }
-            });
+            }
         }
     });
+
+    /* ---------- ④ Related Parts へスクロール ---------- */
+    function focusCurrentRelatedParts() {
+        const section = document.getElementById('current-related-parts');
+        if (section) section.scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
 </script>
