@@ -37,7 +37,11 @@ class PartsController < ApplicationController
                            .includes(image_attachment: :blob)
                            .order(:part_number)
                            .page(params[:cand_page])  # ← Kaminari
-                           .per(10)                   #    1 ページ 50 行
+                           .per(10)   
+    block_ids   = @part.blocks.pluck(:id)
+    @qty_map    = BlockPart.where(block_id: block_ids)
+                         .group(:part_id)
+                         .sum(:quantity)
   end
   
 

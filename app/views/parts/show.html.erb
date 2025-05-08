@@ -267,6 +267,7 @@
                     <th>Image</th>
                     <th>Material</th>
                     <th>Nominal Size</th>
+                    <th>Qty</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -284,6 +285,10 @@
                     </td>
                     <td><%= related_part.material %></td>
                     <td><%= related_part.nominal_size %></td>
+                    <td>
+                        <%= @qty_map[related_part.id] || 0 %>
+                        <!-- ★数量 -->
+                    </td>
                     <td class="text-nowrap">
                         <%= form_with url: remove_related_part_part_path(@part),
                 method: :delete,
