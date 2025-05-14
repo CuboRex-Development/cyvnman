@@ -3,7 +3,7 @@
 class PartsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   # ※ add_related_part / remove_related_part だけを指定
-  before_action :set_part, only: %i[show edit update destroy add_related_part remove_related_part]
+  before_action :set_part, only: %i[show edit update destroy add_related_part remove_related_part change_related_part]
   before_action :set_block, only: %i[new create]
 
   # --------------------------------------------------
@@ -107,6 +107,17 @@ class PartsController < ApplicationController
 
     @part.remove_related_part!(related, qty)
     respond_success(@part, notice: "Removed #{qty} pcs of #{related.part_number}.")
+  rescue ArgumentError => e
+    flash[:alert] = e.message
+    redirect_to @part
+  end
+
+  def change_related_part
+    other = Part.find(params[:related_part_id])
+    delta = params[:delta].to_i                # ±の差分で受け取る
+  
+    @part.change_related_part_quantity!(other, delta)
+    respond_success(@part, notice: "Qty changed by #{delta}.")
   rescue ArgumentError => e
     flash[:alert] = e.message
     redirect_to @part

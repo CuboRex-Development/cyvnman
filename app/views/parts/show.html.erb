@@ -290,22 +290,22 @@
                         <!-- ★数量 -->
                     </td>
                     <td class="text-nowrap">
-                        <%= form_with url: remove_related_part_part_path(@part),
-                method: :delete,
+                        <%= form_with url: change_related_part_part_path(@part),  # ← new route
+                method: :post,
                 local: true,
                 html: { class: 'd-flex gap-1 align-items-center',
-                        onsubmit: 'event.stopPropagation();' } do |f| %>
+                        onsubmit: 'event.stopPropagation();' } do %>
 
                         <!-- 対象パーツ ID -->
                         <%= hidden_field_tag :related_part_id, related_part.id %>
 
-                        <!-- 何個戻すか (デフォルト 1) -->
-                        <%= number_field_tag :quantity, 1, min: 1,
+                        <!-- 増減させる差分 (正:+, 負:-) -->
+                        <%= number_field_tag :delta, 1, step: 1,
          class: 'form-control form-control-sm',
-         style: 'width:4.5rem;' %>
+         style: 'width:5rem;' %>
 
                         <!-- 送信ボタン -->
-                        <%= f.submit 'Remove', class: 'btn btn-sm btn-outline-danger' %>
+                        <%= submit_tag 'Change', class: 'btn btn-sm btn-outline-secondary' %>
                         <% end %>
                     </td>
                 </tr>

@@ -55,6 +55,21 @@ class Part < ApplicationRecord
     end
   end
 
+  # app/models/part.rb
+  def change_related_part_quantity!(other_part, delta)
+    delta = delta.to_i
+    raise ArgumentError, '数量を 0 以外で指定してください' if delta.zero?
+
+    Part.transaction do
+      link = part_links.where(related_part: other_part).first_or_initialize
+      link.quantity = link.quantity.to_i + delta
+      link.quantity <= 0 ? link.destroy! : link.save!
+
+      # BlockPart も同期（正なら add、負なら subtract）
+      sync_block_parts_quantity(other_part, delta)
+    end
+  end
+
   # 全ブロック合計でこの部品が何個使われているか
   def total_used_quantity
     BlockPart.where(part_id: id).sum(:quantity)
